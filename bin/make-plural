@@ -1,6 +1,14 @@
 #!/usr/bin/env node
 
-var	plurals = require('..');
+/** A minimal/sample interface for make-plural.js
+ *
+ *  Usage:
+ *    ./bin/make-plural            // checks all locale rules
+ *    ./bin/make-plural [lc]       // prints the locale function for `lc`
+ *    ./bin/make-plural [lc] [v]   // prints the plural category for `v` in locale `lc`
+ */
+
+var plurals = require('..');
 
 if (process.argv[3]) {
 	console.log(plurals.build(process.argv[2], {'return_function':1})(process.argv[3]));

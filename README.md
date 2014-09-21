@@ -1,5 +1,5 @@
-make-plural.js
-==============
+make-plural
+===========
 
 A JavaScript module that translates [Unicode CLDR](http://cldr.unicode.org/)
 [pluralization rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html)
@@ -8,7 +8,6 @@ to executable JavaScript.
 
 ## Installation
 
-Using npm:
 ```
 npm install make-plural
 ```
@@ -63,12 +62,14 @@ optional `opt` object may contain the following members:
 * `minify` -- if true, the string output of `build` is minified
 
 ### set_rules(cldr)
-Sets the used CLDR rules to `cldr`, which may be an object or the path to a
-JSON file formatted like [this](http://www.unicode.org/repos/cldr-aux/json/25/supplemental/plurals.json).
+Sets the used CLDR rules to `cldr`, which may be an object or the path to a JSON
+file formatted like [this](http://www.unicode.org/repos/cldr-aux/json/25/supplemental/plurals.json).
 By default, the included rules in `data/unicode-cldr-plural-rules.json` are
 used.
 
 
 ## Dependencies
 
-None.
+None. CLDR plural rule data is included in JSON format; make-plural supports the
+[LDML Language Plural Rules](http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules)
+as used in CLDR release 24 and later.
