@@ -1,11 +1,9 @@
 make-plural.js
 ==============
 
-A JavaScript module that translates [Unicode CLDR] [pluralization rules] to
-executable JavaScript.
-
-[Unicode CLDR]: http://cldr.unicode.org/
-[pluralization rules]: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
+A JavaScript module that translates [Unicode CLDR](http://cldr.unicode.org/)
+[pluralization rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html)
+to executable JavaScript.
 
 
 ## Installation
