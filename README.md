@@ -37,7 +37,7 @@ function(n) {
   return 'other';
 }
 
-> sk = plurals.build('sk', true)
+> sk = plurals.build('sk', {'return_function':1})
 [Function]
 
 > sk(1)
@@ -56,10 +56,13 @@ function(n) {
 
 ## Methods
 
-### build(lc, op_function)
+### build(lc, opt)
 By default, returns a string representation of a function that takes a single
-argument `n` and returns its plural category for the given locale `lc`. If
-`op_function` is `true`, it returns an executable function instead.
+argument `n` and returns its plural category for the given locale `lc`. The
+optional `opt` object may contain the following members:
+* `return_function` -- if true, `build` returns an executable function of `n`
+  rather than a string
+* `minify` -- if true, the string output of `build` is minified
 
 ### set_rules(cldr)
 Sets the used CLDR rules to `cldr`, which may be an object or the path to a
