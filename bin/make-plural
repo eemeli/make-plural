@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+var	plurals = require('..');
+
+if (process.argv[3]) {
+	console.log(plurals.build(process.argv[2], true)(process.argv[3]));
+} else if (process.argv[2]) {
+	console.log(plurals.build(process.argv[2]));
+} else {
+	var	cldr = require('../data/unicode-cldr-plural-rules.json'),
+		rules = cldr['supplemental']['plurals-type-cardinal'];
+	for (var lc in rules) {
+		if (plurals.build(lc)) console.log('locale "' + lc + '" ok');
+		else console.error('locale "' + lc + '" FAILED');
+	}
+}
