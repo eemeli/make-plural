@@ -8,17 +8,16 @@
  *    ./bin/make-plural [lc] [v]   // prints the plural category for `v` in locale `lc`
  */
 
-var plurals = require('..');
+var Plurals = require('..');
 
 if (process.argv[3]) {
-	console.log(plurals.build(process.argv[2], {'return_function':1})(process.argv[3]));
+	console.log(Plurals.build(process.argv[2], {'return_function':1})(process.argv[3]));
 } else if (process.argv[2]) {
-	console.log(plurals.build(process.argv[2]));
+	console.log(Plurals.build(process.argv[2]));
 } else {
-	var	cldr = require('../data/unicode-cldr-plural-rules.json'),
-		rules = cldr['supplemental']['plurals-type-cardinal'];
-	for (var lc in rules) {
-		if (plurals.build(lc)) console.log('locale "' + lc + '" ok');
+	Plurals.set_rules();
+	for (var lc in Plurals.rules) {
+		if (Plurals.build(lc)) console.log('locale "' + lc + '" ok');
 		else console.error('locale "' + lc + '" FAILED');
 	}
 }

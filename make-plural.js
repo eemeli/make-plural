@@ -104,22 +104,29 @@ function test(fn, tests, opt) {
 	return ok;
 }
 
-var rules, Plurals = {}
+var Plurals = {};
 
 Plurals.set_rules = function(cldr) {
-	if (!cldr) cldr = require('./data/unicode-cldr-plural-rules.json');
-	else if (typeof cldr == 'string') cldr = require(cldr);
-	rules = cldr['supplemental']['plurals-type-cardinal'];
+	var _require = (typeof require == 'function') ? require : function(url) {
+		if (!cldr && Plurals.src_url) url = Plurals.src_url.replace(/[^\/]*$/, url);
+		var xhr = new XMLHttpRequest();
+		xhr.open('get', url, false);
+		xhr.send();
+		return (xhr.status == 200) && JSON.parse(xhr.responseText);
+	};
+	if (!cldr) cldr = _require('./data/unicode-cldr-plural-rules.json');
+	else if (typeof cldr == 'string') cldr = _require(cldr);
+	Plurals.rules = cldr && cldr['supplemental']['plurals-type-cardinal'];
 };
 
 Plurals.build = function(lc, opt) {
 	var fn, fn_str, lines = [], symbols = {}, tests = {};
 	if (!opt) opt = {};
-	if (!rules) exports.set_rules();
-	if (!rules[lc]) { if (!opt['quiet']) console.error('ERROR: locale "' + lc + '" not found'); return null; }
-	for (var r in rules[lc]) {
+	if (!Plurals.rules) Plurals.set_rules();
+	if (!Plurals.rules[lc]) { if (!opt['quiet']) console.error('ERROR: locale "' + lc + '" not found'); return null; }
+	for (var r in Plurals.rules[lc]) {
 		var	key = r.replace('pluralRule-count-', ''),
-			parts = rules[lc][r].split(/@\w*/),
+			parts = Plurals.rules[lc][r].split(/@\w*/),
 			cond = parts.shift().trim();
 		if (cond) lines.push('if (' + parse(cond, symbols) + ') return \'' + key + '\';');
 		tests[key] = test_values(parts.join(' '));
@@ -134,10 +141,14 @@ Plurals.build = function(lc, opt) {
 	return fn_str;
 };
 
-if (typeof exports !== 'undefined') {
-	exports.set_rules = Plurals.set_rules;
-	exports.build = Plurals.build;
+if ((typeof module !== 'undefined') && module.exports) {
+	module.exports = Plurals;
+} else if (typeof exports !== 'undefined') {
+	// won't expose Plurals.rules
+	for (var p in Plurals) exports[p] = Plurals[p];
 } else {
+	try { Plurals.src_url = Array.prototype.slice.call(document.getElementsByTagName('script')).pop().src; }
+	catch (e) { Plurals.src_url = ''; }
 	global.Plurals = Plurals;
 }
 
