@@ -107,7 +107,7 @@ function test(fn, tests, opt) {
 var rules, Plurals = {}
 
 Plurals.set_rules = function(cldr) {
-	if (!cldr) cldr = require('../data/unicode-cldr-plural-rules.json');
+	if (!cldr) cldr = require('./data/unicode-cldr-plural-rules.json');
 	else if (typeof cldr == 'string') cldr = require(cldr);
 	rules = cldr['supplemental']['plurals-type-cardinal'];
 };
