@@ -56,10 +56,14 @@ function(n) {
 ### build(lc, opt)
 By default, returns a string representation of a function that takes a single
 argument `n` and returns its plural category for the given locale `lc`. The
-optional `opt` object may contain the following members:
-* `return_function` -- if true, `build` returns an executable function of `n`
+optional `opt` object may contain the following members, each of which is
+assumed as false by default:
+* `minify` — if true, the string output of `build` is minified
+* `no_tests` — if true, the generated function is not verified by testing it
+  with each of the example values included in the CLDR rules
+* `quiet` — if true, no output is reported to `console.error` on error
+* `return_function` — if true, `build` returns an executable function of `n`
   rather than a string
-* `minify` -- if true, the string output of `build` is minified
 
 ### set_rules(cldr)
 Sets the used CLDR rules to `cldr`, which may be an object or the path to a JSON
