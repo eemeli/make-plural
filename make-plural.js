@@ -86,20 +86,30 @@ function vars(symbols) {
 	return '';
 }
 
-function test(fn, tests, opt) {
+function test(lc, fn, tests, opt) {
 	var	ok = true,
-		_e = function(t) {
-			ok = false;
-			if (!opt['quiet']) console.error(
-				'ERROR: plural rule self-test failed for v = '
-				+ (typeof t == 'string' ? '"' + t + '"' : t)
-				+ ' (was "' + fn(t) + '", expected "' + k + '")');
+		_test = function(k, x, ord) {
+			try { var r = fn(x, ord); }
+			catch (e) { r = e.toString(); }
+			if (r != k) {
+				ok = false;
+				if (!opt['quiet']) console.error(
+					'Locale "' + lc + '" ' + (ord ? 'ordinal' : 'cardinal')
+					+ ' rule self-test failed for v = '
+					+ (typeof x == 'string' ? '"' + x + '"' : x)
+					+ ' (was "' + r + '", expected "' + k + '")'
+				);
+				return false;
+			}
+			return true;
 		};
-	for (var k in tests) {
-		tests[k].forEach(function(v) {
-			if (fn(v) != k) _e(v);
-			else if (!/\.0+$/.test(v) && fn(Number(v)) != k) _e(Number(v));
-		});
+	for (var t in tests) {
+		var ord = (t == 'ordinal');
+		for (var k in tests[t]) {
+			tests[t][k].forEach(function(v) {
+				if (_test(k, v, ord) && !/\.0+$/.test(v)) _test(k, Number(v), ord);
+			});
+		}
 	}
 	return ok;
 }
@@ -108,35 +118,74 @@ var Plurals = {};
 
 Plurals.set_rules = function(cldr) {
 	var _require = (typeof require == 'function') ? require : function(url) {
-		if (!cldr && Plurals.src_url) url = Plurals.src_url.replace(/[^\/]*$/, url);
+		if (Plurals.src_url && (url[0] == '.')) url = Plurals.src_url.replace(/[^\/]*$/, url);
 		var xhr = new XMLHttpRequest();
 		xhr.open('get', url, false);
 		xhr.send();
 		return (xhr.status == 200) && JSON.parse(xhr.responseText);
 	};
-	if (!cldr) cldr = _require('./data/unicode-cldr-plural-rules.json');
-	else if (typeof cldr == 'string') cldr = _require(cldr);
-	Plurals.rules = cldr && cldr['supplemental']['plurals-type-cardinal'];
+	if (typeof cldr == 'string') cldr = _require(cldr);
+	if (cldr && cldr['supplemental']) {
+		if (!Plurals.rules) Plurals.rules = {};
+		if ('plurals-type-cardinal' in cldr['supplemental']) {
+			Plurals.rules['cardinal'] = cldr['supplemental']['plurals-type-cardinal'];
+		}
+		if ('plurals-type-ordinal' in cldr['supplemental']) {
+			Plurals.rules['ordinal'] = cldr['supplemental']['plurals-type-ordinal'];
+		}
+	}
 };
 
 Plurals.build = function(lc, opt) {
-	var fn, fn_str, lines = [], symbols = {}, tests = {};
+	var	fn, fn_str, fn_vars, lines = [], symbols = {},
+		tests = { 'ordinal':{}, 'cardinal':{} },
+		_compile = function(type, indent, req) {
+			var cases = [];
+			if (!Plurals.rules || !Plurals.rules[type]) {
+				Plurals.set_rules((type == 'ordinal')
+					? './data/unicode-cldr-ordinal-rules.json'
+					: './data/unicode-cldr-plural-rules.json');
+			}
+			if (Plurals.rules[type][lc]) {
+				for (var r in Plurals.rules[type][lc]) {
+					var	key = r.replace('pluralRule-count-', ''),
+						parts = Plurals.rules[type][lc][r].split(/@\w*/),
+						cond = parts.shift().trim();
+					if (cond) cases.push([parse(cond, symbols), key]);
+					tests[type][key] = test_values(parts.join(' '));
+				}
+			} else if (req) {
+				if (!opt['quiet']) console.error('Locale "' + lc + '" ' + type + ' rules not found');
+				return false;
+			}
+			if (!cases.length) return "'other'";
+			if (cases.length == 1) return "(" + cases[0][0] + ") ? '" + cases[0][1] + "' : 'other'";
+			return cases.map(function(c) { return "(" + c[0] + ") ? '" + c[1] + "'"; }).concat("'other'").join('\n      : ');
+		}, _fold = function(l) {
+			return l.replace(/(.{1,72})( \|\| |$) ?/gm, '$1\n         $2').replace(/\s+$/gm, '');
+		};
 	if (!opt) opt = {};
-	if (!Plurals.rules) Plurals.set_rules();
-	if (!Plurals.rules[lc]) { if (!opt['quiet']) console.error('ERROR: locale "' + lc + '" not found'); return null; }
-	for (var r in Plurals.rules[lc]) {
-		var	key = r.replace('pluralRule-count-', ''),
-			parts = Plurals.rules[lc][r].split(/@\w*/),
-			cond = parts.shift().trim();
-		if (cond) lines.push('if (' + parse(cond, symbols) + ') return \'' + key + '\';');
-		tests[key] = test_values(parts.join(' '));
+	if (opt['ordinals']) {
+		if (opt['no_cardinals']) {
+			var l = _compile('ordinal', '  ', true);
+			if (!l) return null;
+			lines.push(_fold('  return ' + l + ';'));
+		} else {
+			lines.push(_fold('  if (ord) return ' + _compile('ordinal', '    ', false) + ';'));
+		}
 	}
-	lines.unshift(vars(symbols));
-	lines.push('return \'other\';');
-	fn = new Function('n', lines.join('\n').trim());
-	if (!opt['no_tests'] && !test(fn, tests, opt)) return null;
+	if (!opt['no_cardinals']) {
+		var l = _compile('cardinal', '  ', true);
+		if (!l) return null;
+		lines.push(_fold('  return ' + l + ';'));
+	}
+	fn_vars = vars(symbols).replace(/(.{1,78})(,|$) ?/g, '\n      $1$2').trim();
+	if (fn_vars) lines.unshift('  ' + fn_vars);
+	fn = new Function('n', 'ord', lines.join('\n').trim());
+	if (!opt['no_tests'] && !test(lc, fn, tests, opt)) return null;
 	if (opt['return_function']) return fn;
-	fn_str = 'function(n) {\n  ' + lines.join('\n  ').trim() + '\n}';
+	fn_str = (opt['ordinals'] && !opt['no_cardinals'] ? 'function(n,ord)' : 'function(n)')
+		+ ' {\n' + lines.join('\n').replace(/{\s*(return [^;]+;)\s*}/, '$1') + '\n}';
 	if (opt['minify']) fn_str = fn_str.replace(/\s+/g, '').replace(/{var/, '{var ');
 	return fn_str;
 };

@@ -13,11 +13,13 @@ var Plurals = require('..');
 if (process.argv[3]) {
 	console.log(Plurals.build(process.argv[2], {'return_function':1})(process.argv[3]));
 } else if (process.argv[2]) {
-	console.log(Plurals.build(process.argv[2]));
+	console.log(Plurals.build(process.argv[2], {'ordinals':1}));
 } else {
-	Plurals.set_rules();
-	for (var lc in Plurals.rules) {
-		if (Plurals.build(lc)) console.log('locale "' + lc + '" ok');
-		else console.error('locale "' + lc + '" FAILED');
+	var ok = [];
+	Plurals.set_rules('./data/unicode-cldr-plural-rules.json');
+	for (var lc in Plurals.rules['cardinal']) {
+		if (Plurals.build(lc, {'ordinals':1})) ok.push(lc);
+		else console.error('Locale "' + lc + '" FAILED\n');
 	}
+	console.log('Locales verified ok:' + ok.join(' ').replace(/(.{1,73})( |$)/g, '\n    $1'));
 }

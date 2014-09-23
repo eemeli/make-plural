@@ -22,22 +22,16 @@ git clone https://github.com/eemeli/make-plural.js.git
 > Plurals = require('make-plural')
 { set_rules: [Function], build: [Function] }
 
-> console.log( Plurals.build('fr') )
-function(n) {
-  if (n >= 0 && n < 2) return 'one';
-  return 'other';
-}
-
-> console.log( Plurals.build('sk') )
-function(n) {
+> console.log(Plurals.build('sk'))    // Slovak
+function(n,ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1];
-  if (n == 1 && v0) return 'one';
-  if ((i >= 2 && i <= 4) && v0) return 'few';
-  if (!v0) return 'many';
-  return 'other';
+  return (n == 1 && v0) ? 'one'
+      : ((i >= 2 && i <= 4) && v0) ? 'few'
+      : (!v0) ? 'many'
+      : 'other';
 }
 
-> sk = Plurals.build('sk', {'return_function':1})
+> sk = Plurals.build('sk', { 'return_function':1 })
 [Function]
 
 > sk(1)
@@ -51,6 +45,26 @@ function(n) {
 
 > sk('0')
 'other'
+
+> console.log(Plurals.build('en', { 'ordinals':1 }))    // English
+function(n,ord) {
+  var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n,
+      n10 = t0 && s[0].substr(-1), n100 = t0 && s[0].substr(-2);
+  if (ord) return (n10 == 1 && n100 != 11) ? 'one'
+      : (n10 == 2 && n100 != 12) ? 'two'
+      : (n10 == 3 && n100 != 13) ? 'few'
+      : 'other';
+  return (n == 1 && v0) ? 'one' : 'other';
+}
+
+> en = Plurals.build('en', { 'ordinals':1, 'return_function':1 })
+[Function]
+
+> en(2)
+'other'
+
+> en(2, true)
+'two'
 ```
 
 ## Usage: Web
@@ -58,55 +72,92 @@ function(n) {
 ```html
 <script src="path/to/make-plural.js"></script>
 <script>
-  console.log( Plurals.build('sk') );
-  var sk = Plurals.build('sk', {'return_function':1});
-  console.log( '1: ' + sk(1) + ', 3.0: ' + sk(3.0) +
-               ', "1.0": ' + sk('1.0') + ', "0": ' + sk('0') );
+  console.log(Plurals.build('sk', {'ordinals':1}));
+  var sk = Plurals.build('sk', { 'ordinals':1, 'return_function':1 });
+  console.log('1: ' + sk(1) + ', 3.0: ' + sk(3.0) +
+              ', "1.0": ' + sk('1.0') + ', "0": ' + sk('0'));
 </script>
 ```
 With outputs:
 ```
-function(n) {
+function(n,ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1];
-  if (n == 1 && v0) return 'one';
-  if ((i >= 2 && i <= 4) && v0) return 'few';
-  if (!v0) return 'many';
-  return 'other';
+  if (ord) return 'other';
+  return (n == 1 && v0) ? 'one'
+      : ((i >= 2 && i <= 4) && v0) ? 'few'
+      : (!v0) ? 'many'
+      : 'other';
 }
 
 1: one, 3.0: few, "1.0": many, "0": other
 ```
 
-If `request()` isn't available, the CLDR rules are fetched automatically by the
-first call to `Plurals.build()` using a synchronous `XMLHttpRequest` for the
-JSON file at the location `data/unicode-cldr-plural-rules.json` relative to the
-given `path/to/make-plural.js`. If that doesn't work for you, you should call
+If `request()` isn't available, the CLDR rules are fetched automatically when
+required using synchronous `XMLHttpRequest` calls for the JSON files at the
+default locations. If that doesn't work for you, you should call
 `Plurals.set_rules(cldr)` before calling `Plurals.build()`.
+
+
+## Usage: CLI
+
+```sh
+$ ./bin/make-plural
+Locales verified ok:
+    af ak am ar asa ast az be bem bez bg bh bm bn bo br brx bs ca cgg chr ckb
+    cs cy da de dsb dv dz ee el en eo es et eu fa ff fi fil fo fr fur fy ga
+    gd gl gsw gu guw gv ha haw he hi hr hsb hu hy id ig ii in is it iu iw ja
+    jbo jgo ji jmc jv jw ka kab kaj kcg kde kea kk kkj kl km kn ko ks ksb ksh
+    ku kw ky lag lb lg lkt ln lo lt lv mas mg mgo mk ml mn mo mr ms mt my nah
+    naq nb nd ne nl nn nnh no nqo nr nso ny nyn om or os pa pap pl prg ps pt
+    pt-PT rm ro rof root ru rwk sah saq se seh ses sg sh shi si sk sl sma smi
+    smj smn sms sn so sq sr ss ssy st sv sw syr ta te teo th ti tig tk tl tn
+    to tr ts tzm ug uk ur uz ve vi vo vun wa wae wo xh xog yi yo zh zu
+
+$ ./bin/make-plural fr
+function(n,ord) {
+  if (ord) return (n == 1) ? 'one' : 'other';
+  return (n >= 0 && n < 2) ? 'one' : 'other';
+}
+
+$ ./bin/make-plural fr 1.5
+one
+```
+
 
 ## Methods
 
 ### build(lc, opt)
 By default, returns a string representation of a function that takes a single
-argument `n` and returns its plural category for the given locale `lc`. The
-optional `opt` object may contain the following members, each of which is
-assumed as false by default:
+argument `n` and returns its plural category for the given locale `lc`.
+
+The optional `opt` object may contain the following members, each of which is
+assumed false by default:
 * `minify` — if true, the string output of `build` is minified
+* `no_cardinals` — if true, rules for cardinal values (1 day, 2 days, etc.)
+   are not included
 * `no_tests` — if true, the generated function is not verified by testing it
    with each of the example values included in the CLDR rules
+* `ordinals` — if true, rules for ordinal values (1st, 2nd, etc.) are included
 * `quiet` — if true, no output is reported to `console.error` on error
 * `return_function` — if true, `build` returns an executable function of `n`
    rather than a string
 
+if `opt.ordinals` is true and `opt.no_cardinals` is not true, the returned
+function takes a second parameter `ord`. Then, if `ord` is true, the function
+will return the ordinal rather than cardinal category applicable to `n` in
+locale `lc`.
+
 ### set_rules(cldr)
 Sets the used CLDR rules to `cldr`, which may be an object or the path to a JSON
-file formatted like [this](http://www.unicode.org/repos/cldr-aux/json/25/supplemental/plurals.json).
-By default, the included rules in `data/unicode-cldr-plural-rules.json` are
-used.
+file formatted like [this](http://www.unicode.org/repos/cldr-aux/json/26/supplemental/plurals.json).
 
 If called within a context where `request()` isn't available and `cldr` is a
 string, it's taken as the URL of the JSON file that'll be fetched and parsed
 using a synchronous `XMLHttpRequest`.
 
+By default, `build()` will call `set_rules(cldr)` when required, using the
+rules included in `data/`: `unicode-cldr-plural-rules.json` and
+`unicode-cldr-ordinal-rules.json`.
 
 ## Dependencies
 
