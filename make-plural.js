@@ -59,14 +59,6 @@ function parse(cond, symbols) {
 		.replace(/ = /g, ' == ');
 }
 
-function test_values(str) {
-	return str
-		.replace(/decimal|integer/g, '')
-		.replace(/^[ ,]+|[ ,…]+$/g, '')
-		.replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
-		.split(/[ ,~…]+/);
-}
-
 function vars(symbols) {
 	var vars = [];
 	if (symbols['i']) vars.push("i = s[0]");
@@ -84,6 +76,55 @@ function vars(symbols) {
 		return 'var ' + vars.join(', ') + ';';
 	}
 	return '';
+}
+
+function build(lc, opt, tests) {
+	var	lines = [], symbols = {},
+		_fold = function(l) { return l.replace(/(.{1,72})( \|\| |$) ?/gm, '$1\n         $2').replace(/\s+$/gm, ''); },
+		_compile = function(type, req) {
+			var cases = [];
+			if (!MakePlural.rules || !MakePlural.rules[type]) {
+				MakePlural.load((type == 'ordinal')
+					? './data/unicode-cldr-ordinal-rules.json'
+					: './data/unicode-cldr-plural-rules.json');
+			}
+			if (MakePlural.rules[type][lc]) {
+				for (var r in MakePlural.rules[type][lc]) {
+					var	key = r.replace('pluralRule-count-', ''),
+						parts = MakePlural.rules[type][lc][r].split(/@\w*/),
+						cond = parts.shift().trim();
+					if (cond) cases.push([parse(cond, symbols), key]);
+					tests[type][key] = parts.join(' ')
+						.replace(/^[ ,]+|[ ,…]+$/g, '')
+						.replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
+						.split(/[ ,~…]+/);
+				}
+			} else if (req) {
+				if (!opt['quiet']) console.error('Locale "' + lc + '" ' + type + ' rules not found');
+				return false;
+			}
+			if (!cases.length) return "'other'";
+			if (cases.length == 1) return "(" + cases[0][0] + ") ? '" + cases[0][1] + "' : 'other'";
+			return cases.map(function(c) { return "(" + c[0] + ") ? '" + c[1] + "'"; }).concat("'other'").join('\n      : ');
+		};
+
+	if (opt['ordinals']) {
+		if (opt['no_cardinals']) {
+			var l = _compile('ordinal', true);
+			if (!l) return null;
+			lines.push(_fold('  return ' + l + ';'));
+		} else {
+			lines.push(_fold('  if (ord) return ' + _compile('ordinal', false) + ';'));
+		}
+	}
+	if (!opt['no_cardinals']) {
+		var l = _compile('cardinal', true);
+		if (!l) return null;
+		lines.push(_fold('  return ' + l + ';'));
+	}
+	var fn_vars = vars(symbols).replace(/(.{1,78})(,|$) ?/g, '\n      $1$2').trim();
+	if (fn_vars) lines.unshift('  ' + fn_vars);
+	return lines.join('\n');
 }
 
 function test(lc, fn, tests, opt) {
@@ -114,91 +155,59 @@ function test(lc, fn, tests, opt) {
 	return ok;
 }
 
-var Plurals = {};
+function xhr_require(src, url) {
+	if (src && (url[0] == '.')) url = src.replace(/[^\/]*$/, url);
+	var xhr = new XMLHttpRequest();
+	xhr.open('get', url, false);
+	xhr.send();
+	return (xhr.status == 200) && JSON.parse(xhr.responseText);
+}
 
-Plurals.set_rules = function(cldr) {
-	var _require = (typeof require == 'function') ? require : function(url) {
-		if (Plurals.src_url && (url[0] == '.')) url = Plurals.src_url.replace(/[^\/]*$/, url);
-		var xhr = new XMLHttpRequest();
-		xhr.open('get', url, false);
-		xhr.send();
-		return (xhr.status == 200) && JSON.parse(xhr.responseText);
+
+var MakePlural = function(lc, opt) {
+	if (typeof lc == 'object') { opt = lc; lc = opt.lc; }
+	else {
+		if (!opt) opt = MakePlural.opt;
+		if (!lc) lc = opt.lc;
+	}
+	var	tests = { 'ordinal':{}, 'cardinal':{} },
+		fn_body = build(lc, opt, tests),
+		fn = opt['ordinals'] && !opt['no_cardinals']
+			? new Function('n', 'ord', fn_body)
+			: new Function('n', fn_body);
+	fn.toString = function(name) {
+		var s = Function.prototype.toString.call(fn);
+		return s.replace(/^function( \w+)?/, name ? 'function ' + name : 'function');
 	};
-	if (typeof cldr == 'string') cldr = _require(cldr);
-	if (cldr && cldr['supplemental']) {
-		if (!Plurals.rules) Plurals.rules = {};
-		if ('plurals-type-cardinal' in cldr['supplemental']) {
-			Plurals.rules['cardinal'] = cldr['supplemental']['plurals-type-cardinal'];
-		}
-		if ('plurals-type-ordinal' in cldr['supplemental']) {
-			Plurals.rules['ordinal'] = cldr['supplemental']['plurals-type-ordinal'];
-		}
-	}
+	return fn_body && (opt['no_tests'] || test(lc, fn, tests, opt)) ? fn : null;
 };
 
-Plurals.build = function(lc, opt) {
-	var	fn, fn_str, fn_vars, lines = [], symbols = {},
-		tests = { 'ordinal':{}, 'cardinal':{} },
-		_compile = function(type, indent, req) {
-			var cases = [];
-			if (!Plurals.rules || !Plurals.rules[type]) {
-				Plurals.set_rules((type == 'ordinal')
-					? './data/unicode-cldr-ordinal-rules.json'
-					: './data/unicode-cldr-plural-rules.json');
-			}
-			if (Plurals.rules[type][lc]) {
-				for (var r in Plurals.rules[type][lc]) {
-					var	key = r.replace('pluralRule-count-', ''),
-						parts = Plurals.rules[type][lc][r].split(/@\w*/),
-						cond = parts.shift().trim();
-					if (cond) cases.push([parse(cond, symbols), key]);
-					tests[type][key] = test_values(parts.join(' '));
-				}
-			} else if (req) {
-				if (!opt['quiet']) console.error('Locale "' + lc + '" ' + type + ' rules not found');
-				return false;
-			}
-			if (!cases.length) return "'other'";
-			if (cases.length == 1) return "(" + cases[0][0] + ") ? '" + cases[0][1] + "' : 'other'";
-			return cases.map(function(c) { return "(" + c[0] + ") ? '" + c[1] + "'"; }).concat("'other'").join('\n      : ');
-		}, _fold = function(l) {
-			return l.replace(/(.{1,72})( \|\| |$) ?/gm, '$1\n         $2').replace(/\s+$/gm, '');
-		};
-	if (!opt) opt = {};
-	if (opt['ordinals']) {
-		if (opt['no_cardinals']) {
-			var l = _compile('ordinal', '  ', true);
-			if (!l) return null;
-			lines.push(_fold('  return ' + l + ';'));
-		} else {
-			lines.push(_fold('  if (ord) return ' + _compile('ordinal', '    ', false) + ';'));
-		}
+MakePlural.opt = {};
+MakePlural.rules = {};
+
+MakePlural.load = function(/* arguments */) {
+	var _require = (typeof require == 'function') ? require : function(url) { return xhr_require(MakePlural.src_url, url); };
+	if (!MakePlural.rules) MakePlural.rules = {};
+	for (var i = 0; i < arguments.length; ++i) {
+		var cldr = (typeof arguments[i] == 'string') ? _require(arguments[i]) : arguments[i];
+		if (cldr && cldr['supplemental']) ['cardinal', 'ordinal'].forEach(function(type) {
+			var set = cldr['supplemental']['plurals-type-' + type];
+			if (set) MakePlural.rules[type] = set;
+		});
 	}
-	if (!opt['no_cardinals']) {
-		var l = _compile('cardinal', '  ', true);
-		if (!l) return null;
-		lines.push(_fold('  return ' + l + ';'));
-	}
-	fn_vars = vars(symbols).replace(/(.{1,78})(,|$) ?/g, '\n      $1$2').trim();
-	if (fn_vars) lines.unshift('  ' + fn_vars);
-	fn = new Function('n', 'ord', lines.join('\n').trim());
-	if (!opt['no_tests'] && !test(lc, fn, tests, opt)) return null;
-	if (opt['return_function']) return fn;
-	fn_str = (opt['ordinals'] && !opt['no_cardinals'] ? 'function(n,ord)' : 'function(n)')
-		+ ' {\n' + lines.join('\n').replace(/{\s*(return [^;]+;)\s*}/, '$1') + '\n}';
-	if (opt['minify']) fn_str = fn_str.replace(/\s+/g, '').replace(/{var/, '{var ');
-	return fn_str;
+	return MakePlural;
 };
+
 
 if ((typeof module !== 'undefined') && module.exports) {
-	module.exports = Plurals;
+	module.exports = MakePlural;
 } else if (typeof exports !== 'undefined') {
-	// won't expose Plurals.rules
-	for (var p in Plurals) exports[p] = Plurals[p];
+	for (var p in MakePlural) exports[p] = MakePlural[p];
+	exports.get = MakePlural;
 } else {
-	try { Plurals.src_url = Array.prototype.slice.call(document.getElementsByTagName('script')).pop().src; }
-	catch (e) { Plurals.src_url = ''; }
-	global.Plurals = Plurals;
+	try { MakePlural.src_url = Array.prototype.slice.call(document.getElementsByTagName('script')).pop().src; }
+	catch (e) { MakePlural.src_url = ''; }
+	global.MakePlural = MakePlural;
 }
 
 })(this);
