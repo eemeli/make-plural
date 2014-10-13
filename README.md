@@ -22,7 +22,10 @@ git clone https://github.com/eemeli/make-plural.js.git
 > MakePlural = require('make-plural')
 { [Function] opt: {}, rules: {}, load: [Function] }
 
-> console.log(MakePlural('sk').toString())
+> sk = MakePlural('sk')
+{ [Function] toString: [Function] }
+
+> console.log(sk.toString())
 function(n) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1];
   return (n == 1 && v0) ? 'one'
@@ -30,9 +33,6 @@ function(n) {
       : (!v0) ? 'many'
       : 'other';
 }
-
-> sk = MakePlural('sk')
-{ [Function] toString: [Function] }
 
 > sk(1)
 'one'
@@ -46,7 +46,10 @@ function(n) {
 > sk('0')
 'other'
 
-> console.log(MakePlural('en', {'ordinals':1}).toString())
+> en = MakePlural('en', {ordinals:1})
+{ [Function] toString: [Function] }
+
+> console.log(en.toString())
 function(n,ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n,
       n10 = t0 && s[0].substr(-1), n100 = t0 && s[0].substr(-2);
@@ -56,9 +59,6 @@ function(n,ord) {
       : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
 }
-
-> en = MakePlural('en', {'ordinals':1})
-{ [Function] toString: [Function] }
 
 > en(2)
 'other'
@@ -72,8 +72,8 @@ function(n,ord) {
 ```html
 <script src="path/to/make-plural.js"></script>
 <script>
-  console.log(MakePlural('ru', {'ordinals':1}).toString());
-  var ru = MakePlural('ru', {'ordinals':1});
+  var ru = MakePlural('ru', {ordinals:1});
+  console.log(ru.toString());
   console.log('1: ' + ru(1) + ', 3.0: ' + ru(3.0) +
               ', "1.0": ' + ru('1.0') + ', "0": ' + ru('0'));
 </script>
