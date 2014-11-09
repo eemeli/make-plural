@@ -5,6 +5,8 @@ A JavaScript module that translates [Unicode CLDR](http://cldr.unicode.org/)
 [pluralization rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html)
 to JavaScript functions.
 
+Can be used as a CommonJS or AMD module, or directly in a browser environment.
+
 
 ## Installation
 

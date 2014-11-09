@@ -204,6 +204,8 @@ if ((typeof module !== 'undefined') && module.exports) {
 } else if (typeof exports !== 'undefined') {
 	for (var p in MakePlural) exports[p] = MakePlural[p];
 	exports.get = MakePlural;
+} else if (typeof define !== 'undefined' && define.amd) {
+	define('make-plural', function() { return MakePlural; });
 } else {
 	try { MakePlural.src_url = Array.prototype.slice.call(document.getElementsByTagName('script')).pop().src; }
 	catch (e) { MakePlural.src_url = ''; }
