@@ -1,6 +1,6 @@
 {
   "name": "make-plural",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
   "keywords": ["unicode", "cldr", "i18n", "internationalization", "pluralization"],
   "author": "Eemeli Aro <eemeli@gmail.com>",
