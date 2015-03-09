@@ -69,7 +69,8 @@ function vars(symbols) {
 	if (symbols['t0'] || symbols['n10'] || symbols['n100']) vars.push("t0 = Number(s[0]) == n");
 	for (var k in symbols) if (/^.10+$/.test(k)) {
 		var k0 = (k[0] == 'n') ? 't0 && s[0]' : k[0];
-		vars.push(k + ' = ' + k0 + '.substr(-' + k.substr(2).length + ')');
+		var startIndex = (k[0] == 'n' ? 's[0]' : k[0]) + '.length - ' + k.substr(2).length;
+		vars.push(k + ' = ' + k0 + '.substring(' + startIndex + ')');
 	}
 	if (vars.length) {
 		vars.unshift("s = String(n).split('.')");
