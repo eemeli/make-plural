@@ -12,16 +12,18 @@ var MakePlural = require('..');
 
 if (process.argv[2]) {
     MakePlural.opt = { 'lc':process.argv[2], 'ordinals':1 };
+    var mp = new MakePlural();
     if (process.argv[3]) {
-        console.log(MakePlural()(process.argv[3]));
+        console.log(mp(process.argv[3]));
     } else {
-        console.log(MakePlural().toString(MakePlural.opt.lc));
+        console.log(mp.toString(MakePlural.opt.lc));
     }
 } else {
     var ok = [];
-    MakePlural.load('./data/unicode-cldr-plural-rules.json');
+    MakePlural.load('unicode-cldr-plural-rules.json');
     for (var lc in MakePlural.rules['cardinal']) {
-        if (MakePlural(lc, {'ordinals':1})) ok.push(lc);
+        var mp = new MakePlural(lc, {'ordinals':1});
+        if (mp.test()) ok.push(lc);
         else console.error('Locale "' + lc + '" FAILED\n');
     }
     console.log('Locales verified ok:' + ok.join(' ').replace(/(.{1,73})( |$)/g, '\n    $1'));

@@ -6,7 +6,7 @@ describe('MakePlural object', function(){
         it('should require valid parameters', function(){
             expect(MakePlural.load).to.not.throwException();
             expect(MakePlural.load).withArgs('').to.throwException();
-            expect(MakePlural.load).withArgs('./data/unicode-cldr-plural-rules.json').to.not.throwException();
+            expect(MakePlural.load).withArgs('unicode-cldr-plural-rules.json').to.not.throwException();
         });
         it('should load custom CLDR data', function(){
             var cldr = { supplemental: { 'plurals-type-cardinal': { xx: {
@@ -18,8 +18,8 @@ describe('MakePlural object', function(){
             expect(MakePlural.rules.cardinal).to.only.have.key('xx');
         });
         it('should load default CLDR data', function(){
-            MakePlural.load('./data/unicode-cldr-plural-rules.json');
-            MakePlural.load('./data/unicode-cldr-ordinal-rules.json');
+            MakePlural.load('unicode-cldr-plural-rules.json');
+            MakePlural.load('unicode-cldr-ordinal-rules.json');
             expect(MakePlural.rules).to.only.have.keys('cardinal', 'ordinal');
             expect(MakePlural.rules.cardinal).to.not.have.key('xx');
             expect(MakePlural.rules.cardinal).to.have.key('en');
