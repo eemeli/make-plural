@@ -35,6 +35,7 @@
   "devDependencies": {
     "babel": "^4.7.9",
     "expect.js": "^0.3.1",
+    "http-server": "^0.7.5",
     "mocha": "^2.2.1"
   }
 }
