@@ -29,8 +29,8 @@
   },
   "main": "make-plural",
   "scripts": {
-    "prepublish": "./node_modules/.bin/babel src/make-plural.js -o make-plural.js",
-    "test": "./node_modules/.bin/mocha"
+    "prepublish": "make",
+    "test": "make test"
   },
   "devDependencies": {
     "babel": "^4.7.9",
