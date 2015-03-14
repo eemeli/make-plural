@@ -100,8 +100,7 @@ function build(lc, opt, tests) {
 						.split(/[ ,~…]+/);
 				}
 			} else if (req) {
-				if (!opt['quiet']) console.error('Locale "' + lc + '" ' + type + ' rules not found');
-				return false;
+				if (!opt['quiet']) throw new Error('Locale "' + lc + '" ' + type + ' rules not found');
 			}
 			if (!cases.length) return "'other'";
 			if (cases.length == 1) return "(" + cases[0][0] + ") ? '" + cases[0][1] + "' : 'other'";
@@ -134,7 +133,7 @@ function test(lc, fn, tests, opt) {
 			catch (e) { r = e.toString(); }
 			if (r != k) {
 				ok = false;
-				if (!opt['quiet']) console.error(
+				if (!opt['quiet']) throw new Error(
 					'Locale "' + lc + '" ' + (ord ? 'ordinal' : 'cardinal')
 					+ ' rule self-test failed for v = '
 					+ (typeof x == 'string' ? '"' + x + '"' : x)

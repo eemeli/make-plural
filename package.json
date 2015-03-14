@@ -2,13 +2,37 @@
   "name": "make-plural",
   "version": "2.1.3",
   "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
-  "keywords": ["unicode", "cldr", "i18n", "internationalization", "pluralization"],
+  "keywords": [
+    "unicode",
+    "cldr",
+    "i18n",
+    "internationalization",
+    "pluralization"
+  ],
   "author": "Eemeli Aro <eemeli@gmail.com>",
   "license": "ISC",
   "homepage": "https://github.com/eemeli/make-plural.js",
-  "repository": { "type": "git", "url": "https://github.com/eemeli/make-plural.js.git" },
-  "bugs": { "url": "https://github.com/eemeli/make-plural.js/issues" },
-  "files": [ "bin/", "data/", "make-plural.js" ],
-  "bin": { "make-plural": "./bin/make-plural" },
-  "main": "make-plural"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eemeli/make-plural.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eemeli/make-plural.js/issues"
+  },
+  "files": [
+    "bin/",
+    "data/",
+    "make-plural.js"
+  ],
+  "bin": {
+    "make-plural": "./bin/make-plural"
+  },
+  "main": "make-plural",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^2.2.1"
+  }
 }
