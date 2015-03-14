@@ -15,7 +15,7 @@
  * or in connection with the use or performance of this software.
  */
 
-(function (global) {
+(function () {
 
 function parse(cond, symbols) {
 	if (cond == 'i = 0 or n = 1') return 'n >= 0 && n <= 1';
@@ -208,7 +208,7 @@ if ((typeof module !== 'undefined') && module.exports) {
 } else {
 	try { MakePlural.src_url = Array.prototype.slice.call(document.getElementsByTagName('script')).pop().src; }
 	catch (e) { MakePlural.src_url = ''; }
-	global.MakePlural = MakePlural;
+	window.MakePlural = MakePlural;
 }
 
-})(this);
+})();
