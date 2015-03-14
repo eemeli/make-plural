@@ -31,6 +31,12 @@ describe('MakePlural object', function(){
     });
 
     describe('MakePlural()', function(){
+        it('should require `new`', function(){
+            expect(MakePlural).to.throwException(function(e){
+                expect(e).to.be.a(TypeError);
+                expect(e.message).to.contain('class');
+            });
+        });
         it('should require a locale', function(){
             var new_mp = function(lc) { return new MakePlural(lc); };
             expect(new_mp).to.throwException();
@@ -59,6 +65,26 @@ describe('MakePlural object', function(){
         });
     });
 
+    describe('#test()', function(){
+        it('should validate default functions', function(){
+            var mp = new MakePlural('en', { ordinals: true });
+            expect(mp.test()).to.be(mp);
+        });
+        it('should not validate bad functions', function(){
+            var cldr = { supplemental: { 'plurals-type-cardinal': { xx: {
+                'pluralRule-count-one': 'n = 1 @integer 2',
+                'pluralRule-count-other': ''
+            }}}};
+            MakePlural.load(cldr);
+            var mp = new MakePlural('xx');
+            expect(mp.test).to.throwException(function(e){
+                expect(e.message).to.contain('self-test failed');
+            });
+            delete MakePlural.rules;
+
+        });
+    });
+
     describe('#toString()', function(){
         var mp = new MakePlural('en', { ordinals: true });
         it('should return a string', function(){
@@ -78,7 +104,7 @@ describe('MakePlural data', function(){
         it(lc, function(){
             var mp;
             expect(mp = new MakePlural(lc, { ordinals: true })).to.not.throwException();
-            expect(mp).to.not.be(null);
+            expect(mp.test()).to.not.be(null);
             expect(mp(2)).to.be.a('string');
             expect(mp(1)).to.match(/^(one|other)$/);
         });
