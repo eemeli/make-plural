@@ -99,7 +99,8 @@ export default class MakePlural {
 
     static load(/* arguments */) {
         if (!MakePlural.rules) MakePlural.rules = {};
-        for (let cldr of Array.prototype.slice.call(arguments)) { // FIXME: shouldn't need the cast
+        for (let i = 0; i < arguments.length; ++i) {  // for (let cldr of arguments) {
+            let cldr = arguments[i];
             if (typeof cldr == 'string') {
                 const path = (cldr.indexOf('/') == -1) ? MakePlural.dataRoot + cldr : cldr;
                 if (typeof require == 'function') {
@@ -112,7 +113,7 @@ export default class MakePlural {
                     cldr = JSON.parse(xhr.responseText);
                 }
             }
-            if (cldr && cldr['supplemental']) for (let type of ['cardinal', 'ordinal']) {
+            if (cldr && cldr['supplemental']) for (let type in {cardinal:1, ordinal:1}) {  // for (let type of ['cardinal', 'ordinal']) {
                 const set = cldr['supplemental']['plurals-type-' + type];
                 if (set) MakePlural.rules[type] = set;
             }
@@ -183,10 +184,10 @@ export default class MakePlural {
             for (let t in this.tests) {
                 const ord = (t == 'ordinal');
                 for (let k in this.tests[t]) {
-                    for (let v of this.tests[t][k]) {
+                    this.tests[t][k].forEach( v => {  // for (let v of this.tests[t][k]) {
                         _test(k, v, ord);
                         /\.0+$/.test(v) || _test(k, Number(v), ord);
-                    }
+                    });
                 }
             }
         } catch (e) {
