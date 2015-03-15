@@ -15,7 +15,7 @@
  * or in connection with the use or performance of this software.
  */
 
-class Symbols {
+class Parser {
     parse(cond) {
         if (cond == 'i = 0 or n = 1') return 'n >= 0 && n <= 1';
         if (cond == 'i = 0,1') return 'n >= 0 && n < 2';
@@ -58,7 +58,7 @@ class Symbols {
             .replace(/ = /g, ' == ');
     };
 
-    toString() {
+    vars() {
         let vars = [];
         if (this.i) vars.push("i = s[0]");
         if (this.f || this.v) vars.push("f = s[1] || ''");
@@ -72,8 +72,43 @@ class Symbols {
         }
         if (!vars.length) return '';
         vars.unshift("s = String(n).split('.')");
-        return 'var ' + vars.join(', ') + ';';
+        return 'var ' + vars.join(', ');
     }
+}
+
+class Rules {
+    constructor() {
+        this.data = {};
+        this.rootPath = './data/';
+    };
+
+    loadData(cldr) {
+        const data = cldr && cldr.supplemental || {};
+        return this.data = {
+            cardinal: data['plurals-type-cardinal'] || this.data.cardinal,
+            ordinal:  data['plurals-type-ordinal']  || this.data.ordinal
+        };
+    };
+
+    loadPath(path) {
+        if (path.indexOf('/') == -1) path = this.rootPath + path;
+        if (typeof require == 'function') {
+            return this.loadData(require(path));
+        }
+        let xhr = new XMLHttpRequest();
+        xhr.open('get', path, false);
+        xhr.send();
+        if (xhr.status != 200) throw new Error('XMLHttpRequest failed for ' + JSON.stringify(path));
+        return this.loadData(JSON.parse(xhr.responseText));
+    };
+
+    get cardinal() {
+        return this.data.cardinal || this.loadPath('unicode-cldr-plural-rules.json').cardinal;
+    };
+
+    get ordinal() {
+        return this.data.ordinal || this.loadPath('unicode-cldr-ordinal-rules.json').ordinal;
+    };
 }
 
 export default class MakePlural {
@@ -85,8 +120,7 @@ export default class MakePlural {
         this.lc = lc || MakePlural.lc;
         this.cardinals = opt && opt.cardinals || MakePlural.cardinals;
         this.ordinals = opt && opt.ordinals || MakePlural.ordinals;
-        if (!this.cardinals && !this.ordinals) throw new Error('At least one type of plural is required');
-        this.symbols = new Symbols();
+        this.parser = new Parser();
         this.tests = { 'ordinal':{}, 'cardinal':{} };
         this.fn = this.build();
         this.fn.obj = this;
@@ -95,72 +129,55 @@ export default class MakePlural {
         return this.fn;
     };
 
-    static load(/* arguments */) {
-        if (!MakePlural.rules) MakePlural.rules = {};
-        for (let i = 0; i < arguments.length; ++i) {  // for (let cldr of arguments) {
-            let cldr = arguments[i];
-            if (typeof cldr == 'string') {
-                const path = (cldr.indexOf('/') == -1) ? MakePlural.dataRoot + cldr : cldr;
-                if (typeof require == 'function') {
-                    cldr = require(path);
-                } else {
-                    let xhr = new XMLHttpRequest();
-                    xhr.open('get', path, false);
-                    xhr.send();
-                    if (xhr.status != 200) throw new Error('XMLHttpRequest failed for ' + JSON.stringify(path));
-                    cldr = JSON.parse(xhr.responseText);
-                }
-            }
-            if (cldr && cldr['supplemental']) for (let type in {cardinal:1, ordinal:1}) {  // for (let type of ['cardinal', 'ordinal']) {
-                const set = cldr['supplemental']['plurals-type-' + type];
-                if (set) MakePlural.rules[type] = set;
-            }
+    static load() {
+        for (let i = 0; i < arguments.length; ++i) {
+            let arg = arguments[i];
+            if (typeof arg == 'string') MakePlural.rules.loadPath(arg);
+            else MakePlural.rules.loadData(arg);
         }
         return MakePlural;
     };
 
     compile(type, req) {
         let cases = [];
-        if (!MakePlural.rules || !MakePlural.rules[type]) {
-            MakePlural.load((type == 'ordinal')
-                ? 'unicode-cldr-ordinal-rules.json'
-                : 'unicode-cldr-plural-rules.json');
+        const rules = MakePlural.rules[type][this.lc];
+        if (!rules) {
+            if (req) throw new Error('Locale "' + this.lc + '" ' + type + ' rules not found');
+            return "'other'";
         }
-        if (MakePlural.rules[type][this.lc]) {
-            for (let r in MakePlural.rules[type][this.lc]) {
-                let parts = MakePlural.rules[type][this.lc][r].split(/@\w*/);
-                const cond = parts.shift().trim(),
-                      key = r.replace('pluralRule-count-', '');
-                if (cond) cases.push([this.symbols.parse(cond), key]);
-                this.tests[type][key] = parts.join(' ')
-                    .replace(/^[ ,]+|[ ,…]+$/g, '')
-                    .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
-                    .split(/[ ,~…]+/);
-            }
-        } else if (req) {
-            throw new Error('Locale "' + this.lc + '" ' + type + ' rules not found');
+        for (let r in rules) {
+            let parts = rules[r].split(/@\w*/);
+            const cond = parts.shift().trim(),
+                  key = r.replace('pluralRule-count-', ''),
+                  sym = cond && this.parser.parse(cond);
+            if (cond) cases.push([sym, key]);
+            this.tests[type][key] = parts.join(' ')
+                                         .replace(/^[ ,]+|[ ,…]+$/g, '')
+                                         .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
+                                         .split(/[ ,~…]+/);
         }
-        switch (cases.length) {
-            case 0: return "'other'";
-            case 1: return "(" + cases[0][0] + ") ? '" + cases[0][1] + "' : 'other'";
-            default: return cases.map(c => "(" + c[0] + ") ? '" + c[1] + "'").concat("'other'").join('\n      : ');
-        }
+        return (cases.length == 1) ? `(${cases[0][0]}) ? '${cases[0][1]}' : 'other'`
+                                   : cases.map(c => `(${c[0]}) ? '${c[1]}'`)
+                                          .concat("'other'")
+                                          .join('\n      : ');
     }
 
     build() {
-        const fold = l => ('  ' + l + ';').replace(/(.{1,72})( \|\| |$) ?/gm, '$1\n         $2').replace(/\s+$/gm, '');
-        let lines = [];
-        if (this.ordinals) {
-            const ret = this.cardinals ? 'if (ord) return ' : 'return ';
-            lines.push(fold(ret + this.compile('ordinal', !this.cardinals)));
-        }
-        if (this.cardinals) {
-            lines.push(fold('return ' + this.compile('cardinal', true)));
-        }
-        const fn_args = this.ordinals && this.cardinals ? 'n, ord' : 'n',
-              fn_vars = this.symbols.toString().replace(/(.{1,78})(,|$) ?/g, '\n      $1$2').trim();
-        if (fn_vars) lines.unshift('  ' + fn_vars);
-        return new Function(fn_args, lines.join('\n'));
+        let lines = (this.ordinals && this.cardinals) ? [ 'if (ord) return ' + this.compile('ordinal', false),
+                                                                   'return ' + this.compile('cardinal', true) ]
+                  : this.ordinals ? [ 'return ' + this.compile('ordinal', true) ]
+                  : this.cardinals ? [ 'return ' + this.compile('cardinal', true) ]
+                  : null;
+        if (!lines) throw new Error('At least one type of plural is required');
+        const args = this.ordinals && this.cardinals ? 'n, ord' : 'n',
+              fold = { vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g,     '$1$2\n      '),
+                       body: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2') },
+              body = [ fold.vars(this.parser.vars()) ]
+                         .concat(lines.map(fold.body))
+                         .join('\n')
+                         .replace(/\s+$/gm, '')
+                         .replace(/^[\s;]*[\r\n]+/gm, '');
+        return new Function(args, body);
     }
 
     test() {
@@ -177,7 +194,7 @@ export default class MakePlural {
         for (let t in this.tests) {
             const ord = (t == 'ordinal');
             for (let k in this.tests[t]) {
-                this.tests[t][k].forEach( v => {  // for (let v of this.tests[t][k]) {
+                this.tests[t][k].forEach( v => {
                     _test(k, v, ord);
                     /\.0+$/.test(v) || _test(k, Number(v), ord);
                 });
@@ -187,13 +204,12 @@ export default class MakePlural {
     };
 
     fnToString(name) {
-        const fn_str = Function.prototype.toString.call(this.fn);
-        return fn_str.replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
-                     .replace('\n/**/', '');
+        return Function.prototype.toString.call(this.fn)
+                   .replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
+                   .replace('\n/**/', '');
     };
 }
 
-MakePlural.dataRoot = './data/';
 MakePlural.cardinals = true;
 MakePlural.ordinals = false;
-MakePlural.rules = {};
+MakePlural.rules = new Rules();
