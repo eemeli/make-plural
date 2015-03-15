@@ -121,7 +121,7 @@ export default class MakePlural {
         this.cardinals = opt && opt.cardinals || MakePlural.cardinals;
         this.ordinals = opt && opt.ordinals || MakePlural.ordinals;
         this.parser = new Parser();
-        this.tests = { 'ordinal':{}, 'cardinal':{} };
+        this.tests = { ordinal:{}, cardinal:{} };
         this.fn = this.build();
         this.fn.obj = this;
         this.fn.test = this.test.bind(this);
@@ -148,10 +148,10 @@ export default class MakePlural {
         for (let r in rules) {
             let parts = rules[r].split(/@\w*/);
             const cond = parts.shift().trim(),
-                  key = r.replace('pluralRule-count-', ''),
-                  sym = cond && this.parser.parse(cond);
-            if (cond) cases.push([sym, key]);
-            this.tests[type][key] = parts.join(' ')
+                  cat = r.replace('pluralRule-count-', ''),
+                  jsCond = cond && this.parser.parse(cond);
+            if (cond) cases.push([jsCond, cat]);
+            this.tests[type][cat] = parts.join(' ')
                                          .replace(/^[ ,]+|[ ,…]+$/g, '')
                                          .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
                                          .split(/[ ,~…]+/);
@@ -180,24 +180,30 @@ export default class MakePlural {
         return new Function(args, body);
     }
 
+    testCond(n, ord, expResult) {
+        try { var r = this.fn(n, ord); }
+        catch (e) { r = e.toString(); }
+        if (r != expResult) throw new Error(
+            'Locale ' + JSON.stringify(this.lc) + (ord ? ' ordinal' : ' cardinal')
+            + ' rule self-test failed for v = ' + JSON.stringify(n)
+            + ' (was ' + JSON.stringify(r) + ', expected ' + JSON.stringify(expResult) + ')'
+        );
+        return true;
+    };
+
+    testCat(type, cat) {
+        const ord = (type == 'ordinal');
+        this.tests[type][cat].forEach( n => {
+            this.testCond(n, ord, cat);
+            /\.0+$/.test(n) || this.testCond(Number(n), ord, cat);
+        });
+        return true;
+    };
+
     test() {
-        const _test = (k, x, ord) => {
-            try { var r = this.fn(x, ord); }
-            catch (e) { r = e.toString(); }
-            if (r != k) throw new Error(
-                'Locale ' + JSON.stringify(this.lc) + (ord ? ' ordinal' : ' cardinal')
-                + ' rule self-test failed for v = ' + JSON.stringify(x)
-                + ' (was ' + JSON.stringify(r) + ', expected ' + JSON.stringify(k) + ')'
-            );
-            return true;
-        };
-        for (let t in this.tests) {
-            const ord = (t == 'ordinal');
-            for (let k in this.tests[t]) {
-                this.tests[t][k].forEach( v => {
-                    _test(k, v, ord);
-                    /\.0+$/.test(v) || _test(k, Number(v), ord);
-                });
+        for (let type in this.tests) {
+            for (let cat in this.tests[type]) {
+                this.testCat(type, cat);
             }
         }
         return this.fn;
