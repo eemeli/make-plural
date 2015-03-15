@@ -1,2 +1,3 @@
 --bail
+--reporter dot
 --require test/node-setup
