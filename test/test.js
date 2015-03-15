@@ -1,6 +1,6 @@
 describe('MakePlural object', function(){
     it('should have data members', function(){
-        expect(MakePlural).to.have.keys('opt', 'rules');
+        expect(MakePlural).to.have.keys('dataRoot', 'cardinals', 'ordinals', 'rules');
     });
     describe('.load()', function(){
         it('should require valid parameters', function(){
@@ -58,10 +58,12 @@ describe('MakePlural object', function(){
             expect(mp(2, true)).to.be('two');
         });
         it('should handle global options', function(){
-            MakePlural.opt = { lc: 'en', ordinals: true };
+            MakePlural.lc = 'en'
+            MakePlural.ordinals = true;
             var mp = new MakePlural();
             expect(mp(2, true)).to.be('two');
-            MakePlural.opt = {};
+            delete MakePlural.lc;
+            MakePlural.ordinals = false;
         });
     });
 

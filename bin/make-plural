@@ -8,15 +8,14 @@
  *    ./bin/make-plural [lc] [v]   // prints the plural category for `v` in locale `lc`
  */
 
-var MakePlural = require('..');
+var MakePlural = require('../');
 
 if (process.argv[2]) {
-    MakePlural.opt = { 'lc':process.argv[2], 'ordinals':1 };
-    var mp = new MakePlural();
+    var mp = new MakePlural(process.argv[2], {ordinals:1});
     if (process.argv[3]) {
         console.log(mp(process.argv[3]));
     } else {
-        console.log(mp.toString(MakePlural.opt.lc));
+        console.log(mp.toString(mp.obj.lc));
     }
 } else {
     var ok = [];

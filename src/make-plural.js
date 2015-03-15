@@ -79,18 +79,16 @@ class Symbols {
 export default class MakePlural {
     constructor(lc, opt) {
         if (typeof lc == 'object') {
-            this.opt = lc;
-            this.lc = this.opt.lc;
-        } else {
-            this.opt = opt || MakePlural.opt;
-            this.lc = lc || this.opt.lc;
+            opt = lc;
+            lc = opt.lc;
         }
+        this.lc = lc || MakePlural.lc;
+        this.cardinals = opt && opt.cardinals || MakePlural.cardinals;
+        this.ordinals = opt && opt.ordinals || MakePlural.ordinals;
+        if (!this.cardinals && !this.ordinals) throw new Error('At least one type of plural is required');
         this.symbols = new Symbols();
         this.tests = { 'ordinal':{}, 'cardinal':{} };
-        const fn_body = this.build(),
-              fn_args = this.opt.ordinals && !this.opt.no_cardinals ? 'n,ord' : 'n';
-        if (!fn_body) return null;
-        this.fn = new Function(fn_args, fn_body);
+        this.fn = this.build();
         this.fn.obj = this;
         this.fn.test = this.test.bind(this);
         this.fn.toString = this.fnToString.bind(this);
@@ -152,21 +150,17 @@ export default class MakePlural {
     build() {
         const fold = l => ('  ' + l + ';').replace(/(.{1,72})( \|\| |$) ?/gm, '$1\n         $2').replace(/\s+$/gm, '');
         let lines = [];
-        try {
-            if (this.opt.ordinals) {
-                const ret = this.opt.no_cardinals ? 'return ' : 'if (ord) return ';
-                lines.push(fold(ret + this.compile('ordinal', this.opt.no_cardinals)));
-            }
-            if (!this.opt.no_cardinals) {
-                lines.push(fold('return ' + this.compile('cardinal', true)));
-            }
-        } catch (e) {
-            if (this.opt.quiet) return null;
-            throw e;
+        if (this.ordinals) {
+            const ret = this.cardinals ? 'if (ord) return ' : 'return ';
+            lines.push(fold(ret + this.compile('ordinal', !this.cardinals)));
         }
-        const fn_vars = this.symbols.toString().replace(/(.{1,78})(,|$) ?/g, '\n      $1$2').trim();
+        if (this.cardinals) {
+            lines.push(fold('return ' + this.compile('cardinal', true)));
+        }
+        const fn_args = this.ordinals && this.cardinals ? 'n, ord' : 'n',
+              fn_vars = this.symbols.toString().replace(/(.{1,78})(,|$) ?/g, '\n      $1$2').trim();
         if (fn_vars) lines.unshift('  ' + fn_vars);
-        return lines.join('\n');
+        return new Function(fn_args, lines.join('\n'));
     }
 
     test() {
@@ -180,19 +174,14 @@ export default class MakePlural {
             );
             return true;
         };
-        try {
-            for (let t in this.tests) {
-                const ord = (t == 'ordinal');
-                for (let k in this.tests[t]) {
-                    this.tests[t][k].forEach( v => {  // for (let v of this.tests[t][k]) {
-                        _test(k, v, ord);
-                        /\.0+$/.test(v) || _test(k, Number(v), ord);
-                    });
-                }
+        for (let t in this.tests) {
+            const ord = (t == 'ordinal');
+            for (let k in this.tests[t]) {
+                this.tests[t][k].forEach( v => {  // for (let v of this.tests[t][k]) {
+                    _test(k, v, ord);
+                    /\.0+$/.test(v) || _test(k, Number(v), ord);
+                });
             }
-        } catch (e) {
-            if (this.opt.quiet) return null;
-            throw e;
         }
         return this.fn;
     };
@@ -205,5 +194,6 @@ export default class MakePlural {
 }
 
 MakePlural.dataRoot = './data/';
-MakePlural.opt = {};
+MakePlural.cardinals = true;
+MakePlural.ordinals = false;
 MakePlural.rules = {};
