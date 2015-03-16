@@ -129,7 +129,8 @@ function testPluralData(type, lc) {
     for (var cat in mp.obj.tests[type]) {
         (function (cat) {
             it(cat + ': ' + MakePlural.rules[type][lc]['pluralRule-count-' + cat], function() {
-                expect(mp.obj.testCat.bind(mp.obj)).withArgs(type, cat).to.not.throwException();
+                var test = mp.obj.tests.testCat.bind(mp.obj.tests);
+                expect(test).withArgs(type, cat).to.not.throwException();
             });
         })(cat);
     }
