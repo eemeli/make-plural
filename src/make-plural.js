@@ -68,11 +68,10 @@ class Parser {
         if (this.t0 || this.n10 || this.n100) vars.push("t0 = Number(s[0]) == n");
         for (let k in this) if (/^.10+$/.test(k)) {
             const k0 = (k[0] == 'n') ? 't0 && s[0]' : k[0];
-            vars.push(k + ' = ' + k0 + '.slice(-' + k.substr(2).length + ')');
+            vars.push(`${k} = ${k0}.slice(-${k.substr(2).length})`);
         }
         if (!vars.length) return '';
-        vars.unshift("s = String(n).split('.')");
-        return 'var ' + vars.join(', ');
+        return 'var ' + [ "s = String(n).split('.')", ...vars ].join(', ');
     }
 }
 
@@ -118,18 +117,18 @@ class Tests {
         this.cardinal = {};
     };
 
-    add(type, cat, rule) {
-        this[type][cat] = rule.join(' ')
+    add(type, cat, examples) {
+        this[type][cat] = examples.join(' ')
                               .replace(/^[ ,]+|[ ,…]+$/g, '')
                               .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
                               .split(/[ ,~…]+/);
     };
 
-    testCond(n, ord, expResult) {
-        try { var r = this.obj.fn(n, ord); }
+    testCond(n, type, expResult) {
+        try { var r = this.obj.fn(n, (type == 'ordinal')); }
         catch (e) { r = e.toString(); }
         if (r != expResult) throw new Error(
-            'Locale ' + JSON.stringify(this.obj.lc) + (ord ? ' ordinal' : ' cardinal')
+            'Locale ' + JSON.stringify(this.obj.lc) + type
             + ' rule self-test failed for v = ' + JSON.stringify(n)
             + ' (was ' + JSON.stringify(r) + ', expected ' + JSON.stringify(expResult) + ')'
         );
@@ -137,10 +136,9 @@ class Tests {
     };
 
     testCat(type, cat) {
-        const ord = (type == 'ordinal');
         this[type][cat].forEach( n => {
-            this.testCond(n, ord, cat);
-            /\.0+$/.test(n) || this.testCond(Number(n), ord, cat);
+            this.testCond(n, type, cat);
+            /\.0+$/.test(n) || this.testCond(Number(n), type, cat);
         });
         return true;
     };
@@ -154,14 +152,15 @@ class Tests {
 }
 
 export default class MakePlural {
-    constructor(lc, opt) {
+    constructor(lc, opt = {}) {
         if (typeof lc == 'object') {
             opt = lc;
             lc = opt.lc;
         }
         this.lc = lc || MakePlural.lc;
-        this.cardinals = opt && opt.cardinals || MakePlural.cardinals;
-        this.ordinals = opt && opt.ordinals || MakePlural.ordinals;
+        this.cardinals = opt.cardinals || MakePlural.cardinals;
+        this.ordinals = opt.ordinals || MakePlural.ordinals;
+        if (!this.ordinals && !this.cardinals) throw new Error('At least one type of plural is required');
         this.parser = new Parser();
         this.tests = new Tests(this);
         this.fn = this.buildFunction();
@@ -171,12 +170,11 @@ export default class MakePlural {
         return this.fn;
     };
 
-    static load() {
-        for (let i = 0; i < arguments.length; ++i) {
-            let arg = arguments[i];
+    static load(...args) {
+        args.forEach(arg => {
             if (typeof arg == 'string') MakePlural.rules.loadPath(arg);
             else MakePlural.rules.loadData(arg);
-        }
+        });
         return MakePlural;
     };
 
@@ -184,41 +182,33 @@ export default class MakePlural {
         let cases = [];
         const rules = MakePlural.rules[type][this.lc];
         if (!rules) {
-            if (req) throw new Error('Locale "' + this.lc + '" ' + type + ' rules not found');
+            if (req) throw new Error(`Locale "${this.lc}" ${type} rules not found`);
             return "'other'";
         }
         for (let r in rules) {
-            let parts = rules[r].split(/@\w*/);
-            const cond = parts.shift().trim(),
-                  cat = r.replace('pluralRule-count-', ''),
-                  jsCond = cond && this.parser.parse(cond);
-            if (cond) cases.push([jsCond, cat]);
-            this.tests.add(type, cat, parts);
+            const [cond, ...examples] = rules[r].trim().split(/\s*@\w*/),
+                  cat = r.replace('pluralRule-count-', '');
+            if (cond) cases.push([ this.parser.parse(cond), cat ]);
+            this.tests.add(type, cat, examples);
         }
         if (cases.length == 1) {
            return `(${cases[0][0]}) ? '${cases[0][1]}' : 'other'`;
         } else {
-            return cases.map(c => `(${c[0]}) ? '${c[1]}'`)
-                        .concat("'other'")
-                        .join('\n      : ');
+            return [ ...cases.map(c => `(${c[0]}) ? '${c[1]}'`), "'other'" ].join('\n      : ');
         }
     }
 
     buildFunction() {
-        let lines = (this.ordinals && this.cardinals) ? [ 'if (ord) return ' + this.compile('ordinal', false),
-                                                                   'return ' + this.compile('cardinal', true) ]
-                  : this.ordinals ? [ 'return ' + this.compile('ordinal', true) ]
-                  : this.cardinals ? [ 'return ' + this.compile('cardinal', true) ]
-                  : null;
-        if (!lines) throw new Error('At least one type of plural is required');
-        const args = this.ordinals && this.cardinals ? 'n, ord' : 'n',
+        const compile = c => c ? ((c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c)) : '',
               fold = { vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g,     '$1$2\n      '),
-                       body: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2') },
-              body = [ fold.vars(this.parser.vars()) ]
-                         .concat(lines.map(fold.body))
+                       cond: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2') },
+              cond = [ this.ordinals  && [ 'ordinal',  !this.cardinals ],
+                       this.cardinals && [ 'cardinal', true            ] ].map(compile).map(fold.cond),
+              body = [ fold.vars(this.parser.vars()), ...cond ]
                          .join('\n')
                          .replace(/\s+$/gm, '')
-                         .replace(/^[\s;]*[\r\n]+/gm, '');
+                         .replace(/^[\s;]*[\r\n]+/gm, ''),
+              args = this.ordinals && this.cardinals ? 'n, ord' : 'n';
         return new Function(args, body);
     }
 
