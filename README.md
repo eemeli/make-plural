@@ -1,11 +1,14 @@
 make-plural
 ===========
 
-A JavaScript module that translates [Unicode CLDR](http://cldr.unicode.org/)
+[![ISC License](https://img.shields.io/npm/l/make-plural.svg)](http://en.wikipedia.org/wiki/ISC_license)
+[![Build Status](https://travis-ci.org/eemeli/make-plural.js.svg?branch=master)](https://travis-ci.org/eemeli/make-plural.js)
+
+Make-plural is a JavaScript module that translates [Unicode CLDR](http://cldr.unicode.org/)
 [pluralization rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html)
 to JavaScript functions.
 
-Can be used as a CommonJS or AMD module, or directly in a browser environment.
+It's written in [ECMAScript 6](https://people.mozilla.org/~jorendorff/es6-draft.html) and transpiled using [Babel](https://babeljs.io/) to CommonJS, AMD and ES6 module formats, as well as being suitable for use in browser environments.
 
 
 ## Installation
@@ -15,26 +18,38 @@ npm install make-plural
 ```
 or
 ```
-git clone https://github.com/eemeli/make-plural.js.git
+bower install make-plural
 ```
+or
+```
+git clone https://github.com/eemeli/make-plural.js.git
+cd make-plural.js
+npm install
+make all
+make test-browser
+```
+
 
 ## Usage: Node
 
 ```js
 > MakePlural = require('make-plural')
-{ [Function] opt: {}, rules: {}, load: [Function] }
+{ [Function: MakePlural]
+  cardinals: true,
+  ordinals: false,
+  rules: { data: {}, rootPath: './data/' } }
 
-> sk = MakePlural('sk')
-{ [Function] toString: [Function] }
-
-> console.log(sk.toString())
-function(n) {
-  var s = String(n).split('.'), i = s[0], v0 = !s[1];
-  return (n == 1 && v0) ? 'one'
-      : ((i >= 2 && i <= 4) && v0) ? 'few'
-      : (!v0) ? 'many'
-      : 'other';
-}
+> sk = new MakePlural('sk')
+{ [Function]
+  obj: 
+   { lc: 'sk',
+     cardinals: true,
+     ordinals: false,
+     parser: { v0: 1, i: 1 },
+     tests: { obj: [Circular], ordinal: {}, cardinal: [Object] },
+     fn: [Circular] },
+  test: [Function],
+  toString: [Function] }
 
 > sk(1)
 'one'
@@ -48,43 +63,64 @@ function(n) {
 > sk('0')
 'other'
 
-> en = MakePlural('en', {ordinals:1})
-{ [Function] toString: [Function] }
-
-> console.log(en.toString())
-function(n,ord) {
-  var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n,
-      n10 = t0 && s[0].substr(-1), n100 = t0 && s[0].substr(-2);
-  if (ord) return (n10 == 1 && n100 != 11) ? 'one'
-      : (n10 == 2 && n100 != 12) ? 'two'
-      : (n10 == 3 && n100 != 13) ? 'few'
+> console.log(sk.toString())
+function(n) {
+  var s = String(n).split('.'), i = s[0], v0 = !s[1];
+  return (i == 1 && v0 ) ? 'one'
+      : ((i >= 2 && i <= 4) && v0 ) ? 'few'
+      : (!v0   ) ? 'many'
       : 'other';
-  return (n == 1 && v0) ? 'one' : 'other';
 }
+
+> en = new MakePlural('en', {ordinals:1})
+{ [Function]
+  obj: 
+   { lc: 'en',
+     cardinals: true,
+     ordinals: 1,
+     parser: { n: 1, n10: 1, n100: 1, v0: 1 },
+     tests: { obj: [Circular], ordinal: [Object], cardinal: [Object] },
+     fn: [Circular] },
+  test: [Function],
+  toString: [Function] }
 
 > en(2)
 'other'
 
 > en(2, true)
 'two'
+
+> console.log(en.toString())
+function(n, ord) {
+  var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n,
+      n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
+  if (ord) return (n10 == 1 && n100 != 11) ? 'one'
+      : (n10 == 2 && n100 != 12) ? 'two'
+      : (n10 == 3 && n100 != 13) ? 'few'
+      : 'other';
+  return (n == 1 && v0) ? 'one' : 'other';
+}
 ```
+
 
 ## Usage: Web
 
 ```html
 <script src="path/to/make-plural.js"></script>
 <script>
-  var ru = MakePlural('ru', {ordinals:1});
-  console.log(ru.toString());
+  var ru = new MakePlural('ru', {ordinals:1});
   console.log('1: ' + ru(1) + ', 3.0: ' + ru(3.0) +
               ', "1.0": ' + ru('1.0') + ', "0": ' + ru('0'));
+  console.log(ru.toString());
 </script>
 ```
 With outputs:
 ```
-function(n,ord) {
-  var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.substr(-1),
-      i100 = i.substr(-2);
+1: one, 3.0: few, "1.0": other, "0": many
+
+function(n, ord) {
+  var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1),
+      i100 = i.slice(-2);
   if (ord) return 'other';
   return (v0 && i10 == 1 && i100 != 11) ? 'one'
       : (v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12
@@ -93,14 +129,12 @@ function(n,ord) {
           || v0 && (i100 >= 11 && i100 <= 14)) ? 'many'
       : 'other';
 }
-
-1: one, 3.0: few, "1.0": other, "0": many
 ```
 
-If `request()` isn't available, the CLDR rules are fetched automatically when
+If `require()` isn't available, the CLDR rules are fetched automatically when
 required using synchronous `XMLHttpRequest` calls for the JSON files at the
 default locations. If that doesn't work for you, you should call
-`MakePlural.load(cldr)` before calling `MakePlural()`.
+`MakePlural.load(cldr)` before calling `new MakePlural()`.
 
 
 ## Usage: CLI
@@ -119,7 +153,7 @@ Locales verified ok:
     to tr ts tzm ug uk ur uz ve vi vo vun wa wae wo xh xog yi yo zh zu
 
 $ ./bin/make-plural fr
-function fr(n,ord) {
+function fr(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return (n >= 0 && n < 2) ? 'one' : 'other';
 }
@@ -131,33 +165,27 @@ one
 
 ## Methods
 
-### MakePlural(lc, opt)
-Returns a function that takes a single argument `n` and returns its plural
-category for the given locale `lc`.
+### new MakePlural(lc, opt)
+Returns a function that takes an argument `n` and returns its plural category
+for the given locale `lc`.
 
 The returned function has an overloaded `toString(name)` method that may be
 used to generate a clean string representation of the function, with an
 optional name `name`.
 
-The optional `opt` parameter may contain the following members, each of which is
-assumed false by default:
-* `no_cardinals` — if true, rules for cardinal values (1 day, 2 days, etc.)
-   are not included
-* `no_tests` — if true, the generated function is not verified by testing it
-   with each of the example values included in the CLDR rules
+The optional `opt` parameter may contain the following boolean members:
+* `cardinals` — if true, rules for cardinal values (1 day, 2 days, etc.) are 
+  included
 * `ordinals` — if true, rules for ordinal values (1st, 2nd, etc.) are included
-* `quiet` — if true, no output is reported to `console.error` on error
 
-If `opt.ordinals` is true and `opt.no_cardinals` is not true, the returned
-function takes a second parameter `ord`. Then, if `ord` is true, the function
-will return the ordinal rather than cardinal category applicable to `n` in
-locale `lc`.
+If both `opt.ordinals` and `opt.cardinals` are true, the returned function takes
+a second parameter `ord`. Then, if `ord` is true, the function will return the
+ordinal rather than cardinal category applicable to `n` in locale `lc`.
 
-If `opt` is not set, it takes the value of `MakePlural.opt`. If `lc` is not set,
-it takes the value of `opt.lc`.
+If `lc` or the `opt` values are not set, the values are taken from
+`MakePlural.lc` (no default value), `MakePlural.cardinals` (default `true`) and
+`MakePlural.ordinals` (default `false`).
 
-In a context where `module.exports` is not available but `exports` is, this
-function is exported as `MakePlural.get()`.
 
 ### MakePlural.load(cldr, ...)
 Loads CLDR rules from one or more `cldr` variables, each of which may be an
@@ -177,7 +205,8 @@ using the rules included in `data/`, `unicode-cldr-plural-rules.json` and
 
 ## Dependencies
 
-None. CLDR plural rule data is included in JSON format; make-plural supports the
+Make-plural has no runtime dependencies. CLDR plural rule data is included in
+JSON format; make-plural supports the
 [LDML Language Plural Rules](http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules)
 as used in CLDR release 24 and later.
 
@@ -190,6 +219,7 @@ For example, the following works when using together with
     cldr('supplemental/plurals'),
     cldr('supplemental/ordinals')
   );
-> MakePlural('ar')(3.14);
+> ar = new MakePlural('ar');
+> ar(3.14);
 'other'
 ```
