@@ -17,9 +17,9 @@
 
 class Parser {
     parse(cond) {
-        if (cond == 'i = 0 or n = 1') return 'n >= 0 && n <= 1';
-        if (cond == 'i = 0,1') return 'n >= 0 && n < 2';
-        if (cond == 'i = 1 and v = 0') {
+        if (cond === 'i = 0 or n = 1') return 'n >= 0 && n <= 1';
+        if (cond === 'i = 0,1') return 'n >= 0 && n < 2';
+        if (cond === 'i = 1 and v = 0') {
             this.v0 = 1;
             return 'n == 1 && v0';
         }
@@ -40,17 +40,17 @@ class Parser {
             })
             .replace(/n10+ = 0/g, 't0 && $&')
             .replace(/(\w+ (!?)= )([0-9.]+,[0-9.,]+)/g, (m, se, noteq, x) => {
-                if (m == 'n = 0,1') return '(n == 0 || n == 1)';
+                if (m === 'n = 0,1') return '(n == 0 || n == 1)';
                 if (noteq) return se + x.split(',').join(' && ' + se);
                 return '(' + se + x.split(',').join(' || ' + se) + ')';
             })
             .replace(/(\w+) (!?)= ([0-9]+)\.\.([0-9]+)/g, (m, sym, noteq, x0, x1) => {
-                if (Number(x0) + 1 == Number(x1)) {
+                if (Number(x0) + 1 === Number(x1)) {
                     if (noteq) return `${sym} != ${x0} && ${sym} != ${x1}`;
                     return `(${sym} == ${x0} || ${sym} == ${x1})`;
                 }
                 if (noteq) return `(${sym} < ${x0} || ${sym} > ${x1})`;
-                if (sym == 'n') { this.t0 = 1; return `(t0 && n >= ${x0} && n <= ${x1})`; }
+                if (sym === 'n') { this.t0 = 1; return `(t0 && n >= ${x0} && n <= ${x1})`; }
                 return `(${sym} >= ${x0} && ${sym} <= ${x1})`;
             })
             .replace(/ and /g, ' && ')
@@ -60,14 +60,14 @@ class Parser {
 
     vars() {
         let vars = [];
-        if (this.i) vars.push("i = s[0]");
+        if (this.i) vars.push('i = s[0]');
         if (this.f || this.v) vars.push("f = s[1] || ''");
         if (this.t) vars.push("t = (s[1] || '').replace(/0+$/, '')");
-        if (this.v) vars.push("v = f.length")
-        if (this.v0) vars.push("v0 = !s[1]");
-        if (this.t0 || this.n10 || this.n100) vars.push("t0 = Number(s[0]) == n");
+        if (this.v) vars.push('v = f.length');
+        if (this.v0) vars.push('v0 = !s[1]');
+        if (this.t0 || this.n10 || this.n100) vars.push('t0 = Number(s[0]) == n');
         for (let k in this) if (/^.10+$/.test(k)) {
-            const k0 = (k[0] == 'n') ? 't0 && s[0]' : k[0];
+            const k0 = (k[0] === 'n') ? 't0 && s[0]' : k[0];
             vars.push(`${k} = ${k0}.slice(-${k.substr(2).length})`);
         }
         if (!vars.length) return '';
@@ -83,21 +83,22 @@ class Rules {
 
     loadData(cldr) {
         const data = cldr && cldr.supplemental || {};
-        return this.data = {
+        this.data = {
             cardinal: data['plurals-type-cardinal'] || this.data.cardinal,
-            ordinal:  data['plurals-type-ordinal']  || this.data.ordinal
+            ordinal: data['plurals-type-ordinal'] || this.data.ordinal
         };
+        return this.data;
     };
 
     loadPath(path) {
-        if (path.indexOf('/') == -1) path = this.rootPath + path;
+        if (path.indexOf('/') === -1) path = this.rootPath + path;
         if (typeof require == 'function') {
             return this.loadData(require(path));
         }
         let xhr = new XMLHttpRequest();
         xhr.open('get', path, false);
         xhr.send();
-        if (xhr.status != 200) throw new Error('XMLHttpRequest failed for ' + JSON.stringify(path));
+        if (xhr.status !== 200) throw new Error('XMLHttpRequest failed for ' + JSON.stringify(path));
         return this.loadData(JSON.parse(xhr.responseText));
     };
 
@@ -125,20 +126,20 @@ class Tests {
     };
 
     testCond(n, type, expResult) {
-        try { var r = this.obj.fn(n, (type == 'ordinal')); }
+        try { var r = this.obj.fn(n, (type === 'ordinal')); }
         catch (e) { r = e.toString(); }
-        if (r != expResult) throw new Error(
+        if (r !== expResult) { throw new Error(
             'Locale ' + JSON.stringify(this.obj.lc) + type
             + ' rule self-test failed for v = ' + JSON.stringify(n)
             + ' (was ' + JSON.stringify(r) + ', expected ' + JSON.stringify(expResult) + ')'
-        );
+        ); }
         return true;
     };
 
     testCat(type, cat) {
         this[type][cat].forEach( n => {
             this.testCond(n, type, cat);
-            /\.0+$/.test(n) || this.testCond(Number(n), type, cat);
+            if (!/\.0+$/.test(n)) this.testCond(Number(n), type, cat);
         });
         return true;
     };
@@ -165,7 +166,7 @@ export default class MakePlural {
         this.tests = new Tests(this);
         this.fn = this.buildFunction();
         this.fn.obj = this;
-        this.fn.test = (function() { return this.tests.testAll() && this.fn; }).bind(this);
+        this.fn.test = function() { return this.tests.testAll() && this.fn; }.bind(this);
         this.fn.toString = this.fnToString.bind(this);
         return this.fn;
     };
@@ -191,7 +192,7 @@ export default class MakePlural {
             if (cond) cases.push([ this.parser.parse(cond), cat ]);
             this.tests.add(type, cat, examples);
         }
-        if (cases.length == 1) {
+        if (cases.length === 1) {
            return `(${cases[0][0]}) ? '${cases[0][1]}' : 'other'`;
         } else {
             return [ ...cases.map(c => `(${c[0]}) ? '${c[1]}'`), "'other'" ].join('\n      : ');
@@ -199,16 +200,22 @@ export default class MakePlural {
     }
 
     buildFunction() {
-        const compile = c => c ? ((c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c)) : '',
-              fold = { vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g,     '$1$2\n      '),
-                       cond: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2') },
-              cond = [ this.ordinals  && [ 'ordinal',  !this.cardinals ],
-                       this.cardinals && [ 'cardinal', true            ] ].map(compile).map(fold.cond),
-              body = [ fold.vars(this.parser.vars()), ...cond ]
-                         .join('\n')
-                         .replace(/\s+$/gm, '')
-                         .replace(/^[\s;]*[\r\n]+/gm, ''),
-              args = this.ordinals && this.cardinals ? 'n, ord' : 'n';
+        const
+            compile = c => c ? ((c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c)) : '',
+            fold = { vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g, '$1$2\n      '),
+                     cond: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2') },
+            cond = [
+                     this.ordinals && [ 'ordinal', !this.cardinals ],
+                     this.cardinals && [ 'cardinal', true ]
+                   ].map(compile)
+                    .map(fold.cond),
+            body = [
+                     fold.vars(this.parser.vars()),
+                     ...cond
+                   ].join('\n')
+                    .replace(/\s+$/gm, '')
+                    .replace(/^[\s;]*[\r\n]+/gm, ''),
+            args = this.ordinals && this.cardinals ? 'n, ord' : 'n';
         return new Function(args, body);
     }
 

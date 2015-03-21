@@ -29,13 +29,31 @@
   },
   "main": "make-plural",
   "scripts": {
+    "lint": "eslint src/",
     "prepublish": "make",
     "test": "make test"
   },
   "devDependencies": {
     "babel": "^4.7.9",
+    "babel-eslint": "*",
+    "eslint": "*",
     "expect.js": "^0.3.1",
     "http-server": "^0.7.5",
     "mocha": "^2.2.1"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "rules": {
+      "curly": [2, "multi-line"],
+      "eqeqeq": [1, "smart"],
+      "no-multi-spaces": 0,
+      "no-new-func": 0,
+      "quotes": [1, "single", "avoid-escape"],
+      "strict": 0
+    }
   }
 }

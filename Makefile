@@ -8,29 +8,33 @@ ERR := $(call VT,31;1)✖${VT0}
 GH_API_FETCH_VALUE = curl -s https://api.github.com/$(1) | grep -m1 '"$(2)"' | cut -d: -f2 | sed 's/^ *"\?//;s/"\?, *$$//'
 
 BIN = ./node_modules/.bin
+SRC = src/make-plural.js
 MODULES = make-plural.js make-plural.amd.js make-plural.es6.js
 GH_REPO = eemeli/make-plural.js
 NPM_TAG = latest
 
-all: $(MODULES) test
+all: $(MODULES) lint test
 
 clean:
 	rm -f $(MODULES)
 
-.PHONY: all clean test test-browser release
+.PHONY: all clean lint test test-browser release-check-init release-check-branch release-check-head release
 
 
 
-make-plural.js: src/make-plural.js
+make-plural.js: $(SRC)
 	$(BIN)/babel $^ | sed 's/^module.exports = /if (typeof module !== "undefined") \0/' > $@
 
-make-plural.amd.js: src/make-plural.js
+make-plural.amd.js: $(SRC)
 	$(BIN)/babel $^ --modules amd -o $@
 
-make-plural.es6.js: src/make-plural.js
+make-plural.es6.js: $(SRC)
 	$(BIN)/babel $^ --blacklist es6.modules -o $@
 
 
+
+lint: $(SRC)
+	$(BIN)/eslint $^
 
 test: make-plural.js
 	@printf "\n  $(VT_DIM)Running tests...$(VT0)"
