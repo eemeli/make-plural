@@ -29,7 +29,6 @@
   "main": "make-plural",
   "scripts": {
     "lint": "eslint src/",
-    "prepublish": "make",
     "test": "make test"
   },
   "devDependencies": {

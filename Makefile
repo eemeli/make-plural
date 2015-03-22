@@ -7,16 +7,16 @@ ERR := $(call VT,31;1)✖${VT0}
 
 GH_API_FETCH_VALUE = curl -s https://api.github.com/$(1) | grep -m1 '"$(2)"' | cut -d: -f2 | sed 's/^ *"\?//;s/"\?, *$$//'
 
-BIN = ./node_modules/.bin
-SRC = src/make-plural.js
-MODULES = make-plural.js make-plural.amd.js make-plural.es6.js
 GH_REPO = eemeli/make-plural.js
 NPM_TAG = latest
 
-all: $(MODULES) lint test
+BIN = ./node_modules/.bin
+SRC = src/make-plural.js
+MODULES = make-plural.js make-plural.amd.js make-plural.es6.js
+OUT = $(MODULES) .make_lint .make_test
 
-clean:
-	rm -f $(MODULES)
+all: $(OUT)
+clean: ; rm -f $(OUT)
 
 .PHONY: all clean lint test test-browser release-check-init release-check-branch release-check-head release
 
@@ -33,13 +33,17 @@ make-plural.es6.js: $(SRC)
 
 
 
-lint: $(SRC)
+lint: .make_lint
+.make_lint: $(SRC)
 	$(BIN)/eslint $^
+	@touch $@
 
-test: make-plural.js
+test: .make_test
+.make_test: make-plural.js
 	@printf "\n  $(VT_DIM)Running tests...$(VT0)"
 	@$(BIN)/mocha
 	@echo "$(CHK) All tests passed"
+	@touch $@
 
 test-browser: make-plural.js
 	open "http://localhost:8080/test/test.html" & $(BIN)/http-server .
