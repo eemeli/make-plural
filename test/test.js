@@ -13,7 +13,7 @@ describe('MakePlural class', function(){
             expect(MakePlural.rules.cardinal).to.only.have.key('xx');
         });
         it('#loadPath() should load data from a path', function(){
-            expect(MakePlural.rules.loadPath('unicode-cldr-plural-rules.json').cardinal).to.not.have.key('xx');
+            expect(MakePlural.rules.loadPath('plurals.json').cardinal).to.not.have.key('xx');
             expect(MakePlural.rules.cardinal).to.have.key('en');
         });
     });
@@ -33,7 +33,7 @@ describe('MakePlural class', function(){
             expect(MakePlural.rules.cardinal).to.only.have.key('xx');
         });
         it('should load default CLDR data', function(){
-            expect(MakePlural.load).withArgs('unicode-cldr-plural-rules.json', 'unicode-cldr-ordinal-rules.json').to.not.throwException();
+            expect(MakePlural.load).withArgs('plurals.json', 'ordinals.json').to.not.throwException();
             expect(MakePlural.rules.data).to.only.have.keys('cardinal', 'ordinal');
             expect(MakePlural.rules.cardinal).to.not.have.key('xx');
             expect(MakePlural.rules.cardinal).to.have.key('en');

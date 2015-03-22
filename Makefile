@@ -11,9 +11,11 @@ GH_REPO = eemeli/make-plural.js
 NPM_TAG = latest
 
 BIN = ./node_modules/.bin
+CLDR = node_modules/cldr-core
 SRC = src/make-plural.js
+DATA = data/plurals.json data/ordinals.json
 MODULES = make-plural.js make-plural.amd.js make-plural.es6.js
-OUT = $(MODULES) .make_lint .make_test
+OUT = $(DATA) $(MODULES) .make_lint .make_test
 
 all: $(OUT)
 clean: ; rm -f $(OUT)
@@ -33,19 +35,27 @@ make-plural.es6.js: $(SRC)
 
 
 
+data:
+	mkdir -p $@
+
+data/%.json: $(CLDR)/supplemental/%.json | data
+	cp $< $@
+
+
+
 lint: .make_lint
 .make_lint: $(SRC)
 	$(BIN)/eslint $^
 	@touch $@
 
 test: .make_test
-.make_test: make-plural.js
+.make_test: $(DATA) make-plural.js
 	@printf "\n  $(VT_DIM)Running tests...$(VT0)"
 	@$(BIN)/mocha
 	@echo "$(CHK) All tests passed"
 	@touch $@
 
-test-browser: make-plural.js
+test-browser: $(DATA) make-plural.js
 	open "http://localhost:8080/test/test.html" & $(BIN)/http-server .
 
 
@@ -75,8 +85,8 @@ release: all release-check-init release-check-branch release-check-head
 		if [[ $${REPLY} =~ ^[Yy]$$ ]]; then echo "$${REPLY}\r$(CHK)\n"; \
 		else echo "\r$(ERR)\n"; exit 1; fi
 	git checkout -b release
-	git add -f $(MODULES)
-	git commit --message "Packaging output modules for release"
+	git add -f $(DATA) $(MODULES)
+	git commit --message "Packaging data & transpiled modules for release"
 	npm version $(VERSION) -m "Version %s"
 	git push --tags
 	npm publish --tag $(NPM_TAG)

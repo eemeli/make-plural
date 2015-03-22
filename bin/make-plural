@@ -19,7 +19,7 @@ if (process.argv[2]) {
     }
 } else {
     var ok = [];
-    MakePlural.load('unicode-cldr-plural-rules.json');
+    MakePlural.load('plurals.json');
     for (var lc in MakePlural.rules['cardinal']) {
         var mp = new MakePlural(lc, {'ordinals':1});
         if (mp.test()) ok.push(lc);

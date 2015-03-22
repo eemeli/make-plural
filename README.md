@@ -199,8 +199,7 @@ string, it's taken as the URL of the JSON file that'll be fetched and parsed
 using a synchronous `XMLHttpRequest`.
 
 By default, `MakePlural()` will call `MakePlural.load(cldr)` when required,
-using the rules included in `data/`, `unicode-cldr-plural-rules.json` and
-`unicode-cldr-ordinal-rules.json`.
+using the rules included in `data/`, `plurals.json` and `ordinals.json`.
 
 
 ## Dependencies

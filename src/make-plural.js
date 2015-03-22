@@ -103,11 +103,11 @@ class Rules {
     };
 
     get cardinal() {
-        return this.data.cardinal || this.loadPath('unicode-cldr-plural-rules.json').cardinal;
+        return this.data.cardinal || this.loadPath('plurals.json').cardinal;
     };
 
     get ordinal() {
-        return this.data.ordinal || this.loadPath('unicode-cldr-ordinal-rules.json').ordinal;
+        return this.data.ordinal || this.loadPath('ordinals.json').ordinal;
     };
 }
 

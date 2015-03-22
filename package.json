@@ -34,6 +34,7 @@
   "devDependencies": {
     "babel": "^4.7.9",
     "babel-eslint": "*",
+    "cldr-core": "unicode-cldr/cldr-core#27.0.0",
     "eslint": "*",
     "expect.js": "^0.3.1",
     "http-server": "^0.7.5",
