@@ -92,14 +92,7 @@ class Rules {
 
     loadPath(path) {
         if (path.indexOf('/') === -1) path = this.rootPath + path;
-        if (typeof require == 'function') {
-            return this.loadData(require(path));
-        }
-        let xhr = new XMLHttpRequest();
-        xhr.open('get', path, false);
-        xhr.send();
-        if (xhr.status !== 200) throw new Error('XMLHttpRequest failed for ' + JSON.stringify(path));
-        return this.loadData(JSON.parse(xhr.responseText));
+        return this.loadData(require(path));
     };
 
     get cardinal() {

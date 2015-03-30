@@ -14,7 +14,7 @@ BIN = ./node_modules/.bin
 CLDR = node_modules/cldr-core
 SRC = src/make-plural.js
 DATA = data/plurals.json data/ordinals.json
-MODULES = make-plural.js make-plural.amd.js make-plural.es6.js
+MODULES = make-plural.js make-plural.amd.js make-plural.es6.js make-plural.browser.js
 OUT = $(DATA) $(MODULES) .make_lint .make_test
 
 all: $(OUT)
@@ -25,7 +25,7 @@ clean: ; rm -f $(OUT)
 
 
 make-plural.js: $(SRC)
-	$(BIN)/babel $^ | sed 's/^module.exports = /if (typeof module !== "undefined") \0/' > $@
+	$(BIN)/babel $^ -o $@
 
 make-plural.amd.js: $(SRC)
 	$(BIN)/babel $^ --modules amd -o $@
@@ -33,6 +33,8 @@ make-plural.amd.js: $(SRC)
 make-plural.es6.js: $(SRC)
 	$(BIN)/babel $^ --blacklist es6.modules -o $@
 
+make-plural.browser.js: src/browser.js make-plural.js $(DATA)
+	$(BIN)/browserify $< -o $@
 
 
 data:
@@ -55,7 +57,7 @@ test: .make_test
 	@echo "$(CHK) All tests passed"
 	@touch $@
 
-test-browser: $(DATA) make-plural.js
+test-browser: $(DATA) make-plural.browser.js
 	open "http://localhost:8080/test/test.html" & $(BIN)/http-server .
 
 
