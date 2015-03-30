@@ -26,7 +26,6 @@ git clone https://github.com/eemeli/make-plural.js.git
 cd make-plural.js
 npm install
 make all
-make test-browser
 ```
 
 
@@ -106,7 +105,7 @@ function(n, ord) {
 ## Usage: Web
 
 ```html
-<script src="path/to/make-plural.js"></script>
+<script src="path/to/make-plural.browser.js"></script>
 <script>
   var ru = new MakePlural('ru', {ordinals:1});
   console.log('1: ' + ru(1) + ', 3.0: ' + ru(3.0) +
@@ -131,10 +130,11 @@ function(n, ord) {
 }
 ```
 
-If `require()` isn't available, the CLDR rules are fetched automatically when
-required using synchronous `XMLHttpRequest` calls for the JSON files at the
-default locations. If that doesn't work for you, you should call
-`MakePlural.load(cldr)` before calling `new MakePlural()`.
+The browser versions of MakePlural (`./make-plural.browser.js` and
+`./make-plural.min.js`) are compiled to include the default CLDR rules. If that
+doesn't work for you, you should either modify `src/browser.js` to fit your
+needs, or remove the `module.exports = ...` statement from `./make-plural.js`
+and use that, calling `MakePlural.load(cldr)` with your custom data.
 
 
 ## Usage: CLI
@@ -190,7 +190,7 @@ If `lc` or the `opt` values are not set, the values are taken from
 ### MakePlural.load(cldr, ...)
 Loads CLDR rules from one or more `cldr` variables, each of which may be an
 object or the path to a JSON file formatted like
-[this](http://www.unicode.org/repos/cldr-aux/json/26/supplemental/plurals.json).
+[this](https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json).
 The stored rules are kept in `MakePlural.rules.cardinal` and
 `MakePlural.rules.ordinal`, which may also be directly accessed.
 
