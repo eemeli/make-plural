@@ -49,12 +49,23 @@
       "node": true
     },
     "rules": {
-      "curly": [2, "multi-line"],
-      "eqeqeq": [1, "smart"],
+      "curly": [
+        2,
+        "multi-line"
+      ],
+      "eqeqeq": [
+        1,
+        "smart"
+      ],
       "no-multi-spaces": 0,
       "no-new-func": 0,
-      "quotes": [1, "single", "avoid-escape"],
+      "quotes": [
+        1,
+        "single",
+        "avoid-escape"
+      ],
       "strict": 0
     }
-  }
+  },
+  "version": "3.0.0-rc2"
 }
