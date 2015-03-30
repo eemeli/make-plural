@@ -39,7 +39,8 @@
     "eslint": "*",
     "expect.js": "^0.3.1",
     "http-server": "^0.7.5",
-    "mocha": "^2.2.1"
+    "mocha": "^2.2.1",
+    "uglify-js": "^2.4.19"
   },
   "eslintConfig": {
     "parser": "babel-eslint",

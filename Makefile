@@ -14,7 +14,7 @@ BIN = ./node_modules/.bin
 CLDR = node_modules/cldr-core
 SRC = src/make-plural.js
 DATA = data/plurals.json data/ordinals.json
-MODULES = make-plural.js make-plural.amd.js make-plural.es6.js make-plural.browser.js
+MODULES = make-plural.js make-plural.amd.js make-plural.es6.js make-plural.browser.js make-plural.min.js
 OUT = $(DATA) $(MODULES) .make_lint .make_test
 
 all: $(OUT)
@@ -35,6 +35,9 @@ make-plural.es6.js: $(SRC)
 
 make-plural.browser.js: src/browser.js make-plural.js $(DATA)
 	$(BIN)/browserify $< -o $@
+
+make-plural.min.js: make-plural.browser.js
+	$(BIN)/uglifyjs $< --compress --mangle -o $@
 
 
 data:
