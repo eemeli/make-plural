@@ -6,6 +6,7 @@
 <div id="mocha"></div>
 
 <script src="../make-plural.js"></script>
+<script src="../plurals.js"></script>
 <script>
     function getJSON(path) {
         var xhr = new XMLHttpRequest();
@@ -14,7 +15,7 @@
         if (xhr.status !== 200) throw new Error('XMLHttpRequest failed for ' + JSON.stringify(path));
         return JSON.parse(xhr.responseText);
     }
-    window.plurals = getJSON('../data/plurals.json');
+    window.cardinals = getJSON('../data/plurals.json');
     window.ordinals = getJSON('../data/ordinals.json');
 </script>
 

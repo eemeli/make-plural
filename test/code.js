@@ -18,7 +18,7 @@ describe('MakePlural compiler', function(){
             expect(MakePlural.rules.cardinal).to.only.have.key('xx');
         });
         it('should load default CLDR data', function(){
-            expect(MakePlural.load).withArgs(plurals, ordinals).to.not.throwException();
+            expect(MakePlural.load).withArgs(cardinals, ordinals).to.not.throwException();
             expect(MakePlural.rules).to.only.have.keys('cardinal', 'ordinal');
             expect(MakePlural.rules.cardinal).to.not.have.key('xx');
             expect(MakePlural.rules.cardinal).to.have.key('en');

@@ -1,4 +1,4 @@
-MakePlural.load(plurals, ordinals);
+MakePlural.load(cardinals, ordinals);
 
 function testPluralData(type, lc) {
     var opt = { ordinals: (type == 'ordinal') };
@@ -9,20 +9,30 @@ function testPluralData(type, lc) {
         expect(mp.obj.tests[type]).to.not.be.empty();
     });
 
+    it('is included in the output', function(){
+        expect(plurals[lc]).to.be.a(Function);
+    });
+
     var mp = new MakePlural(lc, opt);
     for (var cat in mp.obj.tests[type]) {
-        (function (cat) {
-            it(cat + ': ' + MakePlural.rules[type][lc]['pluralRule-count-' + cat], function() {
-                var test = mp.obj.tests.testCat.bind(mp.obj.tests);
-                expect(test).withArgs(type, cat).to.not.throwException();
-            });
-        })(cat);
+        describe(cat + ': ' + MakePlural.rules[type][lc]['pluralRule-count-' + cat], function(){
+            (function (cat) {
+                it('Live data', function() {
+                    var test = mp.obj.tests.testCat.bind(mp.obj.tests);
+                    expect(test).withArgs(type, cat).to.not.throwException();
+                });
+                it('Output', function() {
+                    var test = mp.obj.tests.testCat.bind(mp.obj.tests);
+                    expect(test).withArgs(type, cat, plurals[lc]).to.not.throwException();
+                });
+            })(cat);
+        });
     }
 }
 
 describe('MakePlural data self-test', function(){
     describe('Cardinal rules', function(){
-        for (var lc in plurals.supplemental['plurals-type-cardinal']) {
+        for (var lc in cardinals.supplemental['plurals-type-cardinal']) {
             describe(lc, function(){
                 testPluralData('cardinal', lc);
             });

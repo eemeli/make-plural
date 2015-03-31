@@ -47,7 +47,7 @@ lint: .make_lint
 	@touch $@
 
 test: .make_test
-.make_test: make-plural.js test/* $(DATA)
+.make_test: make-plural.js plurals.js test/* $(DATA)
 	@echo "\n  $(VT_DIM)Testing code...$(VT0)"
 	@$(BIN)/mocha test/code.js
 	@echo "\n  $(VT_DIM)Testing data...$(VT0)"

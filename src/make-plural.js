@@ -89,8 +89,8 @@ class Tests {
                               .split(/[ ,~…]+/);
     };
 
-    testCond(n, type, expResult) {
-        try { var r = this.obj.fn(n, (type === 'ordinal')); }
+    testCond(n, type, expResult, fn) {
+        try { var r = (fn || this.obj.fn)(n, (type === 'ordinal')); }
         catch (e) { r = e.toString(); }
         if (r !== expResult) { throw new Error(
             'Locale ' + JSON.stringify(this.obj.lc) + type
@@ -100,10 +100,10 @@ class Tests {
         return true;
     };
 
-    testCat(type, cat) {
+    testCat(type, cat, fn) {
         this[type][cat].forEach( n => {
-            this.testCond(n, type, cat);
-            if (!/\.0+$/.test(n)) this.testCond(Number(n), type, cat);
+            this.testCond(n, type, cat, fn);
+            if (!/\.0+$/.test(n)) this.testCond(Number(n), type, cat, fn);
         });
         return true;
     };
