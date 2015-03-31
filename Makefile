@@ -54,14 +54,16 @@ lint: .make_lint
 	@touch $@
 
 test: .make_test
-.make_test: $(DATA) make-plural.js
-	@printf "\n  $(VT_DIM)Running tests...$(VT0)"
-	@$(BIN)/mocha
+.make_test: $(DATA) make-plural.js test/*.js
+	@echo "\n  $(VT_DIM)Testing code...$(VT0)"
+	@$(BIN)/mocha test/code.js
+	@echo "\n  $(VT_DIM)Testing data...$(VT0)"
+	@$(BIN)/mocha test/data.js
 	@echo "$(CHK) All tests passed"
 	@touch $@
 
 test-browser: $(DATA) make-plural.browser.js
-	open "http://localhost:8080/test/test.html" & $(BIN)/http-server .
+	open "http://localhost:8080/test/" & $(BIN)/http-server .
 
 
 
