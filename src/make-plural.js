@@ -75,35 +75,6 @@ class Parser {
     }
 }
 
-class Rules {
-    constructor() {
-        this.data = {};
-        this.rootPath = './data/';
-    };
-
-    loadData(cldr) {
-        const data = cldr && cldr.supplemental || {};
-        this.data = {
-            cardinal: data['plurals-type-cardinal'] || this.data.cardinal,
-            ordinal: data['plurals-type-ordinal'] || this.data.ordinal
-        };
-        return this.data;
-    };
-
-    loadPath(path) {
-        if (path.indexOf('/') === -1) path = this.rootPath + path;
-        return this.loadData(require(path));
-    };
-
-    get cardinal() {
-        return this.data.cardinal || this.loadPath('plurals.json').cardinal;
-    };
-
-    get ordinal() {
-        return this.data.ordinal || this.loadPath('ordinals.json').ordinal;
-    };
-}
-
 class Tests {
     constructor(obj) {
         this.obj = obj;
@@ -165,9 +136,13 @@ export default class MakePlural {
     };
 
     static load(...args) {
-        args.forEach(arg => {
-            if (typeof arg == 'string') MakePlural.rules.loadPath(arg);
-            else MakePlural.rules.loadData(arg);
+        args.forEach(cldr => {
+            const data = cldr && cldr.supplemental || null;
+            if (!data) throw new Error('Data does not appear to be CLDR data');
+            MakePlural.rules = {
+                cardinal: data['plurals-type-cardinal'] || MakePlural.rules.cardinal,
+                ordinal: data['plurals-type-ordinal'] || MakePlural.rules.ordinal
+            };
         });
         return MakePlural;
     };
@@ -221,4 +196,4 @@ export default class MakePlural {
 
 MakePlural.cardinals = true;
 MakePlural.ordinals = false;
-MakePlural.rules = new Rules();
+MakePlural.rules = { cardinal: {}, ordinal: {} };
