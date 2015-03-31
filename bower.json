@@ -1,6 +1,6 @@
 {
   "name": "make-plural",
-  "main": [ "make-plural.js", "make-plural.amd.js", "make-plural.browser.js", "make-plural.es6.js", "make-plural.min.js" ],
+  "main": [ "make-plural.js", "plurals.js" ],
   "homepage": "https://github.com/eemeli/make-plural.js",
   "repository": { "type": "git", "url": "git://github.com/eemeli/make-plural.js.git" },
   "authors": [ "Eemeli Aro <eemeli@gmail.com>" ],

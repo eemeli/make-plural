@@ -1,5 +1,6 @@
 {
   "name": "make-plural",
+  "version": "3.0.0-dev",
   "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
   "keywords": [
     "unicode",
@@ -21,12 +22,13 @@
   "files": [
     "bin/",
     "data/",
-    "make-plural.js"
+    "make-plural.*",
+    "plurals.*"
   ],
   "bin": {
     "make-plural": "./bin/make-plural"
   },
-  "main": "make-plural",
+  "main": "plurals",
   "scripts": {
     "lint": "eslint src/",
     "test": "make test"
@@ -34,6 +36,7 @@
   "devDependencies": {
     "babel": "^4.7.9",
     "babel-eslint": "*",
+    "babelify": "^5.0.4",
     "browserify": "^9.0.3",
     "cldr-core": "unicode-cldr/cldr-core#27.0.0",
     "eslint": "*",
@@ -49,11 +52,21 @@
       "node": true
     },
     "rules": {
-      "curly": [2, "multi-line"],
-      "eqeqeq": [1, "smart"],
+      "curly": [
+        2,
+        "multi-line"
+      ],
+      "eqeqeq": [
+        1,
+        "smart"
+      ],
       "no-multi-spaces": 0,
       "no-new-func": 0,
-      "quotes": [1, "single", "avoid-escape"],
+      "quotes": [
+        1,
+        "single",
+        "avoid-escape"
+      ],
       "strict": 0
     }
   }

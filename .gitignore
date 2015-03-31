@@ -1,4 +1,6 @@
+/bin
 /data
 /make-plural*.js
+/plurals*.js
 node_modules
 .*

@@ -12,36 +12,29 @@ NPM_TAG = latest
 
 BIN = ./node_modules/.bin
 CLDR = node_modules/cldr-core
-SRC = src/make-plural.js
 DATA = data/plurals.json data/ordinals.json
-MODULES = make-plural.js make-plural.amd.js make-plural.es6.js make-plural.browser.js make-plural.min.js
-OUT = $(DATA) $(MODULES) .make_lint .make_test
-
-all: $(OUT)
-clean: ; rm -f $(OUT)
+COMPILED = bin/make-plural plurals.js plurals.min.js make-plural.js make-plural.min.js
 
 .PHONY: all clean lint test test-browser release-check-init release-check-branch release-check-head release
 
+all: $(DATA) $(COMPILED) .make_lint .make_test
+clean: ; rm -rf $(COMPILED) .make_* bin/ data/
+bin data: ; mkdir -p $@
 
 
-make-plural.js: $(SRC)
-	$(BIN)/babel $^ -o $@
+make-plural.js: src/make-plural.js
+	$(BIN)/browserify $< -t babelify -s MakePlural -o $@
 
-make-plural.amd.js: $(SRC)
-	$(BIN)/babel $^ --modules amd -o $@
+bin/make-plural: src/index.js | bin
+	echo "#!/usr/bin/env node\n" > $@
+	$(BIN)/babel $< >> $@
+	chmod a+x $@
 
-make-plural.es6.js: $(SRC)
-	$(BIN)/babel $^ --blacklist es6.modules -o $@
+plurals.js: bin/make-plural make-plural.js $(DATA)
+	./$< > $@
 
-make-plural.browser.js: src/browser.js make-plural.js $(DATA)
-	$(BIN)/browserify $< -o $@
-
-make-plural.min.js: make-plural.browser.js
+%.min.js: %.js
 	$(BIN)/uglifyjs $< --compress --mangle -o $@
-
-
-data:
-	mkdir -p $@
 
 data/%.json: $(CLDR)/supplemental/%.json | data
 	cp $< $@
@@ -49,12 +42,12 @@ data/%.json: $(CLDR)/supplemental/%.json | data
 
 
 lint: .make_lint
-.make_lint: $(SRC)
+.make_lint: src/make-plural.js
 	$(BIN)/eslint $^
 	@touch $@
 
 test: .make_test
-.make_test: $(DATA) make-plural.js test/*.js
+.make_test: make-plural.js test/* $(DATA)
 	@echo "\n  $(VT_DIM)Testing code...$(VT0)"
 	@$(BIN)/mocha test/code.js
 	@echo "\n  $(VT_DIM)Testing data...$(VT0)"
@@ -62,7 +55,7 @@ test: .make_test
 	@echo "$(CHK) All tests passed"
 	@touch $@
 
-test-browser: $(DATA) make-plural.browser.js
+test-browser: make-plural.js test/* $(DATA)
 	open "http://localhost:8080/test/" & $(BIN)/http-server .
 
 
@@ -92,7 +85,7 @@ release: all release-check-init release-check-branch release-check-head
 		if [[ $${REPLY} =~ ^[Yy]$$ ]]; then echo "$${REPLY}\r$(CHK)\n"; \
 		else echo "\r$(ERR)\n"; exit 1; fi
 	git checkout -b release
-	git add -f $(DATA) $(MODULES)
+	git add -f $(DATA) $(COMPILED)
 	git commit --message "Packaging data & transpiled modules for release"
 	npm version $(VERSION) -m "Version %s"
 	git push --tags
