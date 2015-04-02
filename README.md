@@ -1,14 +1,23 @@
-make-plural
-===========
-
 [![ISC License](https://img.shields.io/npm/l/make-plural.svg)](http://en.wikipedia.org/wiki/ISC_license)
 [![Build Status](https://travis-ci.org/eemeli/make-plural.js.svg?branch=master)](https://travis-ci.org/eemeli/make-plural.js)
 
-Make-plural is a JavaScript module that translates [Unicode CLDR](http://cldr.unicode.org/)
-[pluralization rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html)
-to JavaScript functions.
+make-plural
+===========
 
-It's written in [ECMAScript 6](https://people.mozilla.org/~jorendorff/es6-draft.html) and transpiled using [Babel](https://babeljs.io/) to CommonJS, AMD and ES6 module formats, as well as being suitable for use in browser environments.
+Make-plural is a JavaScript module that translates
+[Unicode CLDR](http://cldr.unicode.org/)
+[pluralization rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html)
+to JavaScript functions. It includes both a live parser (`make-plural.js`) as
+well as the generated output for the latest edition of the CLDR (`plurals.js`);
+the latter is just over 2kB in size when minified & gzipped, and covers 199
+languages, so it's probably what you want unless you really know what you're
+doing.
+
+Make-plural is written in
+[ECMAScript 6](https://people.mozilla.org/~jorendorff/es6-draft.html) and
+transpiled using [Babel](https://babeljs.io/) and
+[Browserify](http://browserify.org/) to CommonJS and AMD and ES6 module formats,
+as well as being suitable for use in browser environments.
 
 
 ## Installation
@@ -16,81 +25,58 @@ It's written in [ECMAScript 6](https://people.mozilla.org/~jorendorff/es6-draft.
 ```
 npm install make-plural
 ```
-or
+_or_
 ```
 bower install make-plural
 ```
-or
+_or_
 ```
 git clone https://github.com/eemeli/make-plural.js.git
 cd make-plural.js
 npm install
 make all
 ```
+_or_ download the latest release from
+[here](https://github.com/eemeli/make-plural.js/releases/latest)
 
 
-## Usage: Node
+## `plurals.js` - Precompiled plurals
+
+Contains an UMD module that can be included with node's `require` or AMD's
+`define`. In a browser environment, will populate a global object `plurals`.
+Said module contains 199 functions (one per
+[language](http://www.unicode.org/cldr/charts/27/supplemental/language_plural_rules.html)),
+each taking as a first parameter the value to be classified (either a number or
+a string), and as an optional second parameter, a boolean that if true, applies
+ordinal rather than cardinal rules.
+
+If your language isn't directly included, try removing any trailing parts that
+are separated from the stem by `-` or `_`.
+
+
+### Precompiled use: Node
 
 ```js
-> MakePlural = require('make-plural')
-{ [Function: MakePlural]
-  cardinals: true,
-  ordinals: false,
-  rules: { data: {}, rootPath: './data/' } }
+> plurals = require('make-plural/plurals')
+{ af: [Function],
+  ak: [Function],
+  am: [Function],
+    // snip 193 lines...
+  yo: [Function],
+  zh: [Function],
+  zu: [Function] }
 
-> sk = new MakePlural('sk')
-{ [Function]
-  obj: 
-   { lc: 'sk',
-     cardinals: true,
-     ordinals: false,
-     parser: { v0: 1, i: 1 },
-     tests: { obj: [Circular], ordinal: {}, cardinal: [Object] },
-     fn: [Circular] },
-  test: [Function],
-  toString: [Function] }
-
-> sk(1)
+> plurals.en(1)  // 1st param is the value
 'one'
 
-> sk(3.0)
-'few'
-
-> sk('1.0')
-'many'
-
-> sk('0')
+> plurals.en(2)
 'other'
 
-> console.log(sk.toString())
-function(n) {
-  var s = String(n).split('.'), i = s[0], v0 = !s[1];
-  return (i == 1 && v0 ) ? 'one'
-      : ((i >= 2 && i <= 4) && v0 ) ? 'few'
-      : (!v0   ) ? 'many'
-      : 'other';
-}
-
-> en = new MakePlural('en', {ordinals:1})
-{ [Function]
-  obj: 
-   { lc: 'en',
-     cardinals: true,
-     ordinals: 1,
-     parser: { n: 1, n10: 1, n100: 1, v0: 1 },
-     tests: { obj: [Circular], ordinal: [Object], cardinal: [Object] },
-     fn: [Circular] },
-  test: [Function],
-  toString: [Function] }
-
-> en(2)
-'other'
-
-> en(2, true)
+> plurals.en(2, true)  // 2nd param, if true-ish, is for ordinal rules
 'two'
 
-> console.log(en.toString())
-function(n, ord) {
+> console.log(plurals.en.toString())
+function (n, ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n,
       n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   if (ord) return (n10 == 1 && n100 != 11) ? 'one'
@@ -101,16 +87,15 @@ function(n, ord) {
 }
 ```
 
-
-## Usage: Web
+### Precompiled use: Web
 
 ```html
-<script src="path/to/make-plural.browser.js"></script>
+<script src="path/to/make-plural/plurals.min.js"></script>
 <script>
-  var ru = new MakePlural('ru', {ordinals:1});
-  console.log('1: ' + ru(1) + ', 3.0: ' + ru(3.0) +
-              ', "1.0": ' + ru('1.0') + ', "0": ' + ru('0'));
-  console.log(ru.toString());
+  var ru = plurals.ru
+  console.log('1: ' + plurals.ru(1) + ', 3.0: ' + plurals.ru(3.0) +
+              ', "1.0": ' + plurals.ru('1.0') + ', "0": ' + plurals.ru('0'));
+  console.log(plurals.ru.toString());
 </script>
 ```
 With outputs:
@@ -130,40 +115,15 @@ function(n, ord) {
 }
 ```
 
-The browser versions of MakePlural (`./make-plural.browser.js` and
-`./make-plural.min.js`) are compiled to include the default CLDR rules. If that
-doesn't work for you, you should either modify `src/browser.js` to fit your
-needs, or remove the `module.exports = ...` statement from `./make-plural.js`
-and use that, calling `MakePlural.load(cldr)` with your custom data.
-
-
-## Usage: CLI
-
-```sh
-$ ./bin/make-plural
-Locales verified ok:
-    af ak am ar asa ast az be bem bez bg bh bm bn bo br brx bs ca cgg chr ckb
-    cs cy da de dsb dv dz ee el en eo es et eu fa ff fi fil fo fr fur fy ga
-    gd gl gsw gu guw gv ha haw he hi hr hsb hu hy id ig ii in is it iu iw ja
-    jbo jgo ji jmc jv jw ka kab kaj kcg kde kea kk kkj kl km kn ko ks ksb ksh
-    ku kw ky lag lb lg lkt ln lo lt lv mas mg mgo mk ml mn mo mr ms mt my nah
-    naq nb nd ne nl nn nnh no nqo nr nso ny nyn om or os pa pap pl prg ps pt
-    pt-PT rm ro rof root ru rwk sah saq se seh ses sg sh shi si sk sl sma smi
-    smj smn sms sn so sq sr ss ssy st sv sw syr ta te teo th ti tig tk tl tn
-    to tr ts tzm ug uk ur uz ve vi vo vun wa wae wo xh xog yi yo zh zu
-
-$ ./bin/make-plural fr
-function fr(n, ord) {
-  if (ord) return (n == 1) ? 'one' : 'other';
-  return (n >= 0 && n < 2) ? 'one' : 'other';
-}
-
-$ ./bin/make-plural fr 1.5
-one
+Note that with `plurals.min.js`, the stringified function would be rendered as:
+```js
+function (e,t){var r=String(e).split("."),n=r[0],o=!r[1],c=n.slice(-1),
+i=n.slice(-2);return t?"other":o&&1==c&&11!=i?"one":o&&c>=2&&4>=c&&(12>i||i>14)?
+"few":o&&0==c||o&&c>=5&&9>=c||o&&i>=11&&14>=i?"many":"other"}
 ```
 
 
-## Methods
+## `make-plural.js` - Live compiler
 
 ### new MakePlural(lc, opt)
 Returns a function that takes an argument `n` and returns its plural category
@@ -202,6 +162,90 @@ By default, `MakePlural()` will call `MakePlural.load(cldr)` when required,
 using the rules included in `data/`, `plurals.json` and `ordinals.json`.
 
 
+### Live use: Node
+
+```js
+> MakePlural = require('make-plural/make-plural').load(
+... require('./data/plurals.json'), require('./data/ordinals.json'))
+{ [Function: MakePlural]
+  cardinals: true,
+  ordinals: false,
+  rules: 
+   { cardinal: 
+      { af: [Object],
+        ak: [Object],
+        am: [Object],
+        // snip 193 lines...
+        yo: [Object],
+        zh: [Object],
+        zu: [Object] },
+     ordinal: 
+      { af: [Object],
+        am: [Object],
+        ar: [Object],
+        // snip 78 lines...
+        vi: [Object],
+        zh: [Object],
+        zu: [Object] } } }
+
+> sk = new MakePlural('sk')  // Note: not including ordinals by default
+{ [Function]
+  obj: 
+   { lc: 'sk',
+     cardinals: true,
+     ordinals: false,
+     parser: { v0: 1, i: 1 },
+     tests: { obj: [Circular], ordinal: {}, cardinal: [Object] },
+     fn: [Circular] },
+  test: [Function],
+  toString: [Function] }
+
+> sk(1)
+'one'
+
+> sk(3.0)
+'few'
+
+> sk('1.0')
+'many'
+
+> sk('0')
+'other'
+
+> console.log(sk.toString())
+function(n) {
+  var s = String(n).split('.'), i = s[0], v0 = !s[1];
+  return (i == 1 && v0 ) ? 'one'
+      : ((i >= 2 && i <= 4) && v0 ) ? 'few'
+      : (!v0   ) ? 'many'
+      : 'other';
+}
+```
+
+`make-plural.js` may also be used in browser environments; see `test/index.html`
+for an example of its use.
+
+
+## CLI Usage
+
+```sh
+$ ./bin/make-plural fr
+function fr(n, ord) {
+  if (ord) return (n == 1) ? 'one' : 'other';
+  return (n >= 0 && n < 2) ? 'one' : 'other';
+}
+
+$ ./bin/make-plural fr 1.5
+one
+
+$ ./bin/make-plural fr 1.5 true
+other
+```
+
+Please see the source of `src/index.js` for more details.
+
+
+
 ## Dependencies
 
 Make-plural has no runtime dependencies. CLDR plural rule data is included in
@@ -214,11 +258,11 @@ For example, the following works when using together with
 [cldr-data](https://www.npmjs.org/package/cldr-data):
 ```js
 > cldr = require('cldr-data');
-> MakePlural = require('make-plural').load(
+> MakePlural = require('make-plural/make-plural').load(
     cldr('supplemental/plurals'),
     cldr('supplemental/ordinals')
   );
-> ar = new MakePlural('ar');
-> ar(3.14);
-'other'
+> en = new MakePlural('en');
+> en(3, true)
+'few'
 ```
