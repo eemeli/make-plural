@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+
+"use strict";
+
+/** A compiler for make-plural.js
+ *
+ *  Usage:
+ *    ./bin/make-plural                 // checks all locale rules
+ *    ./bin/make-plural [lc]            // prints the locale function for LC
+ *    ./bin/make-plural [lc] [n] [ord]  // prints the (ORD ? ordinal : plural) category for N in locale LC
+ */
+
+var MakePlural = require("../make-plural").load(require("../data/plurals.json"), require("../data/ordinals.json"));
+MakePlural.ordinals = true;
+
+var commonPlurals = ["function(n, ord) {\n  if (ord) return 'other';\n  return 'other';\n}", "function(n, ord) {\n  if (ord) return 'other';\n  return (n == 1) ? 'one' : 'other';\n}", "function(n, ord) {\n  if (ord) return 'other';\n  return ((n == 0\n          || n == 1)) ? 'one' : 'other';\n}", "function(n, ord) {\n  var s = String(n).split('.'), v0 = !s[1];\n  if (ord) return 'other';\n  return (n == 1 && v0) ? 'one' : 'other';\n}"];
+
+// UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
+var umd = {
+
+    pre: "\n(function (root, plurals) {\n  if (typeof define === 'function' && define.amd) {\n    define(plurals);\n  } else if (typeof exports === 'object') {\n    module.exports = plurals;\n  } else {\n    root.plurals = plurals;\n  }\n}(this, {\n",
+
+    post: "\n}));"
+
+};
+
+function printCompletePluralModule() {
+    var languages = [];
+    for (var _lc in MakePlural.rules.cardinal) {
+        (function (_lc) {
+            var key = /^[A-Z_$][0-9A-Z_$]*$/i.test(_lc) ? _lc : JSON.stringify(_lc),
+                mp = new MakePlural(_lc);
+            var fn = mp.test().toString();
+            commonPlurals.forEach(function (p, i) {
+                if (fn === p) fn = "_cp[" + i + "]";
+            });
+            languages.push(key + ": " + fn);
+        })(_lc);
+    }
+
+    console.log("var _cp = [");
+    console.log(commonPlurals.join(",\n"));
+    console.log("];");
+
+    console.log(umd.pre);
+    console.log(languages.join(",\n\n"));
+    console.log(umd.post);
+}
+
+function printOnePluralFunction(lc) {
+    var mp = new MakePlural(lc);
+    console.log(mp.test().toString(lc));
+}
+
+function printPluralCategory(lc, n, ord) {
+    var mp = new MakePlural(lc);
+    console.log(mp.test()(n, ord));
+}
+
+var lc = process.argv[2] || null,
+    n = process.argv[3] || null,
+    ord = process.argv[4] || false;
+
+if (lc && n !== null) {
+    printPluralCategory(lc, n, ord);
+} else if (lc) {
+    printOnePluralFunction(lc);
+} else {
+    printCompletePluralModule();
+}
+
