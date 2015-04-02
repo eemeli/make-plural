@@ -38,7 +38,7 @@
     "babel-eslint": "*",
     "babelify": "^5.0.4",
     "browserify": "^9.0.3",
-    "cldr-core": "unicode-cldr/cldr-core#27.0.0",
+    "cldr-core": "^27.0.1",
     "eslint": "*",
     "expect.js": "^0.3.1",
     "http-server": "^0.7.5",
