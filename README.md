@@ -125,6 +125,18 @@ i=n.slice(-2);return t?"other":o&&1==c&&11!=i?"one":o&&c>=2&&4>=c&&(12>i||i>14)?
 
 ## `make-plural.js` - Live compiler
 
+### MakePlural.load(cldr, ...)
+Loads CLDR rules from one or more `cldr` variables, each of which must be an
+object formatted like
+[this](https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json).
+
+No plural data is included by default, so you'll need to call this at least
+once, or otherwise fill the `MakePlural.rules` object.
+
+The default CLDR rules are included in make-plural, and may be loaded as seen
+in the examples below.
+
+
 ### new MakePlural(lc, opt)
 Returns a function that takes an argument `n` and returns its plural category
 for the given locale `lc`.
@@ -147,26 +159,13 @@ If `lc` or the `opt` values are not set, the values are taken from
 `MakePlural.ordinals` (default `false`).
 
 
-### MakePlural.load(cldr, ...)
-Loads CLDR rules from one or more `cldr` variables, each of which may be an
-object or the path to a JSON file formatted like
-[this](https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json).
-The stored rules are kept in `MakePlural.rules.cardinal` and
-`MakePlural.rules.ordinal`, which may also be directly accessed.
-
-If called within a context where `request()` isn't available and `cldr` is a
-string, it's taken as the URL of the JSON file that'll be fetched and parsed
-using a synchronous `XMLHttpRequest`.
-
-By default, `MakePlural()` will call `MakePlural.load(cldr)` when required,
-using the rules included in `data/`, `plurals.json` and `ordinals.json`.
-
 
 ### Live use: Node
 
 ```js
 > MakePlural = require('make-plural/make-plural').load(
-... require('./data/plurals.json'), require('./data/ordinals.json'))
+... require('make-plural/data/plurals.json'),
+... require('make-plural/data/ordinals.json'))
 { [Function: MakePlural]
   cardinals: true,
   ordinals: false,
@@ -229,6 +228,8 @@ for an example of its use.
 ## CLI Usage
 
 ```sh
+$ ./bin/make-plural > plurals.js
+
 $ ./bin/make-plural fr
 function fr(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
