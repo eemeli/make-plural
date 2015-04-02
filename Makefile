@@ -84,11 +84,10 @@ release: all release-check-init release-check-branch release-check-head
 	@read -p " [y/N] " -n 1 -r -s; \
 		if [[ $${REPLY} =~ ^[Yy]$$ ]]; then echo "$${REPLY}\r$(CHK)\n"; \
 		else echo "\r$(ERR)\n"; exit 1; fi
-	git checkout -b release
+	git checkout $(GH_HEAD)
 	git add -f $(DATA) $(COMPILED)
 	git commit --message "Packaging data & transpiled modules for release"
 	npm version $(VERSION) -m "Version %s"
 	git push --tags
 	npm publish --tag $(NPM_TAG)
 	git checkout $(GH_BRANCH)
-	git branch -D release
