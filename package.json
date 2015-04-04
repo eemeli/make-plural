@@ -62,6 +62,7 @@
       ],
       "no-multi-spaces": 0,
       "no-new-func": 0,
+      "no-underscore-dangle": 0,
       "quotes": [
         1,
         "single",

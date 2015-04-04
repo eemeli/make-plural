@@ -129,7 +129,7 @@ export default class MakePlural {
         this.parser = new Parser();
         this.tests = new Tests(this);
         this.fn = this.buildFunction();
-        this.fn.obj = this;
+        this.fn._obj = this;
         this.fn.test = function() { return this.tests.testAll() && this.fn; }.bind(this);
         this.fn.toString = this.fnToString.bind(this);
         return this.fn;

@@ -189,7 +189,7 @@ If `lc` or the `opt` values are not set, the values are taken from
 
 > sk = new MakePlural('sk')  // Note: not including ordinals by default
 { [Function]
-  obj: 
+  _obj:
    { lc: 'sk',
      cardinals: true,
      ordinals: false,
