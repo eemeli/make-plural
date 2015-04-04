@@ -70,5 +70,8 @@
       ],
       "strict": 0
     }
+  },
+  "optionalDependencies": {
+    "minimist": "^1.1.1"
   }
 }

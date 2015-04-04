@@ -6,12 +6,17 @@
  *    ./bin/make-plural [lc] [n] [ord]  // prints the (ORD ? ordinal : plural) category for N in locale LC
  */
 
-var MakePlural = require('../make-plural').load(
-    require('../data/plurals.json'),
-    require('../data/ordinals.json')
-);
+var argv = require('minimist')(process.argv.slice(2), {
+        default: { locale: null, value: null, ordinal: null },
+        alias: { locale: 'l', value: 'v', ordinal: 'o' },
+        string: [ 'locale', 'value' ],
+        boolean: [ 'ordinal' ]
+    }),
+    MakePlural = require('../make-plural').load(
+        require('../data/plurals.json'),
+        require('../data/ordinals.json')
+    );
 MakePlural.ordinals = true;
-
 
 const commonPlurals = [
 
@@ -81,26 +86,19 @@ function printCompletePluralModule() {
 }
 
 
-function printOnePluralFunction(lc) {
-    const mp = new MakePlural(lc);
-    console.log(mp.test().toString(lc));
-}
 
-
-function printPluralCategory(lc, n, ord) {
-    const mp = new MakePlural(lc);
-    console.log(mp.test()(n, ord));
-}
-
-
-const lc = process.argv[2] || null,
-      n = process.argv[3] || null,
-      ord = process.argv[4] || false;
-
-if (lc && n !== null) {
-    printPluralCategory(lc, n, ord);
-} else if (lc) {
-    printOnePluralFunction(lc);
+argv._.forEach(a => {
+    if (argv.locale === null) argv.locale = a;
+    else if (argv.value === null) argv.value = a;
+    else if (argv.ordinal === null) argv.ordinal = !!a;
+});
+if (argv.locale) {
+    const mp = new MakePlural(argv.locale).test();
+    if (argv.value !== null) {
+        console.log(mp(argv.value, argv.ordinal));
+    } else {
+        console.log(mp.toString(argv.locale));
+    }
 } else {
     printCompletePluralModule();
 }

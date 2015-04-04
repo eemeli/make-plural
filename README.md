@@ -238,10 +238,10 @@ function fr(n, ord) {
   return (n >= 0 && n < 2) ? 'one' : 'other';
 }
 
-$ ./bin/make-plural fr 1.5
+$ ./bin/make-plural --locale fr --value 1.5
 one
 
-$ ./bin/make-plural fr 1.5 true
+$ ./bin/make-plural 1.5 -l fr --ordinal
 other
 ```
 
@@ -251,10 +251,14 @@ Please see the source of `src/index.js` for more details.
 
 ## Dependencies
 
-Make-plural has no runtime dependencies. CLDR plural rule data is included in
-JSON format; make-plural supports the
+Make-plural has no required runtime dependencies. CLDR plural rule data is
+included in JSON format; make-plural supports the
 [LDML Language Plural Rules](http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules)
 as used in CLDR release 24 and later.
+
+The CLI binary `bin/make-plural` does use
+[minimist](https://www.npmjs.com/package/minimist) as an argument parser, but
+that is not required for any other use.
 
 Using `MakePlural.load()`, you may make use of external sources of CLDR data.
 For example, the following works when using together with
