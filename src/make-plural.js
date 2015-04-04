@@ -126,10 +126,12 @@ export default class MakePlural {
         this.cardinals = opt.cardinals || MakePlural.cardinals;
         this.ordinals = opt.ordinals || MakePlural.ordinals;
         if (!this.ordinals && !this.cardinals) throw new Error('At least one type of plural is required');
+        this.categories = { cardinal: null, ordinal: null };
         this.parser = new Parser();
         this.tests = new Tests(this);
         this.fn = this.buildFunction();
         this.fn._obj = this;
+        this.fn.categories = this.categories;
         this.fn.test = function() { return this.tests.testAll() && this.fn; }.bind(this);
         this.fn.toString = this.fnToString.bind(this);
         return this.fn;
@@ -152,6 +154,7 @@ export default class MakePlural {
         const rules = MakePlural.rules[type][this.lc];
         if (!rules) {
             if (req) throw new Error(`Locale "${this.lc}" ${type} rules not found`);
+            this.categories[type] = ['other'];
             return "'other'";
         }
         for (let r in rules) {
@@ -160,6 +163,7 @@ export default class MakePlural {
             if (cond) cases.push([ this.parser.parse(cond), cat ]);
             this.tests.add(type, cat, examples);
         }
+        this.categories[type] = cases.map(c => c[1]).concat('other');
         if (cases.length === 1) {
            return `(${cases[0][0]}) ? '${cases[0][1]}' : 'other'`;
         } else {

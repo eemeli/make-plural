@@ -193,9 +193,11 @@ If `lc` or the `opt` values are not set, the values are taken from
    { lc: 'sk',
      cardinals: true,
      ordinals: false,
+     categories: { cardinal: [Object], ordinal: null },
      parser: { v0: 1, i: 1 },
      tests: { obj: [Circular], ordinal: {}, cardinal: [Object] },
      fn: [Circular] },
+  categories: { cardinal: [ 'one', 'few', 'many', 'other' ], ordinal: null },
   test: [Function],
   toString: [Function] }
 
