@@ -13,7 +13,8 @@ NPM_TAG = latest
 BIN = ./node_modules/.bin
 CLDR = node_modules/cldr-core
 DATA = data/plurals.json data/ordinals.json
-COMPILED = bin/make-plural plurals.js plurals.min.js make-plural.js make-plural.min.js
+MODULES = make-plural.js plurals.js pluralCategories.js
+COMPILED = bin/make-plural $(MODULES) $(MODULES:.js=.min.js)
 
 .PHONY: all clean lint test test-browser release-check-init release-check-branch release-check-head release
 
@@ -32,6 +33,9 @@ bin/make-plural: src/index.js | bin
 
 plurals.js: bin/make-plural make-plural.js $(DATA)
 	./$< > $@
+
+pluralCategories.js: bin/make-plural make-plural.js $(DATA)
+	./$< --categories > $@
 
 %.min.js: %.js
 	$(BIN)/uglifyjs $< --compress --mangle -o $@

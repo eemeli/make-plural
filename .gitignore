@@ -2,5 +2,6 @@
 /data
 /make-plural*.js
 /plurals*.js
+/pluralCategories*.js
 node_modules
 .*

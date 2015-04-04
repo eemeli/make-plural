@@ -40,18 +40,22 @@ _or_ download the latest release from
 [here](https://github.com/eemeli/make-plural.js/releases/latest)
 
 
-## `plurals.js` - Precompiled plurals
+## Precompiled plurals
 
-Contains an UMD module that can be included with node's `require` or AMD's
-`define`. In a browser environment, will populate a global object `plurals`.
-Said module contains 199 functions (one per
+`plurals.js` contains an UMD module that can be included with node's `require`
+or AMD's `define`. In a browser environment, it will populate a global object
+`plurals`.  Said module contains 199 functions (one per
 [language](http://www.unicode.org/cldr/charts/27/supplemental/language_plural_rules.html)),
 each taking as a first parameter the value to be classified (either a number or
 a string), and as an optional second parameter, a boolean that if true, applies
 ordinal rather than cardinal rules.
 
-If your language isn't directly included, try removing any trailing parts that
-are separated from the stem by `-` or `_`.
+`pluralCategories.js` has a similar structure to `plurals.js`, but contains an
+array of the pluralization categories the cardinal and ordinal rules each
+language's pluralization function may output.
+
+If your language isn't directly included in either of the above, try removing
+any trailing parts that are separated from the stem by `-` or `_`.
 
 
 ### Precompiled use: Node
@@ -61,7 +65,7 @@ are separated from the stem by `-` or `_`.
 { af: [Function],
   ak: [Function],
   am: [Function],
-    // snip 193 lines...
+  // snip 193 lines...
   yo: [Function],
   zh: [Function],
   zu: [Function] }
@@ -85,6 +89,17 @@ function (n, ord) {
       : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
 }
+
+> pluralCategories = require('make-plural/pluralCategories')
+{ af: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
+  ak: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
+  am: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
+  ar:
+   { cardinal: [ 'zero', 'one', 'two', 'few', 'many', 'other' ],
+     ordinal: [ 'other' ] },
+  // snip 255 lines...
+  zh: { cardinal: [ 'other' ], ordinal: [ 'other' ] },
+  zu: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] } }
 ```
 
 ### Precompiled use: Web
@@ -123,7 +138,7 @@ i=n.slice(-2);return t?"other":o&&1==c&&11!=i?"one":o&&c>=2&&4>=c&&(12>i||i>14)?
 ```
 
 
-## `make-plural.js` - Live compiler
+## Live compiler: `make-plural.js`
 
 ### MakePlural.load(cldr, ...)
 Loads CLDR rules from one or more `cldr` variables, each of which must be an
@@ -193,11 +208,11 @@ If `lc` or the `opt` values are not set, the values are taken from
    { lc: 'sk',
      cardinals: true,
      ordinals: false,
-     categories: { cardinal: [Object], ordinal: null },
+     categories: { cardinal: [Object], ordinal: [] },
      parser: { v0: 1, i: 1 },
      tests: { obj: [Circular], ordinal: {}, cardinal: [Object] },
      fn: [Circular] },
-  categories: { cardinal: [ 'one', 'few', 'many', 'other' ], ordinal: null },
+  categories: { cardinal: [ 'one', 'few', 'many', 'other' ], ordinal: [] },
   test: [Function],
   toString: [Function] }
 
