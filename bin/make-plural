@@ -1,0 +1,96 @@
+#!/usr/bin/env node
+
+"use strict";
+
+/** A compiler for make-plural.js
+ *
+ *  Usage:
+ *    ./bin/make-plural                 // checks all locale rules
+ *    ./bin/make-plural [lc]            // prints the locale function for LC
+ *    ./bin/make-plural [lc] [n] [ord]  // prints the (ORD ? ordinal : plural) category for N in locale LC
+ */
+
+var argv = require("minimist")(process.argv.slice(2), {
+    "default": { locale: null, value: null, ordinal: null, cardinal: null, categories: false },
+    alias: { locale: "l", value: "v", ordinal: "o", cardinal: "c" },
+    string: ["locale", "value"],
+    boolean: ["categories"]
+}),
+    MakePlural = require("../make-plural").load(require("../data/plurals.json"), require("../data/ordinals.json"));
+
+var commonPlurals = ["function(n, ord) {\n  if (ord) return 'other';\n  return 'other';\n}", "function(n, ord) {\n  if (ord) return 'other';\n  return (n == 1) ? 'one' : 'other';\n}", "function(n, ord) {\n  if (ord) return 'other';\n  return ((n == 0\n          || n == 1)) ? 'one' : 'other';\n}", "function(n, ord) {\n  var s = String(n).split('.'), v0 = !s[1];\n  if (ord) return 'other';\n  return (n == 1 && v0) ? 'one' : 'other';\n}"];
+
+var commonCategories = ["{cardinal:[\"other\"],ordinal:[\"other\"]}", "{cardinal:[\"one\",\"other\"],ordinal:[\"other\"]}", "{cardinal:[\"one\",\"other\"],ordinal:[\"one\",\"other\"]}", "{cardinal:[\"one\",\"two\",\"other\"],ordinal:[\"other\"]}"];
+
+// UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
+function umd(global, value) {
+    return "\n(function (root, " + global + ") {\n  if (typeof define === 'function' && define.amd) {\n    define(" + global + ");\n  } else if (typeof exports === 'object') {\n    module.exports = " + global + ";\n  } else {\n    root." + global + " = " + global + ";\n  }\n}(this, {\n" + value + "\n}));";
+}
+
+function mapForEachLanguage(cb) {
+    var languages = [];
+    for (var lc in MakePlural.rules.cardinal) {
+        var key = /^[A-Z_$][0-9A-Z_$]*$/i.test(lc) ? lc : JSON.stringify(lc),
+            mp = new MakePlural(lc).test();
+        languages.push(key + ": " + cb(mp));
+    }
+    return languages;
+}
+
+function printPluralsModule() {
+    var plurals = mapForEachLanguage(function (mp) {
+        var fn = mp.toString();
+        commonPlurals.forEach(function (p, i) {
+            if (fn === p) fn = "_cp[" + i + "]";
+        });
+        return fn;
+    });
+    console.log("var _cp = [\n" + commonPlurals.join(",\n") + "\n];");
+    console.log(umd("plurals", plurals.join(",\n\n")));
+}
+
+function printCategoriesModule() {
+    var categories = mapForEachLanguage(function (mp) {
+        var cat = JSON.stringify(mp.categories).replace(/"(\w+)":/g, "$1:");
+        commonCategories.forEach(function (c, i) {
+            if (cat === c) cat = "_cc[" + i + "]";
+        });
+        return cat;
+    });
+    console.log("var _cc = [\n  " + commonCategories.join(",\n  ") + "\n];");
+    console.log(umd("pluralCategories", categories.join(",\n")));
+}
+
+function truthy(v) {
+    if (v === "0" || v === "false") {
+        return false;
+    }return !!v;
+}
+
+argv._.forEach(function (a) {
+    if (argv.locale === null) argv.locale = a;else if (argv.value === null) argv.value = a;else if (argv.ordinal === null) argv.ordinal = a;
+});
+
+MakePlural.cardinals = argv.cardinal !== null ? truthy(argv.cardinal) : true;
+MakePlural.ordinals = argv.ordinal !== null ? truthy(argv.ordinal) : true;
+
+if (argv.locale) {
+    var mp = new MakePlural(argv.locale).test();
+    if (argv.categories) {
+        var cats = mp.categories.cardinal.concat(mp.categories.ordinal).filter(function (v, i, self) {
+            return self.indexOf(v) === i;
+        });
+        console.log(cats.join(", "));
+    } else if (argv.value !== null) {
+        console.log(mp(argv.value, truthy(argv.ordinal)));
+    } else {
+        console.log(mp.toString(argv.locale));
+    }
+} else {
+    if (argv.categories) {
+        printCategoriesModule();
+    } else {
+        printPluralsModule();
+    }
+}
+
