@@ -126,7 +126,7 @@ export default class MakePlural {
         this.cardinals = opt.cardinals || MakePlural.cardinals;
         this.ordinals = opt.ordinals || MakePlural.ordinals;
         if (!this.ordinals && !this.cardinals) throw new Error('At least one type of plural is required');
-        this.categories = { cardinal: null, ordinal: null };
+        this.categories = { cardinal: [], ordinal: [] };
         this.parser = new Parser();
         this.tests = new Tests(this);
         this.fn = this.buildFunction();

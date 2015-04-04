@@ -7,16 +7,15 @@
  */
 
 var argv = require('minimist')(process.argv.slice(2), {
-        default: { locale: null, value: null, ordinal: null },
-        alias: { locale: 'l', value: 'v', ordinal: 'o' },
+        default: { locale: null, value: null, ordinal: null, cardinal: null, categories: false },
+        alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c' },
         string: [ 'locale', 'value' ],
-        boolean: [ 'ordinal' ]
+        boolean: [ 'categories' ]
     }),
     MakePlural = require('../make-plural').load(
         require('../data/plurals.json'),
         require('../data/ordinals.json')
     );
-MakePlural.ordinals = true;
 
 const commonPlurals = [
 
@@ -44,61 +43,92 @@ const commonPlurals = [
 
 ];
 
+const commonCategories = [
+    '{cardinal:["other"],ordinal:["other"]}',
+    '{cardinal:["one","other"],ordinal:["other"]}',
+    '{cardinal:["one","other"],ordinal:["one","other"]}',
+    '{cardinal:["one","two","other"],ordinal:["other"]}'
+];
+
 
 // UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
-const umd = {
-    
-pre: `
-(function (root, plurals) {
+function umd(global, value) {
+    return `
+(function (root, ${global}) {
   if (typeof define === 'function' && define.amd) {
-    define(plurals);
+    define(${global});
   } else if (typeof exports === 'object') {
-    module.exports = plurals;
+    module.exports = ${global};
   } else {
-    root.plurals = plurals;
+    root.${global} = ${global};
   }
 }(this, {
-`,
-
-post: `
+${value}
 }));`
-
-};
-
-
-function printCompletePluralModule() {
-    let languages = [];
-    for (let lc in MakePlural.rules.cardinal) {
-        const key = /^[A-Z_$][0-9A-Z_$]*$/i.test(lc) ? lc : JSON.stringify(lc),
-              mp = new MakePlural(lc);
-        let fn = mp.test().toString();
-        commonPlurals.forEach(function(p, i) { if (fn === p) fn = `_cp[${i}]`; });
-        languages.push(key + ': ' + fn);
-    }
-
-    console.log('var _cp = [');
-    console.log(commonPlurals.join(',\n'));
-    console.log('];')
-
-    console.log(umd.pre);
-    console.log(languages.join(',\n\n'));
-    console.log(umd.post);
 }
 
 
+function mapForEachLanguage(cb) {
+    let languages = [];
+    for (let lc in MakePlural.rules.cardinal) {
+        const key = /^[A-Z_$][0-9A-Z_$]*$/i.test(lc) ? lc : JSON.stringify(lc),
+              mp = new MakePlural(lc).test();
+        languages.push(key + ': ' + cb(mp));
+    }
+    return languages;
+}
+
+function printPluralsModule() {
+    const plurals = mapForEachLanguage(mp => {
+        let fn = mp.toString();
+        commonPlurals.forEach(function(p, i) { if (fn === p) fn = `_cp[${i}]`; });
+        return fn;
+    });
+    console.log('var _cp = [\n' + commonPlurals.join(',\n') + '\n];')
+    console.log(umd('plurals', plurals.join(',\n\n')));
+}
+
+function printCategoriesModule() {
+    const categories = mapForEachLanguage(mp => {
+        let cat = JSON.stringify(mp.categories).replace(/"(\w+)":/g, '$1:');
+        commonCategories.forEach(function(c, i) { if (cat === c) cat = `_cc[${i}]`; });
+        return cat;
+    });
+    console.log('var _cc = [\n  ' + commonCategories.join(',\n  ') + '\n];')
+    console.log(umd('pluralCategories', categories.join(',\n')));
+}
+
+
+function truthy(v) {
+    if (v === '0' || v === 'false') return false;
+    return !!v;
+}
 
 argv._.forEach(a => {
     if (argv.locale === null) argv.locale = a;
     else if (argv.value === null) argv.value = a;
-    else if (argv.ordinal === null) argv.ordinal = !!a;
+    else if (argv.ordinal === null) argv.ordinal = a;
 });
+
+MakePlural.cardinals = (argv.cardinal !== null) ? truthy(argv.cardinal) : true;
+MakePlural.ordinals = (argv.ordinal !== null) ? truthy(argv.ordinal) : true;
+
 if (argv.locale) {
     const mp = new MakePlural(argv.locale).test();
-    if (argv.value !== null) {
-        console.log(mp(argv.value, argv.ordinal));
+    if (argv.categories) {
+        const cats = mp.categories.cardinal
+                         .concat(mp.categories.ordinal)
+                         .filter((v, i, self) => self.indexOf(v) === i);
+        console.log(cats.join(', '));
+    } else if (argv.value !== null) {
+        console.log(mp(argv.value, truthy(argv.ordinal)));
     } else {
         console.log(mp.toString(argv.locale));
     }
 } else {
-    printCompletePluralModule();
+    if (argv.categories) {
+        printCategoriesModule();
+    } else {
+        printPluralsModule();
+    }
 }
