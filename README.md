@@ -152,7 +152,7 @@ The default CLDR rules are included in make-plural, and may be loaded as seen
 in the examples below.
 
 
-### new MakePlural(lc, opt)
+### new MakePlural(lc, { cardinals, ordinals })
 Returns a function that takes an argument `n` and returns its plural category
 for the given locale `lc`.
 
@@ -160,19 +160,18 @@ The returned function has an overloaded `toString(name)` method that may be
 used to generate a clean string representation of the function, with an
 optional name `name`.
 
-The optional `opt` parameter may contain the following boolean members:
+The optional second parameter may contain the following boolean members:
 * `cardinals` — if true, rules for cardinal values (1 day, 2 days, etc.) are 
   included
 * `ordinals` — if true, rules for ordinal values (1st, 2nd, etc.) are included
 
-If both `opt.ordinals` and `opt.cardinals` are true, the returned function takes
-a second parameter `ord`. Then, if `ord` is true, the function will return the
+If both `cardinals` and `ordinals` are true, the returned function takes a
+second parameter `ord`. Then, if `ord` is true, the function will return the
 ordinal rather than cardinal category applicable to `n` in locale `lc`.
 
-If `lc` or the `opt` values are not set, the values are taken from
-`MakePlural.lc` (no default value), `MakePlural.cardinals` (default `true`) and
-`MakePlural.ordinals` (default `false`).
-
+If the second parameter is undefined, the values are taken from
+`MakePlural.cardinals` (default `true`) and `MakePlural.ordinals` (default
+`false`).
 
 
 ### Live use: Node

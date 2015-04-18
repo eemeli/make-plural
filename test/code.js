@@ -47,7 +47,7 @@ describe('MakePlural compiler', function(){
             expect(mp(1)).to.be('one');
         });
         it('should handle local options', function(){
-            var mp = new MakePlural({ lc: 'en', ordinals: true });
+            var mp = new MakePlural('en', { ordinals: true });
             expect(mp(2, true)).to.be('two');
         });
         it('should handle global options', function(){

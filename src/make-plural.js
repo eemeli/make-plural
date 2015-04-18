@@ -117,19 +117,13 @@ class Tests {
 }
 
 export default class MakePlural {
-    constructor(lc, opt = {}) {
-        if (typeof lc == 'object') {
-            opt = lc;
-            lc = opt.lc;
-        }
-        this.lc = lc || MakePlural.lc;
-        this.cardinals = opt.cardinals || MakePlural.cardinals;
-        this.ordinals = opt.ordinals || MakePlural.ordinals;
-        if (!this.ordinals && !this.cardinals) throw new Error('At least one type of plural is required');
+    constructor(lc, { cardinals, ordinals } = MakePlural) {
+        if (!cardinals && !ordinals) throw new Error('At least one type of plural is required');
+        this.lc = lc;
         this.categories = { cardinal: [], ordinal: [] };
         this.parser = new Parser();
         this.tests = new Tests(this);
-        this.fn = this.buildFunction();
+        this.fn = this.buildFunction(cardinals, ordinals);
         this.fn._obj = this;
         this.fn.categories = this.categories;
         this.fn.test = function() { return this.tests.testAll() && this.fn; }.bind(this);
@@ -171,14 +165,14 @@ export default class MakePlural {
         }
     }
 
-    buildFunction() {
+    buildFunction(cardinals, ordinals) {
         const
             compile = c => c ? ((c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c)) : '',
             fold = { vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g, '$1$2\n      '),
                      cond: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2') },
             cond = [
-                     this.ordinals && [ 'ordinal', !this.cardinals ],
-                     this.cardinals && [ 'cardinal', true ]
+                     ordinals && [ 'ordinal', !cardinals ],
+                     cardinals && [ 'cardinal', true ]
                    ].map(compile)
                     .map(fold.cond),
             body = [
@@ -187,7 +181,7 @@ export default class MakePlural {
                    ].join('\n')
                     .replace(/\s+$/gm, '')
                     .replace(/^[\s;]*[\r\n]+/gm, ''),
-            args = this.ordinals && this.cardinals ? 'n, ord' : 'n';
+            args = ordinals && cardinals ? 'n, ord' : 'n';
         return new Function(args, body);
     }
 
