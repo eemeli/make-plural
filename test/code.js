@@ -51,11 +51,9 @@ describe('MakePlural compiler', function(){
             expect(mp(2, true)).to.be('two');
         });
         it('should handle global options', function(){
-            MakePlural.lc = 'en'
             MakePlural.ordinals = true;
-            var mp = new MakePlural();
+            var mp = new MakePlural('en');
             expect(mp(2, true)).to.be('two');
-            delete MakePlural.lc;
             MakePlural.ordinals = false;
         });
     });
