@@ -34,15 +34,15 @@
     "test": "make test"
   },
   "devDependencies": {
-    "babel": "^4.7.9",
-    "babel-eslint": "*",
-    "babelify": "^5.0.4",
-    "browserify": "^9.0.3",
+    "babel": "^5.1.11",
+    "babel-eslint": "^3.0.1",
+    "babelify": "^6.0.2",
+    "browserify": "^9.0.8",
     "cldr-core": "^27.0.1",
-    "eslint": "*",
+    "eslint": "^0.19.0",
     "expect.js": "^0.3.1",
-    "http-server": "^0.7.5",
-    "mocha": "^2.2.1",
+    "http-server": "^0.8.0",
+    "mocha": "^2.2.4",
     "uglify-js": "^2.4.19"
   },
   "eslintConfig": {
