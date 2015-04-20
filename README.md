@@ -1,23 +1,26 @@
 [![ISC License](https://img.shields.io/npm/l/make-plural.svg)](http://en.wikipedia.org/wiki/ISC_license)
 [![Build Status](https://travis-ci.org/eemeli/make-plural.js.svg?branch=master)](https://travis-ci.org/eemeli/make-plural.js)
 
+
 make-plural
 ===========
 
-Make-plural is a JavaScript module that translates
-[Unicode CLDR](http://cldr.unicode.org/)
-[pluralization rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html)
-to JavaScript functions. It includes both a live parser (`make-plural.js`) as
-well as the generated output for the latest edition of the CLDR (`plurals.js`);
-the latter is just over 2kB in size when minified & gzipped, and covers 199
-languages, so it's probably what you want unless you really know what you're
-doing.
+Make-plural is a JavaScript module that translates [Unicode CLDR] pluralization
+[rules] to JavaScript functions. It includes both a live parser
+(`make-plural.js`) as well as the generated output for the latest edition of the
+CLDR (`plurals.js`); the latter is just over 2kB in size when minified &
+gzipped and covers 199 languages, so it's probably what you want unless you
+really know what you're doing.
 
-Make-plural is written in
-[ECMAScript 6](https://people.mozilla.org/~jorendorff/es6-draft.html) and
-transpiled using [Babel](https://babeljs.io/) and
-[Browserify](http://browserify.org/) to CommonJS and AMD and ES6 module formats,
-as well as being suitable for use in browser environments.
+Make-plural is written in [ECMAScript 6] and transpiled using [Babel] and
+[Browserify] to CommonJS and AMD and ES6 module formats, as well as being
+suitable for use in browser environments.
+
+[Unicode CLDR]: http://cldr.unicode.org/
+[rules]: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
+[ECMAScript 6]: https://people.mozilla.org/~jorendorff/es6-draft.html
+[Babel]: https://babeljs.io/
+[Browserify]: http://browserify.org/
 
 
 ## Installation
@@ -44,8 +47,7 @@ _or_ download the latest release from
 
 `plurals.js` contains an UMD module that can be included with node's `require`
 or AMD's `define`. In a browser environment, it will populate a global object
-`plurals`.  Said module contains 199 functions (one per
-[language](http://www.unicode.org/cldr/charts/27/supplemental/language_plural_rules.html)),
+`plurals`.  Said module contains 199 functions (one per [language][rules]),
 each taking as a first parameter the value to be classified (either a number or
 a string), and as an optional second parameter, a boolean that if true, applies
 ordinal rather than cardinal rules.
@@ -105,7 +107,7 @@ function (n, ord) {
 ### Precompiled use: Web
 
 ```html
-<script src="path/to/make-plural/plurals.min.js"></script>
+<script src="path/to/make-plural/plurals.js"></script>
 <script>
   var ru = plurals.ru
   console.log('1: ' + plurals.ru(1) + ', 3.0: ' + plurals.ru(3.0) +
@@ -142,14 +144,15 @@ i=n.slice(-2);return t?"other":o&&1==c&&11!=i?"one":o&&c>=2&&4>=c&&(12>i||i>14)?
 
 ### MakePlural.load(cldr, ...)
 Loads CLDR rules from one or more `cldr` variables, each of which must be an
-object formatted like
-[this](https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json).
+object formatted like [this][json].
 
 No plural data is included by default, so you'll need to call this at least
 once, or otherwise fill the `MakePlural.rules` object.
 
 The default CLDR rules are included in make-plural, and may be loaded as seen
 in the examples below.
+
+[json]: https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json
 
 
 ### new MakePlural(lc, { cardinals, ordinals })
@@ -266,17 +269,14 @@ Please see the source of `src/index.js` for more details.
 ## Dependencies
 
 Make-plural has no required runtime dependencies. CLDR plural rule data is
-included in JSON format; make-plural supports the
-[LDML Language Plural Rules](http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules)
+included in JSON format; make-plural supports the [LDML Language Plural Rules]
 as used in CLDR release 24 and later.
 
-The CLI binary `bin/make-plural` does use
-[minimist](https://www.npmjs.com/package/minimist) as an argument parser, but
+The CLI binary `bin/make-plural` does use [minimist] as an argument parser, but
 that is not required for any other use.
 
 Using `MakePlural.load()`, you may make use of external sources of CLDR data.
-For example, the following works when using together with
-[cldr-data](https://www.npmjs.org/package/cldr-data):
+For example, the following works when using together with [cldr-data]:
 ```js
 > cldr = require('cldr-data');
 > MakePlural = require('make-plural/make-plural').load(
@@ -287,3 +287,7 @@ For example, the following works when using together with
 > en(3, true)
 'few'
 ```
+
+[LDML Language Plural Rules]: http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
+[minimist]: https://www.npmjs.com/package/minimist
+[cldr-data]: https://www.npmjs.org/package/cldr-data
