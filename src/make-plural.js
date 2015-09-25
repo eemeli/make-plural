@@ -178,9 +178,9 @@ export default class MakePlural {
             body = [
                      fold.vars(this.parser.vars()),
                      ...cond
-                   ].join('\n')
-                    .replace(/\s+$/gm, '')
-                    .replace(/^[\s;]*[\r\n]+/gm, ''),
+                   ].filter(line => !/^[\s;]*$/.test(line))
+                    .map(line => line.replace(/\s+$/gm, ''))
+                    .join('\n'),
             args = ordinals && cardinals ? 'n, ord' : 'n';
         return new Function(args, body);
     }
