@@ -68,11 +68,12 @@ ${value}
 }
 
 
-function mapForEachLanguage(cb) {
+function mapForEachLanguage(cb, opt) {
+    const style = opt && !opt.cardinals ? 'ordinal' : 'cardinal';
     let languages = [];
-    for (let lc in MakePlural.rules.cardinal) {
+    for (let lc in MakePlural.rules[style]) {
         const key = /^[A-Z_$][0-9A-Z_$]*$/i.test(lc) ? lc : JSON.stringify(lc),
-              mp = new MakePlural(lc).test();
+              mp = new MakePlural(lc, opt).test();
         languages.push(key + ': ' + cb(mp));
     }
     return languages;
