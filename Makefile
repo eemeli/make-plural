@@ -18,7 +18,7 @@ COMPILED = bin/make-plural $(MODULES) $(MODULES:.js=.min.js)
 
 .PHONY: all clean lint test test-browser release-check-init release-check-branch release-check-head release
 
-all: $(DATA) $(COMPILED) .make_lint .make_test
+all: $(DATA) bin/make-plural $(MODULES) .make_lint .make_test $(MODULES:.js=.min.js)
 clean: ; rm -rf $(COMPILED) .make_* bin/ data/
 bin data: ; mkdir -p $@
 
@@ -56,10 +56,10 @@ test: .make_test
 	@$(BIN)/mocha test/code.js
 	@echo "\n  $(VT_DIM)Testing data...$(VT0)"
 	@$(BIN)/mocha test/data.js
-	@echo "$(CHK) All tests passed"
+	@echo "$(CHK) All tests passed\n"
 	@touch $@
 
-test-browser: make-plural.js test/* $(DATA)
+test-browser: make-plural.js plurals.js test/* $(DATA)
 	open "http://localhost:8080/test/" & $(BIN)/http-server .
 
 
