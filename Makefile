@@ -26,7 +26,7 @@ bin data: ; mkdir -p $@
 make-plural.js: src/make-plural.js
 	$(BIN)/browserify $< -t babelify -s MakePlural -o $@
 
-bin/make-plural: src/index.js | bin
+bin/make-plural: src/cli.js | bin
 	echo "#!/usr/bin/env node\n" > $@
 	$(BIN)/babel $< >> $@
 	chmod a+x $@
