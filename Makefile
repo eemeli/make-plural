@@ -14,7 +14,7 @@ BIN = ./node_modules/.bin
 CLDR = node_modules/cldr-core
 DATA = data/plurals.json data/ordinals.json
 MODULES = make-plural.js plurals.js pluralCategories.js
-COMPILED = bin/make-plural $(MODULES) $(MODULES:.js=.min.js)
+COMPILED = bin/* $(MODULES) $(MODULES:.js=.min.js)
 
 .PHONY: all clean lint test test-browser release-check-init release-check-branch release-check-head release
 
@@ -26,7 +26,10 @@ bin data: ; mkdir -p $@
 make-plural.js: src/make-plural.js
 	$(BIN)/browserify $< -t babelify -s MakePlural -o $@
 
-bin/make-plural: src/cli.js | bin
+bin/common.js: src/common.js | bin
+	$(BIN)/babel $< > $@
+
+bin/make-plural: src/cli.js bin/common.js | bin
 	echo "#!/usr/bin/env node\n" > $@
 	$(BIN)/babel $< >> $@
 	chmod a+x $@

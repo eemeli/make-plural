@@ -17,39 +17,7 @@ var argv = require('minimist')(process.argv.slice(2), {
         require('../data/ordinals.json')
     );
 
-const commonPlurals = [
-
-`function(n, ord) {
-  if (ord) return 'other';
-  return 'other';
-}`,
-
-`function(n, ord) {
-  if (ord) return 'other';
-  return (n == 1) ? 'one' : 'other';
-}`,
-
-`function(n, ord) {
-  if (ord) return 'other';
-  return ((n == 0
-          || n == 1)) ? 'one' : 'other';
-}`,
-
-`function(n, ord) {
-  var s = String(n).split('.'), v0 = !s[1];
-  if (ord) return 'other';
-  return (n == 1 && v0) ? 'one' : 'other';
-}`
-
-];
-
-const commonCategories = [
-    '{cardinal:["other"],ordinal:["other"]}',
-    '{cardinal:["one","other"],ordinal:["other"]}',
-    '{cardinal:["one","other"],ordinal:["one","other"]}',
-    '{cardinal:["one","two","other"],ordinal:["other"]}'
-];
-
+import * as common from './common';
 
 // UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
 function umd(global, value) {
@@ -82,20 +50,20 @@ function mapForEachLanguage(cb, opt) {
 function printPluralsModule() {
     const plurals = mapForEachLanguage(mp => {
         let fn = mp.toString();
-        commonPlurals.forEach(function(p, i) { if (fn === p) fn = `_cp[${i}]`; });
+        common.plurals.forEach(function(p, i) { if (fn === p) fn = `_cp[${i}]`; });
         return fn;
     });
-    console.log('var _cp = [\n' + commonPlurals.join(',\n') + '\n];')
+    console.log('var _cp = [\n' + common.plurals.join(',\n') + '\n];')
     console.log(umd('plurals', plurals.join(',\n\n')));
 }
 
 function printCategoriesModule() {
     const categories = mapForEachLanguage(mp => {
         let cat = JSON.stringify(mp.categories).replace(/"(\w+)":/g, '$1:');
-        commonCategories.forEach(function(c, i) { if (cat === c) cat = `_cc[${i}]`; });
+        common.categories.forEach(function(c, i) { if (cat === c) cat = `_cc[${i}]`; });
         return cat;
     });
-    console.log('var _cc = [\n  ' + commonCategories.join(',\n  ') + '\n];')
+    console.log('var _cc = [\n  ' + common.categories.join(',\n  ') + '\n];')
     console.log(umd('pluralCategories', categories.join(',\n')));
 }
 
