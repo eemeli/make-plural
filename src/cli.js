@@ -48,22 +48,24 @@ function mapForEachLanguage(cb, opt) {
 }
 
 function printPluralsModule() {
+    const cp = common[MakePlural.ordinals ? 'combined' : 'cardinals'].plurals;
     const plurals = mapForEachLanguage(mp => {
         let fn = mp.toString();
-        common.plurals.forEach(function(p, i) { if (fn === p) fn = `_cp[${i}]`; });
+        cp.forEach(function(p, i) { if (fn === p) fn = `_cp[${i}]`; });
         return fn;
     });
-    console.log('var _cp = [\n' + common.plurals.join(',\n') + '\n];')
+    console.log('var _cp = [\n' + cp.join(',\n') + '\n];')
     console.log(umd('plurals', plurals.join(',\n\n')));
 }
 
 function printCategoriesModule() {
+    const cc = common[MakePlural.ordinals ? 'combined' : 'cardinals'].categories;
     const categories = mapForEachLanguage(mp => {
         let cat = JSON.stringify(mp.categories).replace(/"(\w+)":/g, '$1:');
-        common.categories.forEach(function(c, i) { if (cat === c) cat = `_cc[${i}]`; });
+        cc.forEach(function(c, i) { if (cat === c) cat = `_cc[${i}]`; });
         return cat;
     });
-    console.log('var _cc = [\n  ' + common.categories.join(',\n  ') + '\n];')
+    console.log('var _cc = [\n  ' + cc.join(',\n  ') + '\n];')
     console.log(umd('pluralCategories', categories.join(',\n')));
 }
 
