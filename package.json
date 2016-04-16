@@ -23,6 +23,7 @@
     "bin/",
     "data/",
     "make-plural.*",
+    "pluralCategories.*",
     "plurals.*"
   ],
   "bin": {
