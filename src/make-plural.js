@@ -1,6 +1,6 @@
 /**
  * make-plural.js -- https://github.com/eemeli/make-plural.js/
- * Copyright (c) 2014-2015 by Eemeli Aro <eemeli@gmail.com>
+ * Copyright (c) 2014-2016 by Eemeli Aro <eemeli@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above

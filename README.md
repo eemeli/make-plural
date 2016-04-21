@@ -57,7 +57,12 @@ array of the pluralization categories the cardinal and ordinal rules each
 language's pluralization function may output.
 
 If your language isn't directly included in either of the above, try removing
-any trailing parts that are separated from the stem by `-` or `_`.
+any trailing parts that are separated from the stem by `-` or `_`. Note also
+that the [capitalization of locale codes] is lowercase for the language, but
+uppercase for the country, so for example the code for Portugese as spoken in
+Portugal is `pt-PT`.
+
+[capitalization of locale codes]: https://tools.ietf.org/html/bcp47#section-2.1.1
 
 
 ### Precompiled use: Node
