@@ -1,6 +1,6 @@
 {
   "name": "make-plural",
-  "version": "3.0.0-dev",
+  "version": "3.0-dev",
   "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
   "keywords": [
     "unicode",
@@ -32,7 +32,8 @@
   "main": "plurals",
   "scripts": {
     "lint": "eslint src/",
-    "test": "make test"
+    "test": "make test",
+    "version": "git add -f $FILES"
   },
   "devDependencies": {
     "babel-cli": "^6.7.7",
