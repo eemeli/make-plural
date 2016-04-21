@@ -66,9 +66,11 @@ class Parser {
         if (this.v) vars.push('v = f.length');
         if (this.v0) vars.push('v0 = !s[1]');
         if (this.t0 || this.n10 || this.n100) vars.push('t0 = Number(s[0]) == n');
-        for (let k in this) if (/^.10+$/.test(k)) {
-            const k0 = (k[0] === 'n') ? 't0 && s[0]' : k[0];
-            vars.push(`${k} = ${k0}.slice(-${k.substr(2).length})`);
+        for (let k in this) {
+            if (/^.10+$/.test(k)) {
+                const k0 = (k[0] === 'n') ? 't0 && s[0]' : k[0];
+                vars.push(`${k} = ${k0}.slice(-${k.substr(2).length})`);
+            }
         }
         if (!vars.length) return '';
         return 'var ' + [ "s = String(n).split('.')", ...vars ].join(', ');
