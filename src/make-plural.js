@@ -84,11 +84,8 @@ class Tests {
         this.cardinal = {};
     };
 
-    add(type, cat, examples) {
-        this[type][cat] = examples.join(' ')
-                              .replace(/^[ ,]+|[ ,…]+$/g, '')
-                              .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
-                              .split(/[ ,~…]+/);
+    add(type, cat, src) {
+        this[type][cat] = { src, values: null };
     };
 
     testCond(n, type, expResult, fn) {
@@ -103,7 +100,12 @@ class Tests {
     };
 
     testCat(type, cat, fn) {
-        this[type][cat].forEach( n => {
+        const data = this[type][cat];
+        if (!data.values) data.values = data.src.join(' ')
+                                            .replace(/^[ ,]+|[ ,…]+$/g, '')
+                                            .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
+                                            .split(/[ ,~…]+/);
+        data.values.forEach( n => {
             this.testCond(n, type, cat, fn);
             if (!/\.0+$/.test(n)) this.testCond(Number(n), type, cat, fn);
         });
