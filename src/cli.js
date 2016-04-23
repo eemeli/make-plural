@@ -11,8 +11,8 @@ var argv = require('minimist')(process.argv.slice(2), {
         alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c' },
         string: [ 'locale', 'value' ],
         boolean: [ 'categories' ]
-    }),
-    MakePlural = require('../make-plural').load(
+    });
+var MakePlural = require('../make-plural').load(
         require('../data/plurals.json'),
         require('../data/ordinals.json')
     );
@@ -40,8 +40,8 @@ function mapForEachLanguage(cb, opt) {
     const style = opt && !opt.cardinals ? 'ordinal' : 'cardinal';
     let languages = [];
     for (let lc in MakePlural.rules[style]) {
-        const key = /^[A-Z_$][0-9A-Z_$]*$/i.test(lc) && (lc !== 'in') ? lc : JSON.stringify(lc),
-              mp = new MakePlural(lc, opt).test();
+        const key = /^[A-Z_$][0-9A-Z_$]*$/i.test(lc) && (lc !== 'in') ? lc : JSON.stringify(lc);
+        const mp = new MakePlural(lc, opt).test();
         languages.push(key + ': ' + cb(mp));
     }
     return languages;

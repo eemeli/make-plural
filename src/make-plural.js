@@ -56,7 +56,7 @@ class Parser {
             .replace(/ and /g, ' && ')
             .replace(/ or /g, ' || ')
             .replace(/ = /g, ' == ');
-    };
+    }
 
     vars() {
         let vars = [];
@@ -82,11 +82,11 @@ class Tests {
         this.obj = obj;
         this.ordinal = {};
         this.cardinal = {};
-    };
+    }
 
     add(type, cat, src) {
         this[type][cat] = { src, values: null };
-    };
+    }
 
     testCond(n, type, expResult, fn) {
         try { var r = (fn || this.obj.fn)(n, (type === 'ordinal')); }
@@ -97,7 +97,7 @@ class Tests {
             + ' (was ' + JSON.stringify(r) + ', expected ' + JSON.stringify(expResult) + ')'
         ); }
         return true;
-    };
+    }
 
     testCat(type, cat, fn) {
         const data = this[type][cat];
@@ -110,14 +110,13 @@ class Tests {
             if (!/\.0+$/.test(n)) this.testCond(Number(n), type, cat, fn);
         });
         return true;
-    };
+    }
 
     testAll() {
         for (let cat in this.cardinal) this.testCat('cardinal', cat);
         for (let cat in this.ordinal) this.testCat('ordinal', cat);
         return true;
-    };
-
+    }
 }
 
 export default class MakePlural {
@@ -133,7 +132,7 @@ export default class MakePlural {
         this.fn.test = function() { return this.tests.testAll() && this.fn; }.bind(this);
         this.fn.toString = this.fnToString.bind(this);
         return this.fn;
-    };
+    }
 
     static load(...args) {
         args.forEach(cldr => {
@@ -145,7 +144,7 @@ export default class MakePlural {
             };
         });
         return MakePlural;
-    };
+    }
 
     compile(type, req) {
         let cases = [];
@@ -156,8 +155,8 @@ export default class MakePlural {
             return "'other'";
         }
         for (let r in rules) {
-            const [cond, ...examples] = rules[r].trim().split(/\s*@\w*/),
-                  cat = r.replace('pluralRule-count-', '');
+            const [cond, ...examples] = rules[r].trim().split(/\s*@\w*/);
+            const cat = r.replace('pluralRule-count-', '');
             if (cond) cases.push([ this.parser.parse(cond), cat ]);
             this.tests.add(type, cat, examples);
         }
@@ -170,22 +169,19 @@ export default class MakePlural {
     }
 
     buildFunction(cardinals, ordinals) {
-        const
-            compile = c => c ? ((c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c)) : '',
-            fold = { vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g, '$1$2\n      '),
-                     cond: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2') },
-            cond = [
-                     ordinals && [ 'ordinal', !cardinals ],
-                     cardinals && [ 'cardinal', true ]
-                   ].map(compile)
-                    .map(fold.cond),
-            body = [
-                     fold.vars(this.parser.vars()),
-                     ...cond
-                   ].filter(line => !/^[\s;]*$/.test(line))
-                    .map(line => line.replace(/\s+$/gm, ''))
-                    .join('\n'),
-            args = ordinals && cardinals ? 'n, ord' : 'n';
+        const compile = c => c ? ((c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c)) : '';
+        const fold = { vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g, '$1$2\n      '),
+                       cond: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2') };
+        const cond = [ ordinals && [ 'ordinal', !cardinals ],
+                       cardinals && [ 'cardinal', true ]
+                     ].map(compile)
+                      .map(fold.cond);
+        const body = [ fold.vars(this.parser.vars()),
+                       ...cond
+                     ].filter(line => !/^[\s;]*$/.test(line))
+                      .map(line => line.replace(/\s+$/gm, ''))
+                      .join('\n');
+        const args = ordinals && cardinals ? 'n, ord' : 'n';
         return new Function(args, body);
     }
 
@@ -193,7 +189,7 @@ export default class MakePlural {
         return Function.prototype.toString.call(this.fn)
                    .replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
                    .replace('\n/**/', '');
-    };
+    }
 }
 
 MakePlural.cardinals = true;
