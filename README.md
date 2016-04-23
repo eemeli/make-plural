@@ -68,45 +68,45 @@ Portugal is `pt-PT`.
 ### Precompiled use: Node
 
 ```js
-> plurals = require('make-plural/plurals')
-{ af: [Function],
-  ak: [Function],
-  am: [Function],
-  // snip 193 lines...
-  yo: [Function],
-  zh: [Function],
-  zu: [Function] }
+var plurals = require('make-plural/plurals')
+// { af: [Function],
+//   ak: [Function],
+//   am: [Function],
+// snip 193 lines...
+//   yo: [Function],
+//   zh: [Function],
+//   zu: [Function] }
 
-> plurals.en(1)  // 1st param is the value
-'one'
+plurals.en(1)  // 1st param is the value
+// 'one'
 
-> plurals.en(2)
-'other'
+plurals.en(2)
+// 'other'
 
-> plurals.en(2, true)  // 2nd param, if true-ish, is for ordinal rules
-'two'
+plurals.en(2, true)  // 2nd param, if true-ish, is for ordinal rules
+// 'two'
 
-> console.log(plurals.en.toString())
-function (n, ord) {
-  var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n,
-      n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
-  if (ord) return (n10 == 1 && n100 != 11) ? 'one'
-      : (n10 == 2 && n100 != 12) ? 'two'
-      : (n10 == 3 && n100 != 13) ? 'few'
-      : 'other';
-  return (n == 1 && v0) ? 'one' : 'other';
-}
+console.log(plurals.en.toString())
+// function (n, ord) {
+//   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n,
+//       n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
+//   if (ord) return (n10 == 1 && n100 != 11) ? 'one'
+//       : (n10 == 2 && n100 != 12) ? 'two'
+//       : (n10 == 3 && n100 != 13) ? 'few'
+//       : 'other';
+//   return (n == 1 && v0) ? 'one' : 'other';
+// }
 
-> pluralCategories = require('make-plural/pluralCategories')
-{ af: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
-  ak: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
-  am: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
-  ar:
-   { cardinal: [ 'zero', 'one', 'two', 'few', 'many', 'other' ],
-     ordinal: [ 'other' ] },
-  // snip 255 lines...
-  zh: { cardinal: [ 'other' ], ordinal: [ 'other' ] },
-  zu: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] } }
+var pluralCategories = require('make-plural/pluralCategories')
+// { af: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
+//   ak: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
+//   am: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
+//   ar:
+//    { cardinal: [ 'zero', 'one', 'two', 'few', 'many', 'other' ],
+//      ordinal: [ 'other' ] },
+// snip 255 lines...
+//   zh: { cardinal: [ 'other' ], ordinal: [ 'other' ] },
+//   zu: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] } }
 ```
 
 ### Precompiled use: Web
@@ -185,64 +185,64 @@ If the second parameter is undefined, the values are taken from
 ### Live use: Node
 
 ```js
-> MakePlural = require('make-plural/make-plural').load(
-... require('make-plural/data/plurals.json'),
-... require('make-plural/data/ordinals.json'))
-{ [Function: MakePlural]
-  cardinals: true,
-  ordinals: false,
-  rules: 
-   { cardinal: 
-      { af: [Object],
-        ak: [Object],
-        am: [Object],
-        // snip 193 lines...
-        yo: [Object],
-        zh: [Object],
-        zu: [Object] },
-     ordinal: 
-      { af: [Object],
-        am: [Object],
-        ar: [Object],
-        // snip 78 lines...
-        vi: [Object],
-        zh: [Object],
-        zu: [Object] } } }
+var MakePlural = require('make-plural/make-plural').load(
+    require('make-plural/data/plurals.json'),
+    require('make-plural/data/ordinals.json'))
+// { [Function: MakePlural]
+//   cardinals: true,
+//   ordinals: false,
+//   rules:
+//    { cardinal:
+//       { af: [Object],
+//         ak: [Object],
+//         am: [Object],
+// snip 193 lines...
+//         yo: [Object],
+//         zh: [Object],
+//         zu: [Object] },
+//      ordinal:
+//       { af: [Object],
+//         am: [Object],
+//         ar: [Object],
+// snip 78 lines...
+//         vi: [Object],
+//         zh: [Object],
+//         zu: [Object] } } }
 
-> sk = new MakePlural('sk')  // Note: not including ordinals by default
-{ [Function]
-  _obj:
-   { lc: 'sk',
-     cardinals: true,
-     ordinals: false,
-     categories: { cardinal: [Object], ordinal: [] },
-     parser: { v0: 1, i: 1 },
-     tests: { obj: [Circular], ordinal: {}, cardinal: [Object] },
-     fn: [Circular] },
-  categories: { cardinal: [ 'one', 'few', 'many', 'other' ], ordinal: [] },
-  test: [Function],
-  toString: [Function] }
+var sk = new MakePlural('sk')  // Note: not including ordinals by default
+// { [Function]
+//   _obj:
+//    { lc: 'sk',
+//      cardinals: true,
+//      ordinals: false,
+//      categories: { cardinal: [Object], ordinal: [] },
+//      parser: { v0: 1, i: 1 },
+//      tests: { obj: [Circular], ordinal: {}, cardinal: [Object] },
+//      fn: [Circular] },
+//   categories: { cardinal: [ 'one', 'few', 'many', 'other' ], ordinal: [] },
+//   test: [Function],
+//   toString: [Function] }
 
-> sk(1)
-'one'
+sk(1)
+// 'one'
 
-> sk(3.0)
-'few'
+sk(3.0)
+// 'few'
 
-> sk('1.0')
-'many'
+sk('1.0')
+// 'many'
 
-> sk('0')
-'other'
+sk('0')
+// 'other'
 
-> console.log(sk.toString())
-function(n) {
-  var s = String(n).split('.'), i = s[0], v0 = !s[1];
-  return (i == 1 && v0 ) ? 'one'
-      : ((i >= 2 && i <= 4) && v0 ) ? 'few'
-      : (!v0   ) ? 'many'
-      : 'other';
-}
+console.log(sk.toString())
+// function(n) {
+//   var s = String(n).split('.'), i = s[0], v0 = !s[1];
+//   return (i == 1 && v0 ) ? 'one'
+//       : ((i >= 2 && i <= 4) && v0 ) ? 'few'
+//       : (!v0   ) ? 'many'
+//       : 'other';
+// }
 ```
 
 `make-plural.js` may also be used in browser environments; see `test/index.html`
@@ -283,14 +283,14 @@ that is not required for any other use.
 Using `MakePlural.load()`, you may make use of external sources of CLDR data.
 For example, the following works when using together with [cldr-data]:
 ```js
-> cldr = require('cldr-data');
-> MakePlural = require('make-plural/make-plural').load(
-    cldr('supplemental/plurals'),
-    cldr('supplemental/ordinals')
-  );
-> en = new MakePlural('en');
-> en(3, true)
-'few'
+var cldr = require('cldr-data');
+var MakePlural = require('make-plural/make-plural').load(
+  cldr('supplemental/plurals'),
+  cldr('supplemental/ordinals')
+);
+var en = new MakePlural('en');
+en(3, true);
+// 'few'
 ```
 
 [LDML Language Plural Rules]: http://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
