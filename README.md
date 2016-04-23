@@ -162,7 +162,8 @@ in the examples below.
 
 ### new MakePlural(lc, { cardinals, ordinals })
 Returns a function that takes an argument `n` and returns its plural category
-for the given locale `lc`.
+for the given locale `lc`. If no direct match for `lc` is found, it is compared
+case-insensitively to known locales.
 
 The returned function has an overloaded `toString(name)` method that may be
 used to generate a clean string representation of the function, with an

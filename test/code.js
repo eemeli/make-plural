@@ -29,6 +29,24 @@ describe('MakePlural compiler', function(){
         });
     });
 
+    describe('.getRules()', function(){
+        it('should throw for invalid type', function(){
+            expect(MakePlural.getRules).to.throwException();
+            expect(MakePlural.getRules).withArgs('nonesuch', 'xx').to.throwException();
+            expect(MakePlural.getRules).withArgs('cardinal', 'xx').to.not.throwException();
+        });
+        it('should return rules for "cardinal", "en"', function(){
+            var en = MakePlural.getRules('cardinal', 'en');
+            expect(en).to.be.an('object');
+            expect(en).to.have.key('pluralRule-count-other');
+        });
+        it('should return the same rules for "cardinal", "EN"', function(){
+            var en = MakePlural.getRules('cardinal', 'en');
+            var EN = MakePlural.getRules('cardinal', 'EN');
+            expect(EN).to.be(en);
+        });
+    });
+
     describe('MakePlural()', function(){
         it('should require `new`', function(){
             expect(MakePlural).to.throwException(function(e){

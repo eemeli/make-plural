@@ -146,9 +146,19 @@ export default class MakePlural {
         return MakePlural;
     }
 
+    static getRules(type, locale) {
+        if (locale.length) {
+            const cat = MakePlural.rules[type];
+            if (locale in cat) return cat[locale];
+            const lc0 = locale.toLowerCase();
+            for (let lc in cat) if (lc.toLowerCase() === lc0) return cat[lc];
+        }
+        return null;
+    }
+
     compile(type, req) {
         let cases = [];
-        const rules = MakePlural.rules[type][this.lc];
+        const rules = MakePlural.getRules(type, this.lc);
         if (!rules) {
             if (req) throw new Error(`Locale "${this.lc}" ${type} rules not found`);
             this.categories[type] = ['other'];
