@@ -52,14 +52,6 @@
   "optionalDependencies": {
     "minimist": "^1.2.0"
   },
-  "babel": {
-    "presets": [
-      "es2015"
-    ],
-    "plugins": [
-      "add-module-exports"
-    ]
-  },
   "eslintConfig": {
     "parser": "babel-eslint",
     "env": {
