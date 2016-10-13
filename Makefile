@@ -13,14 +13,15 @@ NPM_TAG = latest
 BIN = ./node_modules/.bin
 CLDR = node_modules/cldr-core
 DATA = data/plurals.json data/ordinals.json
-MODULES = make-plural.js umd/plurals.js umd/pluralCategories.js
-COMPILED = bin/* $(MODULES) $(MODULES:.js=.min.js)
+ES5_OUTPUT = make-plural.js umd/plurals.js umd/pluralCategories.js
+ES6_OUTPUT = es6/plurals.js es6/pluralCategories.js
+COMPILED = bin data make-plural*.js es6 umd
 
 .PHONY: all clean lint test test-browser release-check-init release-check-branch release-check-head release
 
-all: $(DATA) bin/make-plural $(MODULES) .make_lint .make_test $(MODULES:.js=.min.js)
-clean: ; rm -rf $(COMPILED) .make_* bin/ data/ umd/
-bin data umd: ; mkdir -p $@
+all: $(DATA) bin/make-plural $(ES5_OUTPUT) $(ES6_OUTPUT) .make_lint .make_test $(ES5_OUTPUT:.js=.min.js)
+clean: ; rm -rf .make_* $(COMPILED)
+bin data es6 umd: ; mkdir -p $@
 
 
 make-plural.js: src/make-plural.js
@@ -33,6 +34,12 @@ bin/make-plural: src/cli.js bin/common.js | bin
 	echo "#!/usr/bin/env node\n" > $@
 	$(BIN)/babel $< >> $@
 	chmod a+x $@
+
+es6/plurals.js: bin/make-plural make-plural.js $(DATA) | es6
+	./$< --es6 > $@
+
+es6/pluralCategories.js: bin/make-plural make-plural.js $(DATA) | es6
+	./$< --categories --es6 > $@
 
 umd/plurals.js: bin/make-plural make-plural.js $(DATA) | umd
 	./$< > $@
@@ -92,7 +99,7 @@ release: all release-check-init release-check-branch release-check-head
 		if [[ $${REPLY} =~ ^[Yy]$$ ]]; then echo "$${REPLY}\r$(CHK)\n"; \
 		else echo "\r$(ERR)\n"; exit 1; fi
 	git checkout $(GH_HEAD)
-	FILES="$(DATA) $(COMPILED)" npm version $(VERSION) -m "Version %s"
+	FILES="$(COMPILED)" npm version $(VERSION) -m "Version %s"
 	git push --tags
 	npm publish --tag $(NPM_TAG)
 	git checkout $(GH_BRANCH)
