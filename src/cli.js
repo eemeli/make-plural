@@ -7,10 +7,10 @@
  */
 
 var argv = require('minimist')(process.argv.slice(2), {
-        default: { locale: null, value: null, ordinal: null, cardinal: null, categories: false },
-        alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c' },
+        default: { locale: null, value: null, ordinal: null, cardinal: null, categories: false, es6: false },
+        alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c', es6: 'e' },
         string: [ 'locale', 'value' ],
-        boolean: [ 'categories' ]
+        boolean: [ 'categories', 'es6' ]
     });
 var MakePlural = require('../make-plural').load(
         require('../data/plurals.json'),
@@ -19,9 +19,13 @@ var MakePlural = require('../make-plural').load(
 
 import * as common from './common';
 
+const es6module = (value) => `
+export default {
+${value}
+}`;
+
 // UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
-function umd(global, value) {
-    return `
+const umd = (global, value) => `
 (function (root, ${global}) {
   if (typeof define === 'function' && define.amd) {
     define(${global});
@@ -32,8 +36,7 @@ function umd(global, value) {
   }
 }(this, {
 ${value}
-}));`
-}
+}));`;
 
 
 function mapForEachLanguage(cb, opt) {
@@ -47,26 +50,36 @@ function mapForEachLanguage(cb, opt) {
     return languages;
 }
 
-function printPluralsModule() {
+function printPluralsModule(es6) {
     const cp = common[MakePlural.ordinals ? 'combined' : 'cardinals'].plurals;
     const plurals = mapForEachLanguage(mp => {
         let fn = mp.toString();
         cp.forEach(function(p, i) { if (fn === p) fn = `_cp[${i}]`; });
         return fn;
     });
-    console.log('var _cp = [\n' + cp.join(',\n') + '\n];')
-    console.log(umd('plurals', plurals.join(',\n\n')));
+    if (es6) {
+        console.log('const _cp = [\n' + cp.join(',\n') + '\n];');
+        console.log(es6module(plurals.join(',\n\n')));
+    } else {
+        console.log('var _cp = [\n' + cp.join(',\n') + '\n];');
+        console.log(umd('plurals', plurals.join(',\n\n')));
+    }
 }
 
-function printCategoriesModule() {
+function printCategoriesModule(es6) {
     const cc = common[MakePlural.ordinals ? 'combined' : 'cardinals'].categories;
     const categories = mapForEachLanguage(mp => {
         let cat = JSON.stringify(mp.categories).replace(/"(\w+)":/g, '$1:');
         cc.forEach(function(c, i) { if (cat === c) cat = `_cc[${i}]`; });
         return cat;
     });
-    console.log('var _cc = [\n  ' + cc.join(',\n  ') + '\n];')
-    console.log(umd('pluralCategories', categories.join(',\n')));
+    if (es6) {
+        console.log('const _cc = [\n  ' + cc.join(',\n  ') + '\n];');
+        console.log(es6module(categories.join(',\n')));
+    } else {
+        console.log('var _cc = [\n  ' + cc.join(',\n  ') + '\n];');
+        console.log(umd('pluralCategories', categories.join(',\n')));
+    }
 }
 
 
@@ -98,8 +111,8 @@ if (argv.locale) {
     }
 } else {
     if (argv.categories) {
-        printCategoriesModule();
+        printCategoriesModule(argv.es6);
     } else {
-        printPluralsModule();
+        printPluralsModule(argv.es6);
     }
 }
