@@ -58,6 +58,10 @@
     "plugins": [
       "standard",
       "promise"
-    ]
+    ],
+    "rules": {
+      "no-new-func": 0,
+      "space-before-function-paren": [2, "never"]
+    }
   }
 }
