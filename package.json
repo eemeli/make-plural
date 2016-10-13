@@ -23,13 +23,12 @@
     "bin/",
     "data/",
     "make-plural.*",
-    "pluralCategories.*",
-    "plurals.*"
+    "umd/"
   ],
   "bin": {
     "make-plural": "./bin/make-plural"
   },
-  "main": "plurals",
+  "main": "umd/plurals",
   "scripts": {
     "lint": "eslint src/",
     "test": "make test",

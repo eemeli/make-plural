@@ -13,14 +13,14 @@ NPM_TAG = latest
 BIN = ./node_modules/.bin
 CLDR = node_modules/cldr-core
 DATA = data/plurals.json data/ordinals.json
-MODULES = make-plural.js plurals.js pluralCategories.js
+MODULES = make-plural.js umd/plurals.js umd/pluralCategories.js
 COMPILED = bin/* $(MODULES) $(MODULES:.js=.min.js)
 
 .PHONY: all clean lint test test-browser release-check-init release-check-branch release-check-head release
 
 all: $(DATA) bin/make-plural $(MODULES) .make_lint .make_test $(MODULES:.js=.min.js)
-clean: ; rm -rf $(COMPILED) .make_* bin/ data/
-bin data: ; mkdir -p $@
+clean: ; rm -rf $(COMPILED) .make_* bin/ data/ umd/
+bin data umd: ; mkdir -p $@
 
 
 make-plural.js: src/make-plural.js
@@ -34,10 +34,10 @@ bin/make-plural: src/cli.js bin/common.js | bin
 	$(BIN)/babel $< >> $@
 	chmod a+x $@
 
-plurals.js: bin/make-plural make-plural.js $(DATA)
+umd/plurals.js: bin/make-plural make-plural.js $(DATA) | umd
 	./$< > $@
 
-pluralCategories.js: bin/make-plural make-plural.js $(DATA)
+umd/pluralCategories.js: bin/make-plural make-plural.js $(DATA) | umd
 	./$< --categories > $@
 
 %.min.js: %.js
@@ -54,7 +54,7 @@ lint: .make_lint
 	@touch $@
 
 test: .make_test
-.make_test: make-plural.js plurals.js test/* $(DATA)
+.make_test: make-plural.js umd/plurals.js test/* $(DATA)
 	@echo "\n  $(VT_DIM)Testing code...$(VT0)"
 	@$(BIN)/mocha test/code.js
 	@echo "\n  $(VT_DIM)Testing data...$(VT0)"
@@ -62,7 +62,7 @@ test: .make_test
 	@echo "$(CHK) All tests passed\n"
 	@touch $@
 
-test-browser: make-plural.js plurals.js test/* $(DATA)
+test-browser: make-plural.js umd/plurals.js test/* $(DATA)
 	open "http://localhost:8080/test/" & $(BIN)/http-server .
 
 

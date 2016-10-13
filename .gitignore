@@ -1,7 +1,6 @@
 /bin
 /data
 /make-plural*.js
-/plurals*.js
-/pluralCategories*.js
+/umd
 node_modules
 .*

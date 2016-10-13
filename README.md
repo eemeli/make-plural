@@ -8,7 +8,7 @@ make-plural
 Make-plural is a JavaScript module that translates [Unicode CLDR] pluralization
 [rules] to JavaScript functions. It includes both a live parser
 (`make-plural.js`) as well as the generated output for the latest edition of the
-CLDR (`plurals.js`); the latter is just over 2kB in size when minified &
+CLDR (`umd/plurals.js`); the latter is just over 2kB in size when minified &
 gzipped and covers 199 languages, so it's probably what you want unless you
 really know what you're doing.
 
@@ -45,16 +45,16 @@ _or_ download the latest release from
 
 ## Precompiled plurals
 
-`plurals.js` contains an UMD module that can be included with node's `require`
-or AMD's `define`. In a browser environment, it will populate a global object
-`plurals`.  Said module contains 199 functions (one per [language][rules]),
+`umd/plurals.js` contains an UMD module that can be included with node's
+`require` or AMD's `define`. In a browser environment, it will populate a global
+object `plurals`. Said module contains 199 functions (one per [language][rules]),
 each taking as a first parameter the value to be classified (either a number or
 a string), and as an optional second parameter, a boolean that if true, applies
 ordinal rather than cardinal rules.
 
-`pluralCategories.js` has a similar structure to `plurals.js`, but contains an
-array of the pluralization categories the cardinal and ordinal rules each
-language's pluralization function may output.
+`umd/pluralCategories.js` has a similar structure to `umd/plurals.js`, but
+contains an array of the pluralization categories the cardinal and ordinal rules
+each language's pluralization function may output.
 
 If your language isn't directly included in either of the above, try removing
 any trailing parts that are separated from the stem by `-` or `_`. Note also
@@ -68,7 +68,7 @@ Portugal is `pt-PT`.
 ### Precompiled use: Node
 
 ```js
-var plurals = require('make-plural/plurals')
+var plurals = require('make-plural')
 // { af: [Function],
 //   ak: [Function],
 //   am: [Function],
@@ -97,7 +97,7 @@ console.log(plurals.en.toString())
 //   return (n == 1 && v0) ? 'one' : 'other';
 // }
 
-var pluralCategories = require('make-plural/pluralCategories')
+var pluralCategories = require('make-plural/umd/pluralCategories')
 // { af: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
 //   ak: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
 //   am: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
@@ -112,7 +112,7 @@ var pluralCategories = require('make-plural/pluralCategories')
 ### Precompiled use: Web
 
 ```html
-<script src="path/to/make-plural/plurals.js"></script>
+<script src="path/to/make-plural/umd/plurals.js"></script>
 <script>
   var ru = plurals.ru
   console.log('1: ' + plurals.ru(1) + ', 3.0: ' + plurals.ru(3.0) +
@@ -137,7 +137,8 @@ function(n, ord) {
 }
 ```
 
-Note that with `plurals.min.js`, the stringified function would be rendered as:
+Note that with `umd/plurals.min.js`, the stringified function would be rendered
+as:
 ```js
 function (e,t){var r=String(e).split("."),n=r[0],o=!r[1],c=n.slice(-1),
 i=n.slice(-2);return t?"other":o&&1==c&&11!=i?"one":o&&c>=2&&4>=c&&(12>i||i>14)?
