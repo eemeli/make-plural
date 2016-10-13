@@ -6,11 +6,10 @@ make-plural
 ===========
 
 Make-plural is a JavaScript module that translates [Unicode CLDR] pluralization
-[rules] to JavaScript functions. It includes both a live parser
-(`make-plural.js`) as well as the generated output for the latest edition of the
-CLDR (`umd/plurals.js`); the latter is just over 2kB in size when minified &
-gzipped and covers 199 languages, so it's probably what you want unless you
-really know what you're doing.
+[rules] to JavaScript functions. It includes both a live parser as well as the
+generated output for the latest edition of the CLDR; the latter is just over 2kB
+in size when minified & gzipped and covers 199 languages, so it's probably what
+you want unless you really know what you're doing.
 
 Make-plural is written in [ECMAScript 6] and transpiled using [Babel] and
 [Browserify] to CommonJS and AMD and ES6 module formats, as well as being
@@ -55,6 +54,9 @@ ordinal rather than cardinal rules.
 `umd/pluralCategories.js` has a similar structure to `umd/plurals.js`, but
 contains an array of the pluralization categories the cardinal and ordinal rules
 each language's pluralization function may output.
+
+`es6/plurals.js` and `es6/pluralCategories.js` are the ES6 module equivalents of
+the above.
 
 If your language isn't directly included in either of the above, try removing
 any trailing parts that are separated from the stem by `-` or `_`. Note also
