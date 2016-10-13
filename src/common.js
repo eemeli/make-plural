@@ -25,7 +25,7 @@ export const combined = {
     '{cardinal:["one","other"],ordinal:["one","other"]}',
     '{cardinal:["one","two","other"],ordinal:["other"]}'
   ]
-};
+}
 
 export const cardinals = {
   plurals: [
@@ -50,4 +50,4 @@ export const cardinals = {
     '{cardinal:["one","other"],ordinal:[]}',
     '{cardinal:["one","two","other"],ordinal:[]}'
   ]
-};
+}
