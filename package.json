@@ -42,6 +42,9 @@
     "browserify": "^13.0.0",
     "cldr-core": "^30.0.0",
     "eslint": "^3.7.1",
+    "eslint-config-standard": "^6.2.0",
+    "eslint-plugin-promise": "^3.0.0",
+    "eslint-plugin-standard": "^2.0.1",
     "expect.js": "*",
     "http-server": "^0.9.0",
     "mocha": "*",
@@ -51,28 +54,10 @@
     "minimist": "^1.2.0"
   },
   "eslintConfig": {
-    "env": {
-      "browser": true,
-      "node": true
-    },
-    "rules": {
-      "curly": [
-        2,
-        "multi-line"
-      ],
-      "eqeqeq": [
-        1,
-        "smart"
-      ],
-      "no-multi-spaces": 0,
-      "no-new-func": 0,
-      "no-underscore-dangle": 0,
-      "quotes": [
-        1,
-        "single",
-        "avoid-escape"
-      ],
-      "strict": 0
-    }
+    "extends": "standard",
+    "plugins": [
+      "standard",
+      "promise"
+    ]
   }
 }
