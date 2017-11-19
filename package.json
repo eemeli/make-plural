@@ -35,14 +35,6 @@
     "test": "make test",
     "version": "git add -f $FILES"
   },
-  "babel": {
-    "presets": [
-      "env"
-    ],
-    "plugins": [
-      "add-module-exports"
-    ]
-  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
