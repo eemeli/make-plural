@@ -35,12 +35,21 @@
     "test": "make test",
     "version": "git add -f $FILES"
   },
+  "babel": {
+    "presets": [
+      "env"
+    ],
+    "plugins": [
+      "add-module-exports"
+    ]
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babelify": "^7.2.0",
-    "browserify": "^13.3.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^14.5.0",
     "cldr-core": "^30.0.3",
     "expect.js": "*",
     "http-server": "^0.9.0",
