@@ -16,7 +16,7 @@
  */
 
 class Parser {
-  parse(cond) {
+  parse (cond) {
     if (cond === 'i = 0 or n = 1') return 'n >= 0 && n <= 1'
     if (cond === 'i = 0,1') return 'n >= 0 && n < 2'
     if (cond === 'i = 1 and v = 0') {
@@ -58,7 +58,7 @@ class Parser {
       .replace(/ = /g, ' == ')
   }
 
-  vars() {
+  vars () {
     let vars = []
     if (this.i) vars.push('i = s[0]')
     if (this.f || this.v) vars.push("f = s[1] || ''")
@@ -78,17 +78,17 @@ class Parser {
 }
 
 class Tests {
-  constructor(obj) {
+  constructor (obj) {
     this.obj = obj
     this.ordinal = {}
     this.cardinal = {}
   }
 
-  add(type, cat, src) {
+  add (type, cat, src) {
     this[type][cat] = { src, values: null }
   }
 
-  testCond(n, type, expResult, fn) {
+  testCond (n, type, expResult, fn) {
     try {
       var r = (fn || this.obj.fn)(n, (type === 'ordinal'))
     } catch (e) {
@@ -104,7 +104,7 @@ class Tests {
     return true
   }
 
-  testCat(type, cat, fn) {
+  testCat (type, cat, fn) {
     const data = this[type][cat]
     if (!data.values) {
       data.values = data.src.join(' ')
@@ -119,7 +119,7 @@ class Tests {
     return true
   }
 
-  testAll() {
+  testAll () {
     for (let cat in this.cardinal) this.testCat('cardinal', cat)
     for (let cat in this.ordinal) this.testCat('ordinal', cat)
     return true
@@ -127,7 +127,7 @@ class Tests {
 }
 
 export default class MakePlural {
-  constructor(lc, { cardinals, ordinals } = MakePlural) {
+  constructor (lc, { cardinals, ordinals } = MakePlural) {
     if (!cardinals && !ordinals) throw new Error('At least one type of plural is required')
     this.lc = lc
     this.categories = { cardinal: [], ordinal: [] }
@@ -136,14 +136,14 @@ export default class MakePlural {
     this.fn = this.buildFunction(cardinals, ordinals)
     this.fn._obj = this
     this.fn.categories = this.categories
-    this.fn.test = function() { return this.tests.testAll() && this.fn }.bind(this)
+    this.fn.test = function () { return this.tests.testAll() && this.fn }.bind(this)
     this.fn.toString = this.fnToString.bind(this)
     return this.fn
   }
 
-  static load(...args) {
+  static load (...args) {
     args.forEach(cldr => {
-      const data = cldr && cldr.supplemental || null
+      const data = (cldr && cldr.supplemental) || null
       if (!data) throw new Error('Data does not appear to be CLDR data')
       MakePlural.rules = {
         cardinal: data['plurals-type-cardinal'] || MakePlural.rules.cardinal,
@@ -153,7 +153,7 @@ export default class MakePlural {
     return MakePlural
   }
 
-  static getRules(type, locale) {
+  static getRules (type, locale) {
     if (locale.length) {
       const cat = MakePlural.rules[type]
       if (locale in cat) return cat[locale]
@@ -163,7 +163,7 @@ export default class MakePlural {
     return null
   }
 
-  compile(type, req) {
+  compile (type, req) {
     let cases = []
     const rules = MakePlural.getRules(type, this.lc)
     if (!rules) {
@@ -185,7 +185,7 @@ export default class MakePlural {
     }
   }
 
-  buildFunction(cardinals, ordinals) {
+  buildFunction (cardinals, ordinals) {
     const compile = c => c ? ((c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c)) : ''
     const fold = {
       vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g, '$1$2\n      '),
@@ -205,10 +205,10 @@ export default class MakePlural {
       .map(line => line.replace(/\s+$/gm, ''))
       .join('\n')
     const args = ordinals && cardinals ? 'n, ord' : 'n'
-    return new Function(args, body)
+    return new Function(args, body) // eslint-disable-line no-new-func
   }
 
-  fnToString(name) {
+  fnToString (name) {
     return Function.prototype.toString.call(this.fn)
       .replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
       .replace(/\n\/\*(``)?\*\//, '')

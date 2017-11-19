@@ -6,6 +6,8 @@
  *    ./bin/make-plural [lc] [n] [ord]  // prints the (ORD ? ordinal : plural) category for N in locale LC
  */
 
+import * as common from './common'
+
 var argv = require('minimist')(process.argv.slice(2), {
   default: { locale: null, value: null, ordinal: null, cardinal: null, categories: false, es6: false },
   alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c', es6: 'e' },
@@ -16,8 +18,6 @@ var MakePlural = require('../make-plural').load(
   require('../data/plurals.json'),
   require('../data/ordinals.json')
 )
-
-import * as common from './common'
 
 const es6module = (value) => `
 export default {
@@ -38,8 +38,7 @@ const umd = (global, value) => `
 ${value}
 }));`
 
-
-function mapForEachLanguage(cb, opt) {
+function mapForEachLanguage (cb, opt) {
   const style = opt && !opt.cardinals ? 'ordinal' : 'cardinal'
   let languages = []
   for (let lc in MakePlural.rules[style]) {
@@ -50,11 +49,11 @@ function mapForEachLanguage(cb, opt) {
   return languages
 }
 
-function printPluralsModule(es6) {
+function printPluralsModule (es6) {
   const cp = common[MakePlural.ordinals ? 'combined' : 'cardinals'].plurals
   const plurals = mapForEachLanguage(mp => {
     let fn = mp.toString()
-    cp.forEach(function(p, i) { if (fn === p) fn = `_cp[${i}]` })
+    cp.forEach(function (p, i) { if (fn === p) fn = `_cp[${i}]` })
     return fn
   })
   if (es6) {
@@ -66,11 +65,11 @@ function printPluralsModule(es6) {
   }
 }
 
-function printCategoriesModule(es6) {
+function printCategoriesModule (es6) {
   const cc = common[MakePlural.ordinals ? 'combined' : 'cardinals'].categories
   const categories = mapForEachLanguage(mp => {
     let cat = JSON.stringify(mp.categories).replace(/"(\w+)":/g, '$1:')
-    cc.forEach(function(c, i) { if (cat === c) cat = `_cc[${i}]` })
+    cc.forEach(function (c, i) { if (cat === c) cat = `_cc[${i}]` })
     return cat
   })
   if (es6) {
@@ -82,8 +81,7 @@ function printCategoriesModule(es6) {
   }
 }
 
-
-function truthy(v) {
+function truthy (v) {
   if (v === '0' || v === 'false') return false
   return !!v
 }

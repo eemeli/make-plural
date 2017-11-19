@@ -56,8 +56,8 @@ data/%.json: $(CLDR)/supplemental/%.json | data
 
 
 lint: .make_lint
-.make_lint: src/make-plural.js
-	$(BIN)/eslint $^
+.make_lint: src/cli.js bin/common.js src/make-plural.js
+	$(BIN)/standard 'src/*.js'
 	@touch $@
 
 test: .make_test

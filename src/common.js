@@ -1,19 +1,19 @@
 export const combined = {
   plurals: [
-`function(n, ord) {
+    `function(n, ord) {
   if (ord) return 'other';
   return 'other';
 }`,
-`function(n, ord) {
+    `function(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one' : 'other';
 }`,
-`function(n, ord) {
+    `function(n, ord) {
   if (ord) return 'other';
   return ((n == 0
           || n == 1)) ? 'one' : 'other';
 }`,
-`function(n, ord) {
+    `function(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return 'other';
   return (n == 1 && v0) ? 'one' : 'other';
@@ -29,17 +29,17 @@ export const combined = {
 
 export const cardinals = {
   plurals: [
-`function(n) {
+    `function(n) {
   return 'other';
 }`,
-`function(n) {
+    `function(n) {
   return (n == 1) ? 'one' : 'other';
 }`,
-`function(n) {
+    `function(n) {
   return ((n == 0
           || n == 1)) ? 'one' : 'other';
 }`,
-`function(n) {
+    `function(n) {
   var s = String(n).split('.'), v0 = !s[1];
   return (n == 1 && v0) ? 'one' : 'other';
 }`

@@ -31,7 +31,7 @@
   },
   "main": "umd/plurals",
   "scripts": {
-    "lint": "eslint src/",
+    "lint": "standard 'src/*.js'",
     "test": "make test",
     "version": "git add -f $FILES"
   },
@@ -42,30 +42,13 @@
     "babelify": "^7.2.0",
     "browserify": "^13.3.0",
     "cldr-core": "^30.0.3",
-    "eslint": "^3.19.0",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^2.3.1",
     "expect.js": "*",
     "http-server": "^0.9.0",
     "mocha": "^4.0.1",
+    "standard": "^10.0.3",
     "uglify-js": "^3.1.9"
   },
   "optionalDependencies": {
     "minimist": "^1.2.0"
-  },
-  "eslintConfig": {
-    "extends": "standard",
-    "plugins": [
-      "standard",
-      "promise"
-    ],
-    "rules": {
-      "no-new-func": 0,
-      "space-before-function-paren": [
-        2,
-        "never"
-      ]
-    }
   }
 }
