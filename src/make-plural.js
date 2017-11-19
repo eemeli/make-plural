@@ -205,7 +205,7 @@ export default class MakePlural {
   fnToString(name) {
     return Function.prototype.toString.call(this.fn)
            .replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
-           .replace('\n/**/', '')
+           .replace(/\n\/\*(``)?\*\//, '')
   }
 }
 
