@@ -187,25 +187,31 @@ export default class MakePlural {
 
   buildFunction(cardinals, ordinals) {
     const compile = c => c ? ((c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c)) : ''
-    const fold = { vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g, '$1$2\n      '),
-             cond: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2') }
-    const cond = [ ordinals && [ 'ordinal', !cardinals ],
-             cardinals && [ 'cardinal', true ]
-           ].map(compile)
-            .map(fold.cond)
-    const body = [ fold.vars(this.parser.vars()),
-             ...cond
-           ].filter(line => !/^[\s;]*$/.test(line))
-            .map(line => line.replace(/\s+$/gm, ''))
-            .join('\n')
+    const fold = {
+      vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g, '$1$2\n      '),
+      cond: str => `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2')
+    }
+    const cond = [
+      ordinals && [ 'ordinal', !cardinals ],
+      cardinals && [ 'cardinal', true ]
+    ]
+      .map(compile)
+      .map(fold.cond)
+    const body = [
+      fold.vars(this.parser.vars()),
+      ...cond
+    ]
+      .filter(line => !/^[\s;]*$/.test(line))
+      .map(line => line.replace(/\s+$/gm, ''))
+      .join('\n')
     const args = ordinals && cardinals ? 'n, ord' : 'n'
     return new Function(args, body)
   }
 
   fnToString(name) {
     return Function.prototype.toString.call(this.fn)
-           .replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
-           .replace(/\n\/\*(``)?\*\//, '')
+      .replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
+      .replace(/\n\/\*(``)?\*\//, '')
   }
 }
 
