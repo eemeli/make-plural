@@ -11,13 +11,10 @@
   ],
   "author": "Eemeli Aro <eemeli@gmail.com>",
   "license": "ISC",
-  "homepage": "https://github.com/eemeli/make-plural.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/eemeli/make-plural.js.git"
-  },
+  "homepage": "https://github.com/eemeli/make-plural#readme",
+  "repository": "eemeli/make-plural",
   "bugs": {
-    "url": "https://github.com/eemeli/make-plural.js/issues"
+    "url": "https://github.com/eemeli/make-plural/issues"
   },
   "files": [
     "bin/",

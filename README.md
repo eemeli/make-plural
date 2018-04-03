@@ -1,5 +1,5 @@
 [![ISC License](https://img.shields.io/npm/l/make-plural.svg)](http://en.wikipedia.org/wiki/ISC_license)
-[![Build Status](https://travis-ci.org/eemeli/make-plural.js.svg?branch=master)](https://travis-ci.org/eemeli/make-plural.js)
+[![Build Status](https://travis-ci.org/eemeli/make-plural.svg?branch=master)](https://travis-ci.org/eemeli/make-plural)
 
 
 make-plural
@@ -33,13 +33,13 @@ bower install make-plural
 ```
 _or_
 ```
-git clone https://github.com/eemeli/make-plural.js.git
-cd make-plural.js
+git clone https://github.com/eemeli/make-plural.git
+cd make-plural
 npm install
 make all
 ```
 _or_ download the latest release from
-[here](https://github.com/eemeli/make-plural.js/releases/latest)
+[here](https://github.com/eemeli/make-plural/releases/latest)
 
 
 ## Precompiled plurals
@@ -249,7 +249,7 @@ console.log(sk.toString())
 // }
 ```
 
-`make-plural.js` may also be used in browser environments; see `test/index.html`
+`make-plural` may also be used in browser environments; see `test/index.html`
 for an example of its use.
 
 

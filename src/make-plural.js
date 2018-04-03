@@ -1,5 +1,5 @@
 /**
- * make-plural.js -- https://github.com/eemeli/make-plural.js/
+ * make-plural -- https://github.com/eemeli/make-plural
  * Copyright (c) 2014-2016 by Eemeli Aro <eemeli@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any

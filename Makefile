@@ -7,7 +7,7 @@ ERR := $(call VT,31;1)✖${VT0}
 
 GH_API_FETCH_VALUE = curl -s https://api.github.com/$(1) | grep -m1 '"$(2)"' | cut -d: -f2 | sed 's/^ *"\?//;s/"\?, *$$//'
 
-GH_REPO = eemeli/make-plural.js
+GH_REPO = eemeli/make-plural
 NPM_TAG = latest
 
 BIN = ./node_modules/.bin

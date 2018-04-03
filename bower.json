@@ -1,8 +1,8 @@
 {
   "name": "make-plural",
   "main": "make-plural.js",
-  "homepage": "https://github.com/eemeli/make-plural.js",
-  "repository": { "type": "git", "url": "git://github.com/eemeli/make-plural.js.git" },
+  "homepage": "https://github.com/eemeli/make-plural",
+  "repository": { "type": "git", "url": "git://github.com/eemeli/make-plural.git" },
   "authors": [ "Eemeli Aro <eemeli@gmail.com>" ],
   "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
   "moduleType": [ "amd", "es6", "globals", "node" ],
