@@ -1,8 +1,8 @@
 {
   "presets": [
-    "env"
+    "@babel/preset-env"
   ],
   "plugins": [
-    "add-module-exports"
+    "babel-plugin-add-module-exports"
   ]
 }

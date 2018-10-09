@@ -33,18 +33,18 @@
     "version": "git add -f $FILES"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-env": "^1.6.1",
-    "babelify": "^8.0.0",
-    "browserify": "^14.5.0",
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-plugin-add-module-exports": "^1.0.0",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
     "cldr-core": "^33.0.0",
     "expect.js": "*",
-    "http-server": "^0.10.0",
-    "mocha": "^4.0.1",
-    "standard": "^10.0.3",
-    "uglify-js": "^3.1.9"
+    "http-server": "^0.11.1",
+    "mocha": "^5.2.0",
+    "standard": "^12.0.1",
+    "uglify-js": "^3.4.9"
   },
   "optionalDependencies": {
     "minimist": "^1.2.0"
