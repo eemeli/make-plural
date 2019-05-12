@@ -11,15 +11,8 @@ generated output for the latest edition of the CLDR; the latter is just over 2kB
 in size when minified & gzipped and covers 199 languages, so it's probably what
 you want unless you really know what you're doing.
 
-Make-plural is written in [ECMAScript 6] and transpiled using [Babel] and
-[Browserify] to CommonJS and AMD and ES6 module formats, as well as being
-suitable for use in browser environments.
-
 [Unicode CLDR]: http://cldr.unicode.org/
 [rules]: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
-[ECMAScript 6]: https://people.mozilla.org/~jorendorff/es6-draft.html
-[Babel]: https://babeljs.io/
-[Browserify]: http://browserify.org/
 
 
 ## Installation
@@ -59,9 +52,6 @@ uppercase for the country, so for example the code for Portugese as spoken in
 Portugal is `pt-PT`.
 
 [capitalization of locale codes]: https://tools.ietf.org/html/bcp47#section-2.1.1
-
-
-### Precompiled use: Node
 
 ```js
 var plurals = require('make-plural')
@@ -105,44 +95,8 @@ var pluralCategories = require('make-plural/umd/pluralCategories')
 //   zu: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] } }
 ```
 
-### Precompiled use: Web
 
-```html
-<script src="path/to/make-plural/umd/plurals.js"></script>
-<script>
-  var ru = plurals.ru
-  console.log('1: ' + plurals.ru(1) + ', 3.0: ' + plurals.ru(3.0) +
-              ', "1.0": ' + plurals.ru('1.0') + ', "0": ' + plurals.ru('0'));
-  console.log(plurals.ru.toString());
-</script>
-```
-With outputs:
-```
-1: one, 3.0: few, "1.0": other, "0": many
-
-function(n, ord) {
-  var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1),
-      i100 = i.slice(-2);
-  if (ord) return 'other';
-  return (v0 && i10 == 1 && i100 != 11) ? 'one'
-      : (v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12
-          || i100 > 14)) ? 'few'
-      : (v0 && i10 == 0 || v0 && (i10 >= 5 && i10 <= 9)
-          || v0 && (i100 >= 11 && i100 <= 14)) ? 'many'
-      : 'other';
-}
-```
-
-Note that with `umd/plurals.min.js`, the stringified function would be rendered
-as:
-```js
-function (e,t){var r=String(e).split("."),n=r[0],o=!r[1],c=n.slice(-1),
-i=n.slice(-2);return t?"other":o&&1==c&&11!=i?"one":o&&c>=2&&4>=c&&(12>i||i>14)?
-"few":o&&0==c||o&&c>=5&&9>=c||o&&i>=11&&14>=i?"many":"other"}
-```
-
-
-## Live compiler: `make-plural.js`
+## Live Compiler: `make-plural/lib/make-plural`
 
 ### MakePlural.load(cldr, ...)
 Loads CLDR rules from one or more `cldr` variables, each of which must be an
@@ -180,13 +134,10 @@ If the second parameter is undefined, the values are taken from
 `MakePlural.cardinals` (default `true`) and `MakePlural.ordinals` (default
 `false`).
 
-
-### Live use: Node
-
 ```js
 var plurals = require('cldr-core/supplemental/plurals.json')
 var ordinals = require('cldr-core/supplemental/ordinals.json')
-var MakePlural = require('make-plural/make-plural').load(plurals, ordinals)
+var MakePlural = require('make-plural/lib/make-plural').load(plurals, ordinals)
 // { [Function: MakePlural]
 //   cardinals: true,
 //   ordinals: false,
@@ -282,7 +233,7 @@ Using `MakePlural.load()`, you may make use of external sources of CLDR data.
 For example, the following works when using together with [cldr-data]:
 ```js
 var cldr = require('cldr-data');
-var MakePlural = require('make-plural/make-plural').load(
+var MakePlural = require('make-plural/lib/make-plural').load(
   cldr('supplemental/plurals'),
   cldr('supplemental/ordinals')
 );
