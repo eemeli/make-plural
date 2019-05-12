@@ -5,6 +5,7 @@ export default class Compiler {
   static cardinals = true
   static ordinals = false
   static rules = { cardinal: {}, ordinal: {} }
+  static foldWidth = 78
 
   static load(...args) {
     args.forEach(cldr => {
@@ -73,9 +74,14 @@ export default class Compiler {
     const compile = c =>
       c ? (c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c) : ''
     const fold = {
-      vars: str => `  ${str};`.replace(/(.{1,78})(,|$) ?/g, '$1$2\n      '),
-      cond: str =>
-        `  ${str};`.replace(/(.{1,78}) (\|\| |$) ?/gm, '$1\n          $2')
+      vars(str) {
+        var re = new RegExp(`(.{1,${Compiler.foldWidth}})(,|$) ?`, 'g')
+        return `  ${str};`.replace(re, '$1$2\n      ')
+      },
+      cond(str) {
+        var re = new RegExp(`(.{1,${Compiler.foldWidth}}) (\\|\\| |$) ?`, 'gm')
+        return `  ${str};`.replace(re, '$1\n          $2')
+      }
     }
     const cond = [
       ordinals && ['ordinal', !cardinals],
