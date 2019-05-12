@@ -36,7 +36,7 @@ _or_
 git clone https://github.com/eemeli/make-plural.git
 cd make-plural
 npm install
-make all
+npm run build
 ```
 _or_ download the latest release from
 [here](https://github.com/eemeli/make-plural/releases/latest)
