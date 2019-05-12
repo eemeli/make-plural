@@ -1,1 +1,1 @@
-module.exports = require('./lib/make-plural').default
+module.exports = require('./lib/compiler').default
