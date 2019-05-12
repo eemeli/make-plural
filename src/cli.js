@@ -16,7 +16,7 @@ var argv = require('minimist')(process.argv.slice(2), {
   string: [ 'locale', 'value' ],
   boolean: [ 'categories', 'es6' ]
 })
-var MakePlural = require('../make-plural').load(
+var MakePlural = require('./make-plural').load(
   require('../data/plurals.json'),
   require('../data/ordinals.json')
 )

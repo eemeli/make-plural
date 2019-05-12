@@ -20,6 +20,7 @@
     "bin/",
     "data/",
     "es6/",
+    "lib/",
     "make-plural.*",
     "umd/"
   ],
@@ -28,16 +29,12 @@
   },
   "main": "umd/plurals",
   "scripts": {
-    "bin": "npm run bin:common && npm run bin:make-plural",
-    "bin:common": "babel src/common.js -d bin/",
-    "bin:make-plural": "babel src/cli.js -o bin/make-plural",
-    "postbin:make-plural": "chmod a+x bin/make-plural",
     "browserify": "browserify src/make-plural.js -t babelify -s MakePlural -o make-plural.js",
     "browserify:test": "http-server .",
     "prebuild": "npm run data",
-    "build": "npm run bin && npm run browserify && npm run es6 && npm run umd",
+    "build": "babel src/ -d lib && npm run browserify && npm run es6 && npm run umd",
     "postbuild": "npm run minify && npm run test && npm run lint",
-    "clean": "rm -rf bin data es6 make-plural.* umd",
+    "clean": "rm -rf data es6 lib make-plural.* umd",
     "predata": "mkdirp data",
     "data": "cp node_modules/cldr-core/supplemental/{plurals,ordinals}.json data/",
     "prees6": "mkdirp es6",
@@ -54,7 +51,7 @@
     "umd": "npm run umd:plurals && npm run umd:plural-categories",
     "umd:plurals": "./bin/make-plural > umd/plurals.js",
     "umd:plural-categories": "./bin/make-plural --categories > umd/pluralCategories.js",
-    "version": "git add -f bin data make-plural*.js es6 umd"
+    "version": "git add -f data es6 umd"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

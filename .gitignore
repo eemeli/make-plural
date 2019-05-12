@@ -1,6 +1,6 @@
-/bin
 /data
 /es6
+/lib
 /make-plural*.js
 /umd
 node_modules
