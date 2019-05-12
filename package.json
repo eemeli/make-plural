@@ -11,7 +11,7 @@
     "build:cli": "babel packages/cli/src/ -d packages/cli/lib",
     "build:compiler": "babel packages/compiler/src/ -d packages/compiler/lib",
     "build": "npm run build:compiler && npm run build:cli && lerna run build",
-    "lint": "standard 'packages/*/src/*.js'",
+    "prettier": "prettier --write '{test,packages/*/src}/*.js'",
     "test": "mocha"
   },
   "dependencies": {
@@ -29,6 +29,6 @@
     "expect.js": "^0.3.1",
     "lerna": "^3.13.4",
     "mocha": "^6.1.4",
-    "standard": "^12.0.1"
+    "prettier": "^1.17.0"
   }
 }
