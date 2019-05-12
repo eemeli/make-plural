@@ -54,7 +54,7 @@
     "umd": "npm run umd:plurals && npm run umd:plural-categories",
     "umd:plurals": "./bin/make-plural > umd/plurals.js",
     "umd:plural-categories": "./bin/make-plural --categories > umd/pluralCategories.js",
-    "version": "git add -f $FILES"
+    "version": "git add -f bin data make-plural*.js es6 umd"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

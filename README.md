@@ -38,8 +38,6 @@ cd make-plural
 npm install
 npm run build
 ```
-_or_ download the latest release from
-[here](https://github.com/eemeli/make-plural/releases/latest)
 
 
 ## Precompiled plurals
@@ -173,7 +171,7 @@ used to generate a clean string representation of the function, with an
 optional name `name`.
 
 The optional second parameter may contain the following boolean members:
-* `cardinals` — if true, rules for cardinal values (1 day, 2 days, etc.) are 
+* `cardinals` — if true, rules for cardinal values (1 day, 2 days, etc.) are
   included
 * `ordinals` — if true, rules for ordinal values (1st, 2nd, etc.) are included
 
