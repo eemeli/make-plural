@@ -29,10 +29,6 @@ npm install make-plural
 ```
 _or_
 ```
-bower install make-plural
-```
-_or_
-```
 git clone https://github.com/eemeli/make-plural.git
 cd make-plural
 npm install
