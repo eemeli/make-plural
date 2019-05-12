@@ -56,7 +56,7 @@ describe('MakePlural compiler', function(){
         it('should require `new`', function(){
             expect(MakePlural).to.throwException(function(e){
                 expect(e).to.be.a(TypeError);
-                expect(e.message).to.contain('class');
+                expect(e.message).to.contain('Class');
             });
         });
         it('should require a locale', function(){

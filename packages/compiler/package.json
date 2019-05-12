@@ -21,7 +21,8 @@
     "url": "https://github.com/eemeli/make-plural/issues"
   },
   "files": [
+    "index.js",
     "lib/"
   ],
-  "main": "lib/make-plural.js"
+  "main": "index.js"
 }
