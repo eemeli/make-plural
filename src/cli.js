@@ -16,10 +16,10 @@ var argv = require('minimist')(process.argv.slice(2), {
   string: [ 'locale', 'value' ],
   boolean: [ 'categories', 'es6' ]
 })
-var MakePlural = require('./make-plural').load(
-  require('../data/plurals.json'),
-  require('../data/ordinals.json')
-)
+
+const pluralData = require('cldr-core/supplemental/plurals.json')
+const ordinalData = require('cldr-core/supplemental/ordinals.json')
+const MakePlural = require('./make-plural').load(pluralData, ordinalData)
 
 const es6module = (value) => `
 export default {

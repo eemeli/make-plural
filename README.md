@@ -151,10 +151,11 @@ object formatted like [this][json].
 No plural data is included by default, so you'll need to call this at least
 once, or otherwise fill the `MakePlural.rules` object.
 
-The default CLDR rules are included in make-plural, and may be loaded as seen
-in the examples below.
+The default CLDR rules are available from the [cldr-core] package, and may be
+loaded as seen in the examples below.
 
 [json]: https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json
+[cldr-core]: https://www.npmjs.com/package/cldr-core
 
 
 ### new MakePlural(lc, { cardinals, ordinals })
@@ -183,9 +184,9 @@ If the second parameter is undefined, the values are taken from
 ### Live use: Node
 
 ```js
-var MakePlural = require('make-plural/make-plural').load(
-    require('make-plural/data/plurals.json'),
-    require('make-plural/data/ordinals.json'))
+var plurals = require('cldr-core/supplemental/plurals.json')
+var ordinals = require('cldr-core/supplemental/ordinals.json')
+var MakePlural = require('make-plural/make-plural').load(plurals, ordinals)
 // { [Function: MakePlural]
 //   cardinals: true,
 //   ordinals: false,
@@ -268,8 +269,7 @@ other
 Please see the source of `src/index.js` for more details.
 
 
-
-## Dependencies
+## Dependencies -- FIXME
 
 Make-plural has no required runtime dependencies. CLDR plural rule data is
 included in JSON format; make-plural supports the [LDML Language Plural Rules]

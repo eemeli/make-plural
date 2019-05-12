@@ -15,8 +15,8 @@
         if (xhr.status !== 200) throw new Error('XMLHttpRequest failed for ' + JSON.stringify(path));
         return JSON.parse(xhr.responseText);
     }
-    window.cardinals = getJSON('../data/plurals.json');
-    window.ordinals = getJSON('../data/ordinals.json');
+    window.cardinals = getJSON('../node_modules/cldr-core/supplemental/plurals.json');
+    window.ordinals = getJSON('../node_modules/cldr-core/supplemental/ordinals.json');
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
