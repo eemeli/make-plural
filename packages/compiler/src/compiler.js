@@ -3,8 +3,9 @@ import Tests from './tests'
 
 function toString(fn, name) {
   const str = Function.prototype.toString.call(fn)
+  const func = name ? `function ${name}` : 'function'
   return str
-    .replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
+    .replace(/^function( \w+)\(\s*n\s*(,\s*ord)?\s*\)?/, `${func}(n$2)`)
     .replace(/\n\/\*(``)?\*\//, '')
 }
 

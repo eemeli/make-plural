@@ -65,15 +65,15 @@ function printPluralsModule(es6) {
     let fn = mpc.compile().toString()
     mpc.test()
     cp.forEach(function(p, i) {
-      if (fn === p) fn = `_cp[${i}]`
+      if (fn === p) fn = `C[${i}]`
     })
     return fn
   })
   if (es6) {
-    console.log('const _cp = [\n' + cp.join(',\n') + '\n];')
+    console.log('const C = [\n' + cp.join(',\n') + '\n];')
     console.log(es6module(plurals.join(',\n\n')))
   } else {
-    console.log('var _cp = [\n' + cp.join(',\n') + '\n];')
+    console.log('var C = [\n' + cp.join(',\n') + '\n];')
     console.log(umd('plurals', plurals.join(',\n\n')))
   }
 }

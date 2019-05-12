@@ -2,7 +2,7 @@
 
 `make-plural` provides JavaScript functions determining the pluralization categories of the approximately 200 languages included in the [Unicode CLDR].
 
-The categorization functions are pre-compiled, require no runtime dependencies, and should compress to about 2.7kB. In order to generate an even smaller file from a subset of all possible language (or to drop ordinal plural support), use [make-plural-compiler].
+The categorization functions are pre-compiled, require no runtime dependencies, and should compress to about 2.5kB. In order to generate an even smaller file from a subset of all possible language (or to drop ordinal plural support), use [make-plural-compiler].
 
 [unicode cldr]: http://cldr.unicode.org/
 [make-plural-compiler]: https://www.npmjs.com/package/make-plural-compiler
