@@ -1,0 +1,2 @@
+reporter: progress
+require: '@babel/register'

@@ -1,8 +1,9 @@
-const cardinalData = require('cldr-core/supplemental/plurals.json')
-const ordinalData = require('cldr-core/supplemental/ordinals.json')
-const expect = require('expect.js');
-const MakePlural = require('make-plural-compiler');
-const plurals = require('make-plural');
+import cardinalData from 'cldr-core/supplemental/plurals.json'
+import ordinalData from 'cldr-core/supplemental/ordinals.json'
+import expect from 'expect.js'
+
+import MakePlural from 'make-plural-compiler/src/compiler'
+import plurals from 'make-plural/umd/plurals'
 
 MakePlural.load(cardinalData, ordinalData);
 

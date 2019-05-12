@@ -8,11 +8,11 @@
   "repository": "eemeli/make-plural",
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build:cli": "babel --config-file ./.babelrc packages/cli/src/ -d packages/cli/lib",
-    "build:compiler": "babel --config-file ./.babelrc packages/compiler/src/ -d packages/compiler/lib",
+    "build:cli": "babel packages/cli/src/ -d packages/cli/lib",
+    "build:compiler": "babel packages/compiler/src/ -d packages/compiler/lib",
     "build": "npm run build:compiler && npm run build:cli && lerna run build",
     "lint": "standard 'packages/*/src/*.js'",
-    "test": "mocha test/compiler.js test/plural-data.js --reporter progress"
+    "test": "mocha"
   },
   "dependencies": {
     "make-plural": "file:packages/plurals",
@@ -24,6 +24,7 @@
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4",
     "cldr-core": "^34.0.0",
     "expect.js": "^0.3.1",
     "lerna": "^3.13.4",
