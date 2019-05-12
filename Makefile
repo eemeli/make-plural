@@ -31,8 +31,7 @@ bin/common.js: src/common.js | bin
 	$(BIN)/babel $< > $@
 
 bin/make-plural: src/cli.js bin/common.js | bin
-	echo "#!/usr/bin/env node\n" > $@
-	$(BIN)/babel $< >> $@
+	$(BIN)/babel $< > $@
 	chmod a+x $@
 
 es6/plurals.js: bin/make-plural make-plural.js $(DATA) | es6

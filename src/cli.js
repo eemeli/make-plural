@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /** A compiler for make-plural.js
  *
  *  Usage:
