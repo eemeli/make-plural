@@ -4,9 +4,13 @@ import Tests from './tests'
 function toString(fn, name) {
   const str = Function.prototype.toString.call(fn)
   const func = name ? `function ${name}` : 'function'
-  return str
-    .replace(/^function( \w+)\(\s*n\s*(,\s*ord)?\s*\)?/, `${func}(n$2)`)
-    .replace(/\n\/\*(``)?\*\//, '')
+  return str.replace(/^function(?: \w+)\(([^)]+)\)/, (_, args) => {
+    const a = args
+      .replace(/\n\/\*(``)?\*\//, '') // https://bugs.chromium.org/p/v8/issues/detail?id=2470
+      .split(',')
+      .map(arg => arg.trim())
+    return `${func}(${a.join(', ')})`
+  })
 }
 
 export default class Compiler {
