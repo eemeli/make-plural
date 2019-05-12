@@ -24,6 +24,7 @@ class Parser {
       return 'n == 1 && v0'
     }
     return cond
+      .replace(/([^=\s])([!=%]+)([^=\s])/g, '$1 $2 $3')
       .replace(/([tv]) (!?)= 0/g, (m, sym, noteq) => {
         const sn = sym + '0'
         this[sn] = 1
