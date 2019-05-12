@@ -1,34 +1,42 @@
 export default class Tests {
-  constructor (obj) {
+  constructor(obj) {
     this.obj = obj
     this.ordinal = {}
     this.cardinal = {}
   }
 
-  add (type, cat, src) {
+  add(type, cat, src) {
     this[type][cat] = { src, values: null }
   }
 
-  testCond (n, type, expResult, fn) {
+  testCond(n, type, expResult, fn) {
     try {
-      var r = (fn || this.obj.fn)(n, (type === 'ordinal'))
+      var r = (fn || this.obj.fn)(n, type === 'ordinal')
     } catch (e) {
       r = e.toString()
     }
     if (r !== expResult) {
       throw new Error(
-        'Locale ' + JSON.stringify(this.obj.lc) + type +
-        ' rule self-test failed for v = ' + JSON.stringify(n) +
-        ' (was ' + JSON.stringify(r) + ', expected ' + JSON.stringify(expResult) + ')'
+        'Locale ' +
+          JSON.stringify(this.obj.lc) +
+          type +
+          ' rule self-test failed for v = ' +
+          JSON.stringify(n) +
+          ' (was ' +
+          JSON.stringify(r) +
+          ', expected ' +
+          JSON.stringify(expResult) +
+          ')'
       )
     }
     return true
   }
 
-  testCat (type, cat, fn) {
+  testCat(type, cat, fn) {
     const data = this[type][cat]
     if (!data.values) {
-      data.values = data.src.join(' ')
+      data.values = data.src
+        .join(' ')
         .replace(/^[ ,]+|[ ,…]+$/g, '')
         .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
         .split(/[ ,~…]+/)
@@ -40,7 +48,7 @@ export default class Tests {
     return true
   }
 
-  testAll () {
+  testAll() {
     for (let cat in this.cardinal) this.testCat('cardinal', cat)
     for (let cat in this.ordinal) this.testCat('ordinal', cat)
     return true

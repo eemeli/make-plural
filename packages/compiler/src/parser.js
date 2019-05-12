@@ -1,5 +1,5 @@
 export default class Parser {
-  parse (cond) {
+  parse(cond) {
     if (cond === 'i = 0 or n = 1') return 'n >= 0 && n <= 1'
     if (cond === 'i = 0,1') return 'n >= 0 && n < 2'
     if (cond === 'i = 1 and v = 0') {
@@ -33,7 +33,10 @@ export default class Parser {
           return `(${sym} == ${x0} || ${sym} == ${x1})`
         }
         if (noteq) return `(${sym} < ${x0} || ${sym} > ${x1})`
-        if (sym === 'n') { this.t0 = 1; return `(t0 && n >= ${x0} && n <= ${x1})` }
+        if (sym === 'n') {
+          this.t0 = 1
+          return `(t0 && n >= ${x0} && n <= ${x1})`
+        }
         return `(${sym} >= ${x0} && ${sym} <= ${x1})`
       })
       .replace(/ and /g, ' && ')
@@ -41,7 +44,7 @@ export default class Parser {
       .replace(/ = /g, ' == ')
   }
 
-  vars () {
+  vars() {
     let vars = []
     if (this.i) vars.push('i = s[0]')
     if (this.f || this.v) vars.push("f = s[1] || ''")
@@ -51,11 +54,11 @@ export default class Parser {
     if (this.t0 || this.n10 || this.n100) vars.push('t0 = Number(s[0]) == n')
     for (let k in this) {
       if (/^.10+$/.test(k)) {
-        const k0 = (k[0] === 'n') ? 't0 && s[0]' : k[0]
+        const k0 = k[0] === 'n' ? 't0 && s[0]' : k[0]
         vars.push(`${k} = ${k0}.slice(-${k.substr(2).length})`)
       }
     }
     if (!vars.length) return ''
-    return 'var ' + [ "s = String(n).split('.')", ...vars ].join(', ')
+    return 'var ' + ["s = String(n).split('.')", ...vars].join(', ')
   }
 }
