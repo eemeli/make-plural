@@ -1,5 +1,3 @@
-/es6
-/lib
-/umd
-node_modules
 .*
+node_modules
+/packages/*/lib

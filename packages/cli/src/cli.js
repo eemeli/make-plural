@@ -19,7 +19,7 @@ var argv = require('minimist')(process.argv.slice(2), {
 
 const pluralData = require('cldr-core/supplemental/plurals.json')
 const ordinalData = require('cldr-core/supplemental/ordinals.json')
-const MakePlural = require('./make-plural').load(pluralData, ordinalData)
+const MakePlural = require('make-plural-compiler').load(pluralData, ordinalData)
 
 const es6module = (value) => `
 export default {

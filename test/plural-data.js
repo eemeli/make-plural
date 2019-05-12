@@ -1,4 +1,10 @@
-MakePlural.load(cardinals, ordinals);
+const cardinalData = require('cldr-core/supplemental/plurals.json')
+const ordinalData = require('cldr-core/supplemental/ordinals.json')
+const expect = require('expect.js');
+const MakePlural = require('make-plural-compiler');
+const plurals = require('make-plural');
+
+MakePlural.load(cardinalData, ordinalData);
 
 function testPluralData(type, lc) {
     var opt = { cardinals: (type == 'cardinal'), ordinals: (type == 'ordinal') };
@@ -32,7 +38,7 @@ function testPluralData(type, lc) {
 
 describe('MakePlural data self-test', function(){
     describe('Cardinal rules', function(){
-        for (var lc in cardinals.supplemental['plurals-type-cardinal']) {
+        for (var lc in cardinalData.supplemental['plurals-type-cardinal']) {
             describe(lc, function(){
                 testPluralData('cardinal', lc);
             });
@@ -40,7 +46,7 @@ describe('MakePlural data self-test', function(){
     });
 
     describe('Ordinal rules', function(){
-        for (var lc in ordinals.supplemental['plurals-type-ordinal']) {
+        for (var lc in ordinalData.supplemental['plurals-type-ordinal']) {
             describe(lc, function(){
                 testPluralData('ordinal', lc);
             });

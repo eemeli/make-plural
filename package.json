@@ -1,62 +1,33 @@
 {
-  "name": "make-plural",
-  "version": "4.0.0-dev",
-  "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
-  "keywords": [
-    "unicode",
-    "cldr",
-    "i18n",
-    "internationalization",
-    "pluralization"
-  ],
+  "name": "make-plural-monorepo",
+  "private": true,
+  "version": "5.0.0-dev",
+  "description": "Monorepo for make-plural packages",
   "author": "Eemeli Aro <eemeli@gmail.com>",
   "license": "ISC",
-  "homepage": "https://github.com/eemeli/make-plural#readme",
   "repository": "eemeli/make-plural",
-  "bugs": {
-    "url": "https://github.com/eemeli/make-plural/issues"
-  },
-  "files": [
-    "bin/",
-    "es6/",
-    "lib/",
-    "make-plural.*",
-    "umd/"
-  ],
-  "bin": {
-    "make-plural": "./bin/make-plural"
-  },
-  "main": "umd/plurals",
   "scripts": {
-    "build": "babel src/ -d lib && npm run es6 && npm run umd",
-    "postbuild": "npm run test && npm run lint",
-    "clean": "rm -rf es6 lib umd",
-    "prees6": "mkdirp es6",
-    "es6": "npm run es6:plurals && npm run es6:plural-categories",
-    "es6:plurals": "./bin/make-plural --es6 > es6/plurals.js",
-    "es6:plural-categories": "./bin/make-plural --es6 --categories > es6/pluralCategories.js",
-    "preumd": "mkdirp umd",
-    "lint": "standard 'src/*.js'",
-    "test": "mocha test/code.js test/data.js",
-    "umd": "npm run umd:plurals && npm run umd:plural-categories",
-    "umd:plurals": "./bin/make-plural > umd/plurals.js",
-    "umd:plural-categories": "./bin/make-plural --categories > umd/pluralCategories.js",
-    "version": "git add -f es6 umd"
+    "bootstrap": "lerna bootstrap",
+    "build:cli": "babel --config-file ./.babelrc packages/cli/src/ -d packages/cli/lib",
+    "build:compiler": "babel --config-file ./.babelrc packages/compiler/src/ -d packages/compiler/lib",
+    "build": "npm run build:compiler && npm run build:cli && lerna run build",
+    "lint": "standard 'packages/*/src/*.js'",
+    "test": "mocha test/compiler.js test/plural-data.js --reporter progress"
   },
   "dependencies": {
-    "cldr-core": "^34.0.0"
+    "make-plural": "file:packages/plurals",
+    "make-plural-cli": "file:packages/cli",
+    "make-plural-compiler": "file:packages/compiler"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "babel-plugin-add-module-exports": "^1.0.2",
+    "cldr-core": "^34.0.0",
     "expect.js": "^0.3.1",
-    "mkdirp": "^0.5.1",
+    "lerna": "^3.13.4",
     "mocha": "^6.1.4",
     "standard": "^12.0.1"
-  },
-  "optionalDependencies": {
-    "minimist": "^1.2.0"
   }
 }

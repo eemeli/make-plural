@@ -1,3 +1,8 @@
+const cardinalData = require('cldr-core/supplemental/plurals.json')
+const ordinalData = require('cldr-core/supplemental/ordinals.json')
+const expect = require('expect.js');
+const MakePlural = require('make-plural-compiler');
+
 describe('MakePlural compiler', function(){
     it('should have data members', function(){
         expect(MakePlural).to.have.keys('cardinals', 'ordinals', 'rules');
@@ -18,7 +23,7 @@ describe('MakePlural compiler', function(){
             expect(MakePlural.rules.cardinal).to.only.have.key('xx');
         });
         it('should load default CLDR data', function(){
-            expect(MakePlural.load).withArgs(cardinals, ordinals).to.not.throwException();
+            expect(MakePlural.load).withArgs(cardinalData, ordinalData).to.not.throwException();
             expect(MakePlural.rules).to.only.have.keys('cardinal', 'ordinal');
             expect(MakePlural.rules.cardinal).to.not.have.key('xx');
             expect(MakePlural.rules.cardinal).to.have.key('en');
