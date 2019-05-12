@@ -17,10 +17,11 @@ var argv = require('minimist')(process.argv.slice(2), {
     ordinal: null,
     cardinal: null,
     categories: false,
-    es6: false
+    es6: false,
+    width: null
   },
-  alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c', es6: 'e' },
-  string: ['locale', 'value'],
+  alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c', es6: 'e', width: 'w' },
+  string: ['locale', 'value', 'width'],
   boolean: ['categories', 'es6']
 })
 
@@ -111,6 +112,8 @@ argv._.forEach(a => {
 
 MakePlural.cardinals = argv.cardinal !== null ? truthy(argv.cardinal) : true
 MakePlural.ordinals = argv.ordinal !== null ? truthy(argv.ordinal) : true
+const foldWidth = Number(argv.width)
+if (foldWidth > 0) MakePlural.foldWidth = foldWidth
 
 if (argv.locale) {
   const mpc = new MakePlural(argv.locale)

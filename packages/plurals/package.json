@@ -28,10 +28,10 @@
   "scripts": {
     "build": "npm run es6 && npm run umd",
     "es6": "npm run es6:plurals && npm run es6:plural-categories",
-    "es6:plurals": "../cli/make-plural --es6 > es6/plurals.js",
+    "es6:plurals": "../cli/make-plural -w118 --es6 > es6/plurals.js",
     "es6:plural-categories": "../cli/make-plural --es6 --categories > es6/pluralCategories.js",
     "umd": "npm run umd:plurals && npm run umd:plural-categories",
-    "umd:plurals": "../cli/make-plural > umd/plurals.js",
+    "umd:plurals": "../cli/make-plural -w118 > umd/plurals.js",
     "umd:plural-categories": "../cli/make-plural --categories > umd/pluralCategories.js",
     "version": "git add -f es6 umd"
   }
