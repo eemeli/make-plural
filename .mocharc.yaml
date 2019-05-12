@@ -1,2 +1,3 @@
+bail: true
 reporter: progress
 require: '@babel/register'

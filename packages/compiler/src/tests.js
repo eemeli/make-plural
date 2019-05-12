@@ -1,6 +1,6 @@
 export default class Tests {
   constructor(obj) {
-    this.obj = obj
+    this.lc = obj.lc
     this.ordinal = {}
     this.cardinal = {}
   }
@@ -9,25 +9,24 @@ export default class Tests {
     this[type][cat] = { src, values: null }
   }
 
+  error(n, type, msg) {
+    const lc = JSON.stringify(this.lc)
+    const val = JSON.stringify(n)
+    return new Error(
+      `Locale ${lc} ${type} rule self-test failed for ${val} (${msg})`
+    )
+  }
+
   testCond(n, type, expResult, fn) {
     try {
-      var r = (fn || this.obj.fn)(n, type === 'ordinal')
-    } catch (e) {
-      r = e.toString()
+      var r = fn(n, type === 'ordinal')
+    } catch (error) {
+      throw this.error(n, type, error)
     }
     if (r !== expResult) {
-      throw new Error(
-        'Locale ' +
-          JSON.stringify(this.obj.lc) +
-          type +
-          ' rule self-test failed for v = ' +
-          JSON.stringify(n) +
-          ' (was ' +
-          JSON.stringify(r) +
-          ', expected ' +
-          JSON.stringify(expResult) +
-          ')'
-      )
+      const res = JSON.stringify(r)
+      const exp = JSON.stringify(expResult)
+      throw this.error(n, type, `was ${res}, expected ${exp}`)
     }
     return true
   }
@@ -48,9 +47,9 @@ export default class Tests {
     return true
   }
 
-  testAll() {
-    for (let cat in this.cardinal) this.testCat('cardinal', cat)
-    for (let cat in this.ordinal) this.testCat('ordinal', cat)
+  testAll(fn) {
+    for (let cat in this.cardinal) this.testCat('cardinal', cat, fn)
+    for (let cat in this.ordinal) this.testCat('ordinal', cat, fn)
     return true
   }
 }

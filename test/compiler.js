@@ -69,7 +69,7 @@ describe('MakePlural compiler', function() {
     })
   })
 
-  describe('MakePlural()', function() {
+  describe('Compiler()', function() {
     it('should require `new`', function() {
       expect(MakePlural).to.throwException(function(e) {
         expect(e).to.be.a(TypeError)
@@ -77,26 +77,24 @@ describe('MakePlural compiler', function() {
       })
     })
     it('should require a locale', function() {
-      var new_mp = function(lc) {
-        return new MakePlural(lc)
-      }
+      var new_mp = lc => new MakePlural(lc)
       expect(new_mp).to.throwException()
       expect(new_mp)
         .withArgs('en')
         .to.not.throwException()
     })
     it('should return a pluralization function', function() {
-      var mp = new MakePlural('en')
+      var mp = new MakePlural('en').compile()
       expect(mp).to.be.a(Function)
       expect(mp(1)).to.be('one')
     })
     it('should handle local options', function() {
-      var mp = new MakePlural('en', { ordinals: true })
+      var mp = new MakePlural('en', { ordinals: true }).compile()
       expect(mp(2, true)).to.be('two')
     })
     it('should handle global options', function() {
       MakePlural.ordinals = true
-      var mp = new MakePlural('en')
+      var mp = new MakePlural('en').compile()
       expect(mp(2, true)).to.be('two')
       MakePlural.ordinals = false
     })
@@ -104,8 +102,9 @@ describe('MakePlural compiler', function() {
 
   describe('#test()', function() {
     it('should validate default functions', function() {
-      var mp = new MakePlural('en', { ordinals: true })
-      expect(mp.test()).to.be(mp)
+      var mpc = new MakePlural('en', { ordinals: true })
+      var mp = mpc.compile()
+      expect(() => mpc.test()).not.to.throwException()
     })
     it('should not validate bad functions', function() {
       var cldr = {
@@ -120,8 +119,9 @@ describe('MakePlural compiler', function() {
         },
         prevRules = MakePlural.rules
       MakePlural.load(cldr)
-      var mp = new MakePlural('xx')
-      expect(mp.test).to.throwException(function(e) {
+      var mpc = new MakePlural('xx')
+      var mp = mpc.compile()
+      expect(() => mpc.test()).to.throwException(e => {
         expect(e.message).to.contain('self-test failed')
       })
       MakePlural.rules = prevRules
@@ -130,11 +130,11 @@ describe('MakePlural compiler', function() {
 
   describe('#toString()', function() {
     it('should return a string', function() {
-      var mp = new MakePlural('en', { ordinals: true })
+      var mp = new MakePlural('en', { ordinals: true }).compile()
       expect(mp.toString()).to.contain('function')
     })
     it("which can be eval'd as a function", function() {
-      var mp = new MakePlural('en', { ordinals: true })
+      var mp = new MakePlural('en', { ordinals: true }).compile()
       var fn = eval('(' + mp.toString() + ')')
       expect(fn).to.be.a(Function)
       expect(fn(1)).to.be('one')

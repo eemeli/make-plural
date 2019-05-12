@@ -1,6 +1,13 @@
 import Parser from './parser'
 import Tests from './tests'
 
+function toString(fn, name) {
+  const str = Function.prototype.toString.call(fn)
+  return str
+    .replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
+    .replace(/\n\/\*(``)?\*\//, '')
+}
+
 export default class Compiler {
   static cardinals = true
   static ordinals = false
@@ -30,23 +37,26 @@ export default class Compiler {
   }
 
   constructor(lc, { cardinals, ordinals } = Compiler) {
+    if (!lc) throw new Error('A locale is required')
     if (!cardinals && !ordinals)
       throw new Error('At least one type of plural is required')
     this.lc = lc
     this.categories = { cardinal: [], ordinal: [] }
     this.parser = new Parser()
     this.tests = new Tests(this)
-    this.fn = this.buildFunction(cardinals, ordinals)
-    this.fn._obj = this
-    this.fn.categories = this.categories
-    this.fn.test = function() {
-      return this.tests.testAll() && this.fn
-    }.bind(this)
-    this.fn.toString = this.fnToString.bind(this)
+    this.types = { cardinals, ordinals }
+  }
+
+  compile() {
+    if (!this.fn) {
+      this.fn = this.buildFunction()
+      this.fn.toString = toString.bind(null, this.fn)
+      this.test = () => this.tests.testAll(this.fn)
+    }
     return this.fn
   }
 
-  compile(type, req) {
+  buildBody(type, req) {
     let cases = []
     const rules = Compiler.getRules(type, this.lc)
     if (!rules) {
@@ -70,9 +80,10 @@ export default class Compiler {
     }
   }
 
-  buildFunction(cardinals, ordinals) {
+  buildFunction() {
+    const { cardinals, ordinals } = this.types
     const compile = c =>
-      c ? (c[1] ? 'return ' : 'if (ord) return ') + this.compile(...c) : ''
+      c ? (c[1] ? 'return ' : 'if (ord) return ') + this.buildBody(...c) : ''
     const fold = {
       vars(str) {
         var re = new RegExp(`(.{1,${Compiler.foldWidth}})(,|$) ?`, 'g')
@@ -95,12 +106,5 @@ export default class Compiler {
       .join('\n')
     const args = ordinals && cardinals ? 'n, ord' : 'n'
     return new Function(args, body) // eslint-disable-line no-new-func
-  }
-
-  fnToString(name) {
-    return Function.prototype.toString
-      .call(this.fn)
-      .replace(/^function( \w+)?/, name ? 'function ' + name : 'function')
-      .replace(/\n\/\*(``)?\*\//, '')
   }
 }

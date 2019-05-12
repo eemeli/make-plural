@@ -29,57 +29,66 @@ The default CLDR rules are available from the [cldr-core] package, and may be lo
 
 ## new Compiler(lc, { cardinals, ordinals })
 
-Returns a function that takes an argument `n` and returns its plural category for the given locale `lc`. If no direct match for `lc` is found, it is compared case-insensitively to known locales.
-
-The returned function has an overloaded `toString(name)` method that may be used to generate a clean string representation of the function, with an optional name `name`.
+Creates a new compiler for the given locale `lc`. If no direct match for `lc` is found, it is compared case-insensitively to known locales.
 
 The optional second parameter may contain the following boolean members:
 
 - `cardinals` — if true, rules for cardinal values (1 day, 2 days, etc.) are included
 - `ordinals` — if true, rules for ordinal values (1st, 2nd, etc.) are included
 
-If both `cardinals` and `ordinals` are true, the returned function takes a second parameter `ord`. Then, if `ord` is true, the function will return the ordinal rather than cardinal category applicable to `n` in locale `lc`.
-
 If the second parameter is undefined, the values are taken from `Compiler.cardinals` (default `true`) and `Compiler.ordinals` (default `false`).
 
+## Compiler#compile()
+
+Returns a function that takes an argument `n` and returns its plural category for the given locale. The function has an overloaded `toString(name)` method that may be used to generate a clean string representation of the function, with an optional name `name`.
+
+If the compiler's `cardinals` and `ordinals` options are both true, the returned function takes a second parameter `ord`. Then, if `ord` is true, the function will return the ordinal rather than cardinal category applicable to `n` in locale `lc`.
+
+## Compiler#test()
+
+Available after `compile()` has been called, `test()` verifies that all of the sample values included in the rules' samples are correctly categorised by teh compiled function. Either throws an error or returns `undefined` on success.
+
 ```js
-var plurals = require('cldr-core/supplemental/plurals.json')
-var ordinals = require('cldr-core/supplemental/ordinals.json')
-var Compiler = require('make-plural-compiler').load(plurals, ordinals)
-// { [Function: MakePlural]
+import plurals from 'cldr-core/supplemental/plurals.json'
+import ordinals from 'cldr-core/supplemental/ordinals.json'
+import Compiler from 'make-plural-compiler'
+
+Compiler.load(plurals, ordinals)
+// { [Function: Compiler]
 //   cardinals: true,
 //   ordinals: false,
+//   foldWidth: 78,
 //   rules:
 //    { cardinal:
 //       { af: [Object],
 //         ak: [Object],
 //         am: [Object],
-// snip 193 lines...
-//         yo: [Object],
+//         [snip many lines...]
+//         yue: [Object],
 //         zh: [Object],
 //         zu: [Object] },
 //      ordinal:
 //       { af: [Object],
 //         am: [Object],
 //         ar: [Object],
-// snip 78 lines...
-//         vi: [Object],
+//         [snip slightly fewer lines...]
+//         yue: [Object],
 //         zh: [Object],
 //         zu: [Object] } } }
 
-var sk = new Compiler('sk') // Note: not including ordinals by default
-// { [Function]
-//   _obj:
-//    { lc: 'sk',
-//      cardinals: true,
-//      ordinals: false,
-//      categories: { cardinal: [Object], ordinal: [] },
-//      parser: { v0: 1, i: 1 },
-//      tests: { obj: [Circular], ordinal: {}, cardinal: [Object] },
-//      fn: [Circular] },
-//   categories: { cardinal: [ 'one', 'few', 'many', 'other' ], ordinal: [] },
-//   test: [Function],
-//   toString: [Function] }
+var skc = new Compiler('sk') // Note: not including ordinals by default
+// Compiler {
+//   lc: 'sk',
+//   categories: { cardinal: [], ordinal: [] },
+//   parser: Parser {},
+//   tests: Tests { lc: 'sk', ordinal: {}, cardinal: {} },
+//   types: { cardinals: true, ordinals: false } }
+
+var sk = skc.compile()
+// { [Function: anonymous] toString: [Function: bound toString] }
+
+skc.test()
+// undefined
 
 sk(1)
 // 'one'
@@ -93,7 +102,7 @@ sk('1.0')
 sk('0')
 // 'other'
 
-console.log(sk.toString())
+console.log(String(sk))
 // function(n) {
 //   var s = String(n).split('.'), i = s[0], v0 = !s[1];
 //   return (i == 1 && v0 ) ? 'one'
@@ -110,12 +119,13 @@ This library has no explicit dependencies, but it will require CLDR plural rule 
 The canonical source for the data is [cldr-core] (as shown above), but the compiler may also be used e.g. with [cldr-data]:
 
 ```js
-var cldr = require('cldr-data')
-var MakePlural = require('make-plural/lib/make-plural').load(
+const cldr = require('cldr-data')
+const Compiler = require('make-plural-compiler').load(
   cldr('supplemental/plurals'),
   cldr('supplemental/ordinals')
 )
-var en = new MakePlural('en')
+const enc = new Compiler('en')
+const en = enc.compile()
 en(3, true)
 // 'few'
 ```
