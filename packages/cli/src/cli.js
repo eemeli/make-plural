@@ -8,6 +8,7 @@
  *    ./bin/make-plural [lc] [n] [ord]  // prints the (ORD ? ordinal : plural) category for N in locale LC
  */
 
+import { source } from 'common-tags'
 import * as common from './common'
 
 var argv = require('minimist')(process.argv.slice(2), {
@@ -35,18 +36,19 @@ ${value}
 }`
 
 // UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
-const umd = (global, value) => `
-(function (root, ${global}) {
-  if (typeof define === 'function' && define.amd) {
-    define(${global});
-  } else if (typeof exports === 'object') {
-    module.exports = ${global};
-  } else {
-    root.${global} = ${global};
-  }
-}(this, {
-${value}
-}));`
+const umd = (global, value) => source`
+  (function (root, ${global}) {
+    if (typeof define === 'function' && define.amd) {
+      define(${global});
+    } else if (typeof exports === 'object') {
+      module.exports = ${global};
+    } else {
+      root.${global} = ${global};
+    }
+  }(this, {
+  ${value}
+  }));
+`
 
 function mapForEachLanguage(cb, opt) {
   const style = opt && !opt.cardinals ? 'ordinal' : 'cardinal'
@@ -74,7 +76,7 @@ function printPluralsModule(es6) {
     console.log('const C = [\n' + cp.join(',\n') + '\n];')
     console.log(es6module(plurals.join(',\n\n')))
   } else {
-    console.log('var C = [\n' + cp.join(',\n') + '\n];')
+    console.log('var C = [\n' + cp.join(',\n') + '\n];\n')
     console.log(umd('plurals', plurals.join(',\n\n')))
   }
 }
@@ -94,7 +96,7 @@ function printCategoriesModule(es6) {
     console.log('const _cc = [\n  ' + cc.join(',\n  ') + '\n];')
     console.log(es6module(categories.join(',\n')))
   } else {
-    console.log('var _cc = [\n  ' + cc.join(',\n  ') + '\n];')
+    console.log('var _cc = [\n  ' + cc.join(',\n  ') + '\n];\n')
     console.log(umd('pluralCategories', categories.join(',\n')))
   }
 }
