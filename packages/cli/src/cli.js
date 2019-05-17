@@ -9,6 +9,7 @@
  */
 
 import { source } from 'common-tags'
+import { property } from 'safe-identifier'
 import * as common from './common'
 
 var argv = require('minimist')(process.argv.slice(2), {
@@ -60,8 +61,7 @@ function mapForEachLanguage(cb, opt) {
   const style = opt && !opt.cardinals ? 'ordinal' : 'cardinal'
   let languages = []
   for (let lc in MakePlural.rules[style]) {
-    const key =
-      /^[A-Z_$][0-9A-Z_$]*$/i.test(lc) && lc !== 'in' ? lc : JSON.stringify(lc)
+    const key = property(null, lc)
     const mpc = new MakePlural(lc, opt)
     languages.push(key + ': ' + cb(mpc))
   }
