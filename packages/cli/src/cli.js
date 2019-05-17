@@ -30,10 +30,16 @@ const pluralData = require('cldr-core/supplemental/plurals.json')
 const ordinalData = require('cldr-core/supplemental/ordinals.json')
 const MakePlural = require('make-plural-compiler').load(pluralData, ordinalData)
 
-const es6module = value => `
-export default {
-${value}
-}`
+function write(str, end) {
+  process.stdout.write(str)
+  if (end) process.stdout.write(end)
+}
+
+const es6module = value => source`
+  export default {
+  ${value}
+  }
+`
 
 // UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
 const umd = (global, value) => source`
@@ -73,11 +79,19 @@ function printPluralsModule(es6) {
     return fn
   })
   if (es6) {
-    console.log('const C = [\n' + cp.join(',\n') + '\n];')
-    console.log(es6module(plurals.join(',\n\n')))
+    write(source`
+      const C = [
+      ${cp.join(',\n')}
+      ];
+    `, '\n\n')
+    write(es6module(plurals.join(',\n\n')), '\n')
   } else {
-    console.log('var C = [\n' + cp.join(',\n') + '\n];\n')
-    console.log(umd('plurals', plurals.join(',\n\n')))
+    write(source`
+      var C = [
+      ${cp.join(',\n')}
+      ];
+    `, '\n\n')
+    write(umd('plurals', plurals.join(',\n\n')), '\n')
   }
 }
 
@@ -93,11 +107,11 @@ function printCategoriesModule(es6) {
     return cat
   })
   if (es6) {
-    console.log('const _cc = [\n  ' + cc.join(',\n  ') + '\n];')
-    console.log(es6module(categories.join(',\n')))
+    write('const _cc = [\n  ' + cc.join(',\n  ') + '\n];', '\n\n')
+    write(es6module(categories.join(',\n')), '\n')
   } else {
-    console.log('var _cc = [\n  ' + cc.join(',\n  ') + '\n];\n')
-    console.log(umd('pluralCategories', categories.join(',\n')))
+    write('var _cc = [\n  ' + cc.join(',\n  ') + '\n];', '\n\n')
+    write(umd('pluralCategories', categories.join(',\n')), '\n')
   }
 }
 
