@@ -73,24 +73,16 @@ function printPluralsModule(es6) {
   const plurals = mapForEachLanguage(mpc => {
     let fn = mpc.compile().toString()
     mpc.test()
-    cp.forEach(function(p, i) {
-      if (fn === p) fn = `C[${i}]`
+    cp.forEach((p, i) => {
+      if (fn === p) fn = `_${i}`
     })
     return fn
   })
   if (es6) {
-    write(source`
-      const C = [
-      ${cp.join(',\n')}
-      ];
-    `, '\n\n')
+    write(cp.map((p, i) => `const _${i} = ${p};`).join('\n'), '\n\n')
     write(es6module(plurals.join(',\n\n')), '\n')
   } else {
-    write(source`
-      var C = [
-      ${cp.join(',\n')}
-      ];
-    `, '\n\n')
+    write(cp.map((p, i) => `var _${i} = ${p};`).join('\n'), '\n\n')
     write(umd('plurals', plurals.join(',\n\n')), '\n')
   }
 }
@@ -101,16 +93,16 @@ function printCategoriesModule(es6) {
     mpc.compile()
     mpc.test()
     let cat = JSON.stringify(mpc.categories).replace(/"(\w+)":/g, '$1:')
-    cc.forEach(function(c, i) {
-      if (cat === c) cat = `_cc[${i}]`
+    cc.forEach((c, i) => {
+      if (cat === c) cat = `_${i}`
     })
     return cat
   })
   if (es6) {
-    write('const _cc = [\n  ' + cc.join(',\n  ') + '\n];', '\n\n')
+    write(cc.map((c, i) => `const _${i} = ${c};`).join('\n'), '\n\n')
     write(es6module(categories.join(',\n')), '\n')
   } else {
-    write('var _cc = [\n  ' + cc.join(',\n  ') + '\n];', '\n\n')
+    write(cc.map((c, i) => `var _${i} = ${c};`).join('\n'), '\n\n')
     write(umd('pluralCategories', categories.join(',\n')), '\n')
   }
 }
