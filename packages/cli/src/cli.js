@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /** A compiler for make-plural.js
  *
  *  Usage:
@@ -9,17 +11,25 @@
 import * as common from './common'
 
 var argv = require('minimist')(process.argv.slice(2), {
-  default: { locale: null, value: null, ordinal: null, cardinal: null, categories: false, es6: false },
-  alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c', es6: 'e' },
-  string: [ 'locale', 'value' ],
-  boolean: [ 'categories', 'es6' ]
+  default: {
+    locale: null,
+    value: null,
+    ordinal: null,
+    cardinal: null,
+    categories: false,
+    es6: false,
+    width: null
+  },
+  alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c', es6: 'e', width: 'w' },
+  string: ['locale', 'value', 'width'],
+  boolean: ['categories', 'es6']
 })
-var MakePlural = require('../make-plural').load(
-  require('../data/plurals.json'),
-  require('../data/ordinals.json')
-)
 
-const es6module = (value) => `
+const pluralData = require('cldr-core/supplemental/plurals.json')
+const ordinalData = require('cldr-core/supplemental/ordinals.json')
+const MakePlural = require('make-plural-compiler').load(pluralData, ordinalData)
+
+const es6module = value => `
 export default {
 ${value}
 }`
@@ -38,38 +48,46 @@ const umd = (global, value) => `
 ${value}
 }));`
 
-function mapForEachLanguage (cb, opt) {
+function mapForEachLanguage(cb, opt) {
   const style = opt && !opt.cardinals ? 'ordinal' : 'cardinal'
   let languages = []
   for (let lc in MakePlural.rules[style]) {
-    const key = /^[A-Z_$][0-9A-Z_$]*$/i.test(lc) && (lc !== 'in') ? lc : JSON.stringify(lc)
-    const mp = new MakePlural(lc, opt).test()
-    languages.push(key + ': ' + cb(mp))
+    const key =
+      /^[A-Z_$][0-9A-Z_$]*$/i.test(lc) && lc !== 'in' ? lc : JSON.stringify(lc)
+    const mpc = new MakePlural(lc, opt)
+    languages.push(key + ': ' + cb(mpc))
   }
   return languages
 }
 
-function printPluralsModule (es6) {
+function printPluralsModule(es6) {
   const cp = common[MakePlural.ordinals ? 'combined' : 'cardinals'].plurals
-  const plurals = mapForEachLanguage(mp => {
-    let fn = mp.toString()
-    cp.forEach(function (p, i) { if (fn === p) fn = `_cp[${i}]` })
+  const plurals = mapForEachLanguage(mpc => {
+    let fn = mpc.compile().toString()
+    mpc.test()
+    cp.forEach(function(p, i) {
+      if (fn === p) fn = `C[${i}]`
+    })
     return fn
   })
   if (es6) {
-    console.log('const _cp = [\n' + cp.join(',\n') + '\n];')
+    console.log('const C = [\n' + cp.join(',\n') + '\n];')
     console.log(es6module(plurals.join(',\n\n')))
   } else {
-    console.log('var _cp = [\n' + cp.join(',\n') + '\n];')
+    console.log('var C = [\n' + cp.join(',\n') + '\n];')
     console.log(umd('plurals', plurals.join(',\n\n')))
   }
 }
 
-function printCategoriesModule (es6) {
+function printCategoriesModule(es6) {
   const cc = common[MakePlural.ordinals ? 'combined' : 'cardinals'].categories
-  const categories = mapForEachLanguage(mp => {
-    let cat = JSON.stringify(mp.categories).replace(/"(\w+)":/g, '$1:')
-    cc.forEach(function (c, i) { if (cat === c) cat = `_cc[${i}]` })
+  const categories = mapForEachLanguage(mpc => {
+    mpc.compile()
+    mpc.test()
+    let cat = JSON.stringify(mpc.categories).replace(/"(\w+)":/g, '$1:')
+    cc.forEach(function(c, i) {
+      if (cat === c) cat = `_cc[${i}]`
+    })
     return cat
   })
   if (es6) {
@@ -81,7 +99,7 @@ function printCategoriesModule (es6) {
   }
 }
 
-function truthy (v) {
+function truthy(v) {
   if (v === '0' || v === 'false') return false
   return !!v
 }
@@ -92,14 +110,18 @@ argv._.forEach(a => {
   else if (argv.ordinal === null) argv.ordinal = a
 })
 
-MakePlural.cardinals = (argv.cardinal !== null) ? truthy(argv.cardinal) : true
-MakePlural.ordinals = (argv.ordinal !== null) ? truthy(argv.ordinal) : true
+MakePlural.cardinals = argv.cardinal !== null ? truthy(argv.cardinal) : true
+MakePlural.ordinals = argv.ordinal !== null ? truthy(argv.ordinal) : true
+const foldWidth = Number(argv.width)
+if (foldWidth > 0) MakePlural.foldWidth = foldWidth
 
 if (argv.locale) {
-  const mp = new MakePlural(argv.locale).test()
+  const mpc = new MakePlural(argv.locale)
+  const mp = mpc.compile()
+  mpc.test()
   if (argv.categories) {
-    const cats = mp.categories.cardinal
-      .concat(mp.categories.ordinal)
+    const cats = mpc.categories.cardinal
+      .concat(mpc.categories.ordinal)
       .filter((v, i, self) => self.indexOf(v) === i)
     console.log(cats.join(', '))
   } else if (argv.value !== null) {

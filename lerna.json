@@ -1,0 +1,12 @@
+{
+  "packages": ["packages/*"],
+  "command": {
+    "version": {
+      "allowBranch": "master",
+      "conventionalCommits": true,
+      "message": "chore(release): %s"
+    }
+  },
+  "ignoreChanges": ["**/*.md"],
+  "version": "independent"
+}

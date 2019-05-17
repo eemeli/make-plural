@@ -1,52 +1,36 @@
 {
-  "name": "make-plural",
-  "version": "4.0.0-dev",
-  "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
-  "keywords": [
-    "unicode",
-    "cldr",
-    "i18n",
-    "internationalization",
-    "pluralization"
-  ],
+  "name": "make-plural-monorepo",
+  "private": true,
+  "version": "5.0.0-dev",
+  "description": "Monorepo for make-plural packages",
   "author": "Eemeli Aro <eemeli@gmail.com>",
   "license": "ISC",
-  "homepage": "https://github.com/eemeli/make-plural#readme",
   "repository": "eemeli/make-plural",
-  "bugs": {
-    "url": "https://github.com/eemeli/make-plural/issues"
-  },
-  "files": [
-    "bin/",
-    "data/",
-    "es6/",
-    "make-plural.*",
-    "umd/"
-  ],
-  "bin": {
-    "make-plural": "./bin/make-plural"
-  },
-  "main": "umd/plurals",
   "scripts": {
-    "lint": "standard 'src/*.js'",
-    "test": "make test",
-    "version": "git add -f $FILES"
+    "bootstrap": "lerna bootstrap",
+    "build:cli": "babel packages/cli/src/ -d packages/cli/lib",
+    "build:compiler": "babel packages/compiler/src/ -d packages/compiler/lib",
+    "build": "npm run build:compiler && npm run build:cli && lerna run build",
+    "clean": "git clean -fdx packages/",
+    "prettier": "prettier --write '{test,packages/*/src}/*.js'",
+    "preversion": "npm run clean && npm run build && npm test",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "make-plural": "file:packages/plurals",
+    "make-plural-cli": "file:packages/cli",
+    "make-plural-compiler": "file:packages/compiler"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
-    "babel-plugin-add-module-exports": "^1.0.2",
-    "babelify": "^10.0.0",
-    "browserify": "^16.2.3",
+    "@babel/register": "^7.4.4",
     "cldr-core": "^34.0.0",
-    "expect.js": "*",
-    "http-server": "^0.11.1",
+    "expect.js": "^0.3.1",
+    "lerna": "^3.13.4",
     "mocha": "^6.1.4",
-    "standard": "^12.0.1",
-    "uglify-js": "^3.5.12"
-  },
-  "optionalDependencies": {
-    "minimist": "^1.2.0"
+    "prettier": "^1.17.0"
   }
 }

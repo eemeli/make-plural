@@ -1,3 +1,0 @@
---bail
---reporter progress
---require test/node-setup
