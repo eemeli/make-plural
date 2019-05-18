@@ -9,7 +9,7 @@
  */
 
 import { source } from 'common-tags'
-import { property } from 'safe-identifier'
+import { identifier, property } from 'safe-identifier'
 import * as common from './common'
 
 var argv = require('minimist')(process.argv.slice(2), {
@@ -45,7 +45,7 @@ function write(str, end) {
 
 const es6module = value => source`
   export default {
-  ${value}
+    ${value}
   }
 `
 
@@ -73,14 +73,30 @@ function printPluralsModule(es6) {
     const fn = mpc.compile().toString()
     mpc.test()
     const i = cp.indexOf(fn)
-    return [lc, i === -1 ? fn : `_${i}`]
+    return [
+      lc,
+      i === -1
+        ? fn.replace(/^function\b/, `function ${identifier(lc)}`)
+        : `_${i}`
+    ]
   })
-  const pm = plurals.map(([lc, fn]) => `${property(null, lc)}: ${fn}`)
+  for (let i = 0; i < cp.length; ++i) {
+    write(cp[i].replace(/^function\b/, `function _${i}`), '\n\n')
+  }
   if (es6) {
-    write(cp.map((p, i) => `const _${i} = ${p};`).join('\n'), '\n\n')
-    write(es6module(pm.join(',\n\n')), '\n')
+    const exp = []
+    for (const [lc, fn] of plurals) {
+      const prop = property(null, lc)
+      if (fn[0] === '_') exp.push(`${prop}: ${fn}`)
+      else {
+        write(fn, '\n\n')
+        const id = identifier(lc)
+        exp.push(id === prop ? id : `${prop}: ${id}`)
+      }
+    }
+    write(es6module(exp.join(',\n')), '\n')
   } else {
-    write(cp.map((p, i) => `var _${i} = ${p};`).join('\n'), '\n\n')
+    const pm = plurals.map(([lc, fn]) => `${property(null, lc)}: ${fn}`)
     write(umd('plurals', pm.join(',\n\n')), '\n')
   }
 }

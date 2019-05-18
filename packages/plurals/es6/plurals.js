@@ -1,33 +1,31 @@
-const _0 = function(n, ord) {
+function _0(n, ord) {
   if (ord) return 'other';
   return 'other';
-};
-const _1 = function(n, ord) {
+}
+
+function _1(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one' : 'other';
-};
-const _2 = function(n, ord) {
+}
+
+function _2(n, ord) {
   if (ord) return 'other';
   return ((n == 0
           || n == 1)) ? 'one' : 'other';
-};
-const _3 = function(n, ord) {
+}
+
+function _3(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return 'other';
   return (n == 1 && v0) ? 'one' : 'other';
-};
+}
 
-export default {
-af: _1,
-
-ak: _2,
-
-am: function(n, ord) {
+function am(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
-},
+}
 
-ar: function(n, ord) {
+function ar(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return 'other';
   return (n == 0) ? 'zero'
@@ -36,9 +34,9 @@ ar: function(n, ord) {
       : ((n100 >= 3 && n100 <= 10)) ? 'few'
       : ((n100 >= 11 && n100 <= 99)) ? 'many'
       : 'other';
-},
+}
 
-ars: function(n, ord) {
+function ars(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return 'other';
   return (n == 0) ? 'zero'
@@ -47,9 +45,9 @@ ars: function(n, ord) {
       : ((n100 >= 3 && n100 <= 10)) ? 'few'
       : ((n100 >= 11 && n100 <= 99)) ? 'many'
       : 'other';
-},
+}
 
-as: function(n, ord) {
+function as(n, ord) {
   if (ord) return ((n == 1 || n == 5 || n == 7 || n == 8 || n == 9
           || n == 10)) ? 'one'
       : ((n == 2
@@ -58,13 +56,9 @@ as: function(n, ord) {
       : (n == 6) ? 'many'
       : 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
-},
+}
 
-asa: _1,
-
-ast: _3,
-
-az: function(n, ord) {
+function az(n, ord) {
   var s = String(n).split('.'), i = s[0], i10 = i.slice(-1), i100 = i.slice(-2), i1000 = i.slice(-3);
   if (ord) return ((i10 == 1 || i10 == 2 || i10 == 5 || i10 == 7 || i10 == 8) || (i100 == 20 || i100 == 50
           || i100 == 70
@@ -76,9 +70,9 @@ az: function(n, ord) {
           || i100 == 90)) ? 'many'
       : 'other';
   return (n == 1) ? 'one' : 'other';
-},
+}
 
-be: function(n, ord) {
+function be(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   if (ord) return ((n10 == 2
           || n10 == 3) && n100 != 12 && n100 != 13) ? 'few' : 'other';
@@ -88,19 +82,9 @@ be: function(n, ord) {
       : (t0 && n10 == 0 || (n10 >= 5 && n10 <= 9)
           || (n100 >= 11 && n100 <= 14)) ? 'many'
       : 'other';
-},
+}
 
-bem: _1,
-
-bez: _1,
-
-bg: _1,
-
-bh: _2,
-
-bm: _0,
-
-bn: function(n, ord) {
+function bn(n, ord) {
   if (ord) return ((n == 1 || n == 5 || n == 7 || n == 8 || n == 9
           || n == 10)) ? 'one'
       : ((n == 2
@@ -109,11 +93,9 @@ bn: function(n, ord) {
       : (n == 6) ? 'many'
       : 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
-},
+}
 
-bo: _0,
-
-br: function(n, ord) {
+function br(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2),
       n1000000 = t0 && s[0].slice(-6);
   if (ord) return 'other';
@@ -123,11 +105,9 @@ br: function(n, ord) {
           || n100 > 99)) ? 'few'
       : (n != 0 && t0 && n1000000 == 0) ? 'many'
       : 'other';
-},
+}
 
-brx: _1,
-
-bs: function(n, ord) {
+function bs(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2),
       f10 = f.slice(-1), f100 = f.slice(-2);
   if (ord) return 'other';
@@ -136,9 +116,9 @@ bs: function(n, ord) {
       : (v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) || (f10 >= 2 && f10 <= 4) && (f100 < 12
           || f100 > 14)) ? 'few'
       : 'other';
-},
+}
 
-ca: function(n, ord) {
+function ca(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return ((n == 1
           || n == 3)) ? 'one'
@@ -146,26 +126,18 @@ ca: function(n, ord) {
       : (n == 4) ? 'few'
       : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
-},
+}
 
-ce: _1,
-
-cgg: _1,
-
-chr: _1,
-
-ckb: _1,
-
-cs: function(n, ord) {
+function cs(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1];
   if (ord) return 'other';
   return (n == 1 && v0) ? 'one'
       : ((i >= 2 && i <= 4) && v0) ? 'few'
       : (!v0) ? 'many'
       : 'other';
-},
+}
 
-cy: function(n, ord) {
+function cy(n, ord) {
   if (ord) return ((n == 0 || n == 7 || n == 8
           || n == 9)) ? 'zero'
       : (n == 1) ? 'one'
@@ -181,18 +153,16 @@ cy: function(n, ord) {
       : (n == 3) ? 'few'
       : (n == 6) ? 'many'
       : 'other';
-},
+}
 
-da: function(n, ord) {
+function da(n, ord) {
   var s = String(n).split('.'), i = s[0], t0 = Number(s[0]) == n;
   if (ord) return 'other';
   return (n == 1 || !t0 && (i == 0
           || i == 1)) ? 'one' : 'other';
-},
+}
 
-de: _3,
-
-dsb: function(n, ord) {
+function dsb(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
   if (ord) return 'other';
   return (v0 && i100 == 1
@@ -202,17 +172,9 @@ dsb: function(n, ord) {
       : (v0 && (i100 == 3 || i100 == 4) || (f100 == 3
           || f100 == 4)) ? 'few'
       : 'other';
-},
+}
 
-dv: _1,
-
-dz: _0,
-
-ee: _1,
-
-el: _1,
-
-en: function(n, ord) {
+function en(n, ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1),
       n100 = t0 && s[0].slice(-2);
   if (ord) return (n10 == 1 && n100 != 11) ? 'one'
@@ -220,47 +182,31 @@ en: function(n, ord) {
       : (n10 == 3 && n100 != 13) ? 'few'
       : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
-},
+}
 
-eo: _1,
-
-es: _1,
-
-et: _3,
-
-eu: _1,
-
-fa: function(n, ord) {
+function fa(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
-},
+}
 
-ff: function(n, ord) {
+function ff(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n < 2) ? 'one' : 'other';
-},
+}
 
-fi: _3,
-
-fil: function(n, ord) {
+function fil(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
   if (ord) return (n == 1) ? 'one' : 'other';
   return (v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9
           || !v0 && f10 != 4 && f10 != 6 && f10 != 9) ? 'one' : 'other';
-},
+}
 
-fo: _1,
-
-fr: function(n, ord) {
+function fr(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return (n >= 0 && n < 2) ? 'one' : 'other';
-},
+}
 
-fur: _1,
-
-fy: _3,
-
-ga: function(n, ord) {
+function ga(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return (n == 1) ? 'one' : 'other';
   return (n == 1) ? 'one'
@@ -268,9 +214,9 @@ ga: function(n, ord) {
       : ((t0 && n >= 3 && n <= 6)) ? 'few'
       : ((t0 && n >= 7 && n <= 10)) ? 'many'
       : 'other';
-},
+}
 
-gd: function(n, ord) {
+function gd(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return ((n == 1
           || n == 11)) ? 'one'
@@ -286,13 +232,9 @@ gd: function(n, ord) {
       : (((t0 && n >= 3 && n <= 10)
           || (t0 && n >= 13 && n <= 19))) ? 'few'
       : 'other';
-},
+}
 
-gl: _3,
-
-gsw: _1,
-
-gu: function(n, ord) {
+function gu(n, ord) {
   if (ord) return (n == 1) ? 'one'
       : ((n == 2
           || n == 3)) ? 'two'
@@ -300,11 +242,9 @@ gu: function(n, ord) {
       : (n == 6) ? 'many'
       : 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
-},
+}
 
-guw: _2,
-
-gv: function(n, ord) {
+function gv(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
   return (v0 && i10 == 1) ? 'one'
@@ -313,13 +253,9 @@ gv: function(n, ord) {
           || i100 == 80)) ? 'few'
       : (!v0) ? 'many'
       : 'other';
-},
+}
 
-ha: _1,
-
-haw: _1,
-
-he: function(n, ord) {
+function he(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
   if (ord) return 'other';
   return (n == 1 && v0) ? 'one'
@@ -327,9 +263,9 @@ he: function(n, ord) {
       : (v0 && (n < 0
           || n > 10) && t0 && n10 == 0) ? 'many'
       : 'other';
-},
+}
 
-hi: function(n, ord) {
+function hi(n, ord) {
   if (ord) return (n == 1) ? 'one'
       : ((n == 2
           || n == 3)) ? 'two'
@@ -337,9 +273,9 @@ hi: function(n, ord) {
       : (n == 6) ? 'many'
       : 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
-},
+}
 
-hr: function(n, ord) {
+function hr(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2),
       f10 = f.slice(-1), f100 = f.slice(-2);
   if (ord) return 'other';
@@ -348,9 +284,9 @@ hr: function(n, ord) {
       : (v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) || (f10 >= 2 && f10 <= 4) && (f100 < 12
           || f100 > 14)) ? 'few'
       : 'other';
-},
+}
 
-hsb: function(n, ord) {
+function hsb(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
   if (ord) return 'other';
   return (v0 && i100 == 1
@@ -360,53 +296,41 @@ hsb: function(n, ord) {
       : (v0 && (i100 == 3 || i100 == 4) || (f100 == 3
           || f100 == 4)) ? 'few'
       : 'other';
-},
+}
 
-hu: function(n, ord) {
+function hu(n, ord) {
   if (ord) return ((n == 1
           || n == 5)) ? 'one' : 'other';
   return (n == 1) ? 'one' : 'other';
-},
+}
 
-hy: function(n, ord) {
+function hy(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return (n >= 0 && n < 2) ? 'one' : 'other';
-},
+}
 
-ia: _3,
-
-id: _0,
-
-ig: _0,
-
-ii: _0,
-
-"in": _0,
-
-io: _3,
-
-is: function(n, ord) {
+function is(n, ord) {
   var s = String(n).split('.'), i = s[0], t0 = Number(s[0]) == n, i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
   return (t0 && i10 == 1 && i100 != 11
           || !t0) ? 'one' : 'other';
-},
+}
 
-it: function(n, ord) {
+function it(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return ((n == 11 || n == 8 || n == 80
           || n == 800)) ? 'many' : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
-},
+}
 
-iu: function(n, ord) {
+function iu(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one'
       : (n == 2) ? 'two'
       : 'other';
-},
+}
 
-iw: function(n, ord) {
+function iw(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
   if (ord) return 'other';
   return (n == 1 && v0) ? 'one'
@@ -414,109 +338,63 @@ iw: function(n, ord) {
       : (v0 && (n < 0
           || n > 10) && t0 && n10 == 0) ? 'many'
       : 'other';
-},
+}
 
-ja: _0,
-
-jbo: _0,
-
-jgo: _1,
-
-ji: _3,
-
-jmc: _1,
-
-jv: _0,
-
-jw: _0,
-
-ka: function(n, ord) {
+function ka(n, ord) {
   var s = String(n).split('.'), i = s[0], i100 = i.slice(-2);
   if (ord) return (i == 1) ? 'one'
       : (i == 0 || ((i100 >= 2 && i100 <= 20) || i100 == 40 || i100 == 60
           || i100 == 80)) ? 'many'
       : 'other';
   return (n == 1) ? 'one' : 'other';
-},
+}
 
-kab: function(n, ord) {
+function kab(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n < 2) ? 'one' : 'other';
-},
+}
 
-kaj: _1,
-
-kcg: _1,
-
-kde: _0,
-
-kea: _0,
-
-kk: function(n, ord) {
+function kk(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
   if (ord) return (n10 == 6 || n10 == 9
           || t0 && n10 == 0 && n != 0) ? 'many' : 'other';
   return (n == 1) ? 'one' : 'other';
-},
+}
 
-kkj: _1,
-
-kl: _1,
-
-km: _0,
-
-kn: function(n, ord) {
+function kn(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
-},
+}
 
-ko: _0,
-
-ks: _1,
-
-ksb: _1,
-
-ksh: function(n, ord) {
+function ksh(n, ord) {
   if (ord) return 'other';
   return (n == 0) ? 'zero'
       : (n == 1) ? 'one'
       : 'other';
-},
+}
 
-ku: _1,
-
-kw: function(n, ord) {
+function kw(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one'
       : (n == 2) ? 'two'
       : 'other';
-},
+}
 
-ky: _1,
-
-lag: function(n, ord) {
+function lag(n, ord) {
   var s = String(n).split('.'), i = s[0];
   if (ord) return 'other';
   return (n == 0) ? 'zero'
       : ((i == 0
           || i == 1) && n != 0) ? 'one'
       : 'other';
-},
+}
 
-lb: _1,
-
-lg: _1,
-
-lkt: _0,
-
-ln: _2,
-
-lo: function(n, ord) {
+function lo(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return 'other';
-},
+}
 
-lt: function(n, ord) {
+function lt(n, ord) {
   var s = String(n).split('.'), f = s[1] || '', t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1),
       n100 = t0 && s[0].slice(-2);
   if (ord) return 'other';
@@ -526,9 +404,9 @@ lt: function(n, ord) {
           || n100 > 19)) ? 'few'
       : (f != 0) ? 'many'
       : 'other';
-},
+}
 
-lv: function(n, ord) {
+function lv(n, ord) {
   var s = String(n).split('.'), f = s[1] || '', v = f.length, t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1),
       n100 = t0 && s[0].slice(-2), f100 = f.slice(-2), f10 = f.slice(-1);
   if (ord) return 'other';
@@ -537,15 +415,9 @@ lv: function(n, ord) {
       : (n10 == 1 && n100 != 11 || v == 2 && f10 == 1 && f100 != 11
           || v != 2 && f10 == 1) ? 'one'
       : 'other';
-},
+}
 
-mas: _1,
-
-mg: _2,
-
-mgo: _1,
-
-mk: function(n, ord) {
+function mk(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2),
       f10 = f.slice(-1), f100 = f.slice(-2);
   if (ord) return (i10 == 1 && i100 != 11) ? 'one'
@@ -555,36 +427,32 @@ mk: function(n, ord) {
       : 'other';
   return (v0 && i10 == 1 && i100 != 11
           || f10 == 1 && f100 != 11) ? 'one' : 'other';
-},
+}
 
-ml: _1,
-
-mn: _1,
-
-mo: function(n, ord) {
+function mo(n, ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return (n == 1) ? 'one' : 'other';
   return (n == 1 && v0) ? 'one'
       : (!v0 || n == 0
           || n != 1 && (n100 >= 1 && n100 <= 19)) ? 'few'
       : 'other';
-},
+}
 
-mr: function(n, ord) {
+function mr(n, ord) {
   if (ord) return (n == 1) ? 'one'
       : ((n == 2
           || n == 3)) ? 'two'
       : (n == 4) ? 'few'
       : 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
-},
+}
 
-ms: function(n, ord) {
+function ms(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return 'other';
-},
+}
 
-mt: function(n, ord) {
+function mt(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return 'other';
   return (n == 1) ? 'one'
@@ -592,50 +460,22 @@ mt: function(n, ord) {
           || (n100 >= 2 && n100 <= 10)) ? 'few'
       : ((n100 >= 11 && n100 <= 19)) ? 'many'
       : 'other';
-},
+}
 
-my: _0,
-
-nah: _1,
-
-naq: function(n, ord) {
+function naq(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one'
       : (n == 2) ? 'two'
       : 'other';
-},
+}
 
-nb: _1,
-
-nd: _1,
-
-ne: function(n, ord) {
+function ne(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return ((t0 && n >= 1 && n <= 4)) ? 'one' : 'other';
   return (n == 1) ? 'one' : 'other';
-},
+}
 
-nl: _3,
-
-nn: _1,
-
-nnh: _1,
-
-no: _1,
-
-nqo: _0,
-
-nr: _1,
-
-nso: _2,
-
-ny: _1,
-
-nyn: _1,
-
-om: _1,
-
-or: function(n, ord) {
+function or(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return ((n == 1 || n == 5
           || (t0 && n >= 7 && n <= 9))) ? 'one'
@@ -645,15 +485,9 @@ or: function(n, ord) {
       : (n == 6) ? 'many'
       : 'other';
   return (n == 1) ? 'one' : 'other';
-},
+}
 
-os: _1,
-
-pa: _2,
-
-pap: _1,
-
-pl: function(n, ord) {
+function pl(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
   return (n == 1 && v0) ? 'one'
@@ -662,9 +496,9 @@ pl: function(n, ord) {
       : (v0 && i != 1 && (i10 == 0 || i10 == 1) || v0 && (i10 >= 5 && i10 <= 9)
           || v0 && (i100 >= 12 && i100 <= 14)) ? 'many'
       : 'other';
-},
+}
 
-prg: function(n, ord) {
+function prg(n, ord) {
   var s = String(n).split('.'), f = s[1] || '', v = f.length, t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1),
       n100 = t0 && s[0].slice(-2), f100 = f.slice(-2), f10 = f.slice(-1);
   if (ord) return 'other';
@@ -673,35 +507,25 @@ prg: function(n, ord) {
       : (n10 == 1 && n100 != 11 || v == 2 && f10 == 1 && f100 != 11
           || v != 2 && f10 == 1) ? 'one'
       : 'other';
-},
+}
 
-ps: _1,
-
-pt: function(n, ord) {
+function pt(n, ord) {
   var s = String(n).split('.'), i = s[0];
   if (ord) return 'other';
   return ((i == 0
           || i == 1)) ? 'one' : 'other';
-},
+}
 
-"pt-PT": _3,
-
-rm: _1,
-
-ro: function(n, ord) {
+function ro(n, ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return (n == 1) ? 'one' : 'other';
   return (n == 1 && v0) ? 'one'
       : (!v0 || n == 0
           || n != 1 && (n100 >= 1 && n100 <= 19)) ? 'few'
       : 'other';
-},
+}
 
-rof: _1,
-
-root: _0,
-
-ru: function(n, ord) {
+function ru(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
   return (v0 && i10 == 1 && i100 != 11) ? 'one'
@@ -710,46 +534,30 @@ ru: function(n, ord) {
       : (v0 && i10 == 0 || v0 && (i10 >= 5 && i10 <= 9)
           || v0 && (i100 >= 11 && i100 <= 14)) ? 'many'
       : 'other';
-},
+}
 
-rwk: _1,
-
-sah: _0,
-
-saq: _1,
-
-sc: function(n, ord) {
+function sc(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return ((n == 11 || n == 8 || n == 80
           || n == 800)) ? 'many' : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
-},
+}
 
-scn: function(n, ord) {
+function scn(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return ((n == 11 || n == 8 || n == 80
           || n == 800)) ? 'many' : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
-},
+}
 
-sd: _1,
-
-sdh: _1,
-
-se: function(n, ord) {
+function se(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one'
       : (n == 2) ? 'two'
       : 'other';
-},
+}
 
-seh: _1,
-
-ses: _0,
-
-sg: _0,
-
-sh: function(n, ord) {
+function sh(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2),
       f10 = f.slice(-1), f100 = f.slice(-2);
   if (ord) return 'other';
@@ -758,33 +566,33 @@ sh: function(n, ord) {
       : (v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) || (f10 >= 2 && f10 <= 4) && (f100 < 12
           || f100 > 14)) ? 'few'
       : 'other';
-},
+}
 
-shi: function(n, ord) {
+function shi(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return 'other';
   return (n >= 0 && n <= 1) ? 'one'
       : ((t0 && n >= 2 && n <= 10)) ? 'few'
       : 'other';
-},
+}
 
-si: function(n, ord) {
+function si(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '';
   if (ord) return 'other';
   return ((n == 0 || n == 1)
           || i == 0 && f == 1) ? 'one' : 'other';
-},
+}
 
-sk: function(n, ord) {
+function sk(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1];
   if (ord) return 'other';
   return (n == 1 && v0) ? 'one'
       : ((i >= 2 && i <= 4) && v0) ? 'few'
       : (!v0) ? 'many'
       : 'other';
-},
+}
 
-sl: function(n, ord) {
+function sl(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i100 = i.slice(-2);
   if (ord) return 'other';
   return (v0 && i100 == 1) ? 'one'
@@ -792,56 +600,52 @@ sl: function(n, ord) {
       : (v0 && (i100 == 3 || i100 == 4)
           || !v0) ? 'few'
       : 'other';
-},
+}
 
-sma: function(n, ord) {
+function sma(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one'
       : (n == 2) ? 'two'
       : 'other';
-},
+}
 
-smi: function(n, ord) {
+function smi(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one'
       : (n == 2) ? 'two'
       : 'other';
-},
+}
 
-smj: function(n, ord) {
+function smj(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one'
       : (n == 2) ? 'two'
       : 'other';
-},
+}
 
-smn: function(n, ord) {
+function smn(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one'
       : (n == 2) ? 'two'
       : 'other';
-},
+}
 
-sms: function(n, ord) {
+function sms(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one'
       : (n == 2) ? 'two'
       : 'other';
-},
+}
 
-sn: _1,
-
-so: _1,
-
-sq: function(n, ord) {
+function sq(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   if (ord) return (n == 1) ? 'one'
       : (n10 == 4 && n100 != 14) ? 'many'
       : 'other';
   return (n == 1) ? 'one' : 'other';
-},
+}
 
-sr: function(n, ord) {
+function sr(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2),
       f10 = f.slice(-1), f100 = f.slice(-2);
   if (ord) return 'other';
@@ -850,70 +654,38 @@ sr: function(n, ord) {
       : (v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) || (f10 >= 2 && f10 <= 4) && (f100 < 12
           || f100 > 14)) ? 'few'
       : 'other';
-},
+}
 
-ss: _1,
-
-ssy: _1,
-
-st: _1,
-
-sv: function(n, ord) {
+function sv(n, ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1),
       n100 = t0 && s[0].slice(-2);
   if (ord) return ((n10 == 1
           || n10 == 2) && n100 != 11 && n100 != 12) ? 'one' : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
-},
+}
 
-sw: _3,
-
-syr: _1,
-
-ta: _1,
-
-te: _1,
-
-teo: _1,
-
-th: _0,
-
-ti: _2,
-
-tig: _1,
-
-tk: function(n, ord) {
+function tk(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
   if (ord) return ((n10 == 6 || n10 == 9)
           || n == 10) ? 'few' : 'other';
   return (n == 1) ? 'one' : 'other';
-},
+}
 
-tl: function(n, ord) {
+function tl(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
   if (ord) return (n == 1) ? 'one' : 'other';
   return (v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9
           || !v0 && f10 != 4 && f10 != 6 && f10 != 9) ? 'one' : 'other';
-},
+}
 
-tn: _1,
-
-to: _0,
-
-tr: _1,
-
-ts: _1,
-
-tzm: function(n, ord) {
+function tzm(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return 'other';
   return ((n == 0 || n == 1)
           || (t0 && n >= 11 && n <= 99)) ? 'one' : 'other';
-},
+}
 
-ug: _1,
-
-uk: function(n, ord) {
+function uk(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1),
       n100 = t0 && s[0].slice(-2), i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return (n10 == 3 && n100 != 13) ? 'few' : 'other';
@@ -923,43 +695,224 @@ uk: function(n, ord) {
       : (v0 && i10 == 0 || v0 && (i10 >= 5 && i10 <= 9)
           || v0 && (i100 >= 11 && i100 <= 14)) ? 'many'
       : 'other';
-},
+}
 
-ur: _3,
-
-uz: _1,
-
-ve: _1,
-
-vi: function(n, ord) {
+function vi(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return 'other';
-},
+}
 
-vo: _1,
-
-vun: _1,
-
-wa: _2,
-
-wae: _1,
-
-wo: _0,
-
-xh: _1,
-
-xog: _1,
-
-yi: _3,
-
-yo: _0,
-
-yue: _0,
-
-zh: _0,
-
-zu: function(n, ord) {
+function zu(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
 }
+
+export default {
+  af: _1,
+  ak: _2,
+  am,
+  ar,
+  ars,
+  as,
+  asa: _1,
+  ast: _3,
+  az,
+  be,
+  bem: _1,
+  bez: _1,
+  bg: _1,
+  bh: _2,
+  bm: _0,
+  bn,
+  bo: _0,
+  br,
+  brx: _1,
+  bs,
+  ca,
+  ce: _1,
+  cgg: _1,
+  chr: _1,
+  ckb: _1,
+  cs,
+  cy,
+  da,
+  de: _3,
+  dsb,
+  dv: _1,
+  dz: _0,
+  ee: _1,
+  el: _1,
+  en,
+  eo: _1,
+  es: _1,
+  et: _3,
+  eu: _1,
+  fa,
+  ff,
+  fi: _3,
+  fil,
+  fo: _1,
+  fr,
+  fur: _1,
+  fy: _3,
+  ga,
+  gd,
+  gl: _3,
+  gsw: _1,
+  gu,
+  guw: _2,
+  gv,
+  ha: _1,
+  haw: _1,
+  he,
+  hi,
+  hr,
+  hsb,
+  hu,
+  hy,
+  ia: _3,
+  id: _0,
+  ig: _0,
+  ii: _0,
+  "in": _0,
+  io: _3,
+  is,
+  it,
+  iu,
+  iw,
+  ja: _0,
+  jbo: _0,
+  jgo: _1,
+  ji: _3,
+  jmc: _1,
+  jv: _0,
+  jw: _0,
+  ka,
+  kab,
+  kaj: _1,
+  kcg: _1,
+  kde: _0,
+  kea: _0,
+  kk,
+  kkj: _1,
+  kl: _1,
+  km: _0,
+  kn,
+  ko: _0,
+  ks: _1,
+  ksb: _1,
+  ksh,
+  ku: _1,
+  kw,
+  ky: _1,
+  lag,
+  lb: _1,
+  lg: _1,
+  lkt: _0,
+  ln: _2,
+  lo,
+  lt,
+  lv,
+  mas: _1,
+  mg: _2,
+  mgo: _1,
+  mk,
+  ml: _1,
+  mn: _1,
+  mo,
+  mr,
+  ms,
+  mt,
+  my: _0,
+  nah: _1,
+  naq,
+  nb: _1,
+  nd: _1,
+  ne,
+  nl: _3,
+  nn: _1,
+  nnh: _1,
+  no: _1,
+  nqo: _0,
+  nr: _1,
+  nso: _2,
+  ny: _1,
+  nyn: _1,
+  om: _1,
+  or,
+  os: _1,
+  pa: _2,
+  pap: _1,
+  pl,
+  prg,
+  ps: _1,
+  pt,
+  "pt-PT": _3,
+  rm: _1,
+  ro,
+  rof: _1,
+  root: _0,
+  ru,
+  rwk: _1,
+  sah: _0,
+  saq: _1,
+  sc,
+  scn,
+  sd: _1,
+  sdh: _1,
+  se,
+  seh: _1,
+  ses: _0,
+  sg: _0,
+  sh,
+  shi,
+  si,
+  sk,
+  sl,
+  sma,
+  smi,
+  smj,
+  smn,
+  sms,
+  sn: _1,
+  so: _1,
+  sq,
+  sr,
+  ss: _1,
+  ssy: _1,
+  st: _1,
+  sv,
+  sw: _3,
+  syr: _1,
+  ta: _1,
+  te: _1,
+  teo: _1,
+  th: _0,
+  ti: _2,
+  tig: _1,
+  tk,
+  tl,
+  tn: _1,
+  to: _0,
+  tr: _1,
+  ts: _1,
+  tzm,
+  ug: _1,
+  uk,
+  ur: _3,
+  uz: _1,
+  ve: _1,
+  vi,
+  vo: _1,
+  vun: _1,
+  wa: _2,
+  wae: _1,
+  wo: _0,
+  xh: _1,
+  xog: _1,
+  yi: _3,
+  yo: _0,
+  yue: _0,
+  zh: _0,
+  zu
 }
