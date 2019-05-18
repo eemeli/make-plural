@@ -22,7 +22,14 @@ var argv = require('minimist')(process.argv.slice(2), {
     es6: false,
     width: null
   },
-  alias: { locale: 'l', value: 'v', ordinal: 'o', cardinal: 'c', es6: 'e', width: 'w' },
+  alias: {
+    locale: 'l',
+    value: 'v',
+    ordinal: 'o',
+    cardinal: 'c',
+    es6: 'e',
+    width: 'w'
+  },
   string: ['locale', 'value', 'width'],
   boolean: ['categories', 'es6']
 })
@@ -57,53 +64,46 @@ const umd = (global, value) => source`
   }));
 `
 
-function mapForEachLanguage(cb, opt) {
-  const style = opt && !opt.cardinals ? 'ordinal' : 'cardinal'
-  let languages = []
-  for (let lc in MakePlural.rules[style]) {
-    const key = property(null, lc)
-    const mpc = new MakePlural(lc, opt)
-    languages.push(key + ': ' + cb(mpc))
-  }
-  return languages
-}
-
 function printPluralsModule(es6) {
-  const cp = common[MakePlural.ordinals ? 'combined' : 'cardinals'].plurals
-  const plurals = mapForEachLanguage(mpc => {
-    let fn = mpc.compile().toString()
+  const { plurals: cp } = MakePlural.ordinals
+    ? common.combined
+    : common.cardinals
+  const plurals = Object.keys(MakePlural.rules.cardinal).map(lc => {
+    const mpc = new MakePlural(lc)
+    const fn = mpc.compile().toString()
     mpc.test()
-    cp.forEach((p, i) => {
-      if (fn === p) fn = `_${i}`
-    })
-    return fn
+    const i = cp.indexOf(fn)
+    return [lc, i === -1 ? fn : `_${i}`]
   })
+  const pm = plurals.map(([lc, fn]) => `${property(null, lc)}: ${fn}`)
   if (es6) {
     write(cp.map((p, i) => `const _${i} = ${p};`).join('\n'), '\n\n')
-    write(es6module(plurals.join(',\n\n')), '\n')
+    write(es6module(pm.join(',\n\n')), '\n')
   } else {
     write(cp.map((p, i) => `var _${i} = ${p};`).join('\n'), '\n\n')
-    write(umd('plurals', plurals.join(',\n\n')), '\n')
+    write(umd('plurals', pm.join(',\n\n')), '\n')
   }
 }
 
 function printCategoriesModule(es6) {
-  const cc = common[MakePlural.ordinals ? 'combined' : 'cardinals'].categories
-  const categories = mapForEachLanguage(mpc => {
+  const { categories: cc } = MakePlural.ordinals
+    ? common.combined
+    : common.cardinals
+  const categories = Object.keys(MakePlural.rules.cardinal).map(lc => {
+    const mpc = new MakePlural(lc)
     mpc.compile()
     mpc.test()
-    let cat = JSON.stringify(mpc.categories).replace(/"(\w+)":/g, '$1:')
-    cc.forEach((c, i) => {
-      if (cat === c) cat = `_${i}`
-    })
-    return cat
+    const cat = JSON.stringify(mpc.categories).replace(/"(\w+)":/g, '$1:')
+    const i = cc.indexOf(cat)
+    return [lc, i === -1 ? cat : `_${i}`]
   })
+  const cm = categories.map(([lc, cat]) => `${property(null, lc)}: ${cat}`)
   if (es6) {
     write(cc.map((c, i) => `const _${i} = ${c};`).join('\n'), '\n\n')
-    write(es6module(categories.join(',\n')), '\n')
+    write(es6module(cm.join(',\n')), '\n')
   } else {
     write(cc.map((c, i) => `var _${i} = ${c};`).join('\n'), '\n\n')
-    write(umd('pluralCategories', categories.join(',\n')), '\n')
+    write(umd('pluralCategories', cm.join(',\n')), '\n')
   }
 }
 
