@@ -1,6 +1,6 @@
 {
   "name": "make-plural-compiler",
-  "version": "5.0.0-beta.0",
+  "version": "5.0.0-beta.1",
   "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
   "keywords": [
     "unicode",
