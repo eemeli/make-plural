@@ -24,7 +24,9 @@
     "es6/",
     "umd/"
   ],
-  "main": "umd/plurals",
+  "main": "umd/plurals.js",
+  "module": "es6/plurals.js",
+  "sideEffects": false,
   "scripts": {
     "build": "npm run es6 && npm run umd",
     "es6": "npm run es6:plurals && npm run es6:plural-categories",
