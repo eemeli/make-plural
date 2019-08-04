@@ -86,14 +86,16 @@ function printPluralsModule(es6) {
   if (es6) {
     const exp = []
     for (const [lc, fn] of plurals) {
+      const id = identifier(lc)
       const prop = property(null, lc)
-      if (fn[0] === '_') exp.push(`${prop}: ${fn}`)
-      else {
-        write(fn, '\n\n')
-        const id = identifier(lc)
-        exp.push(id === prop ? id : `${prop}: ${id}`)
+      if (fn[0] === '_') {
+        write(`export const ${id} = ${fn};`, '\n')
+      } else {
+        write(`export ${fn}`, '\n')
       }
+      exp.push(id === prop ? id : `${prop}: ${id}`)
     }
+    write('\n')
     write(es6module(exp.join(',\n')), '\n')
   } else {
     const pm = plurals.map(([lc, fn]) => `${property(null, lc)}: ${fn}`)
@@ -113,12 +115,20 @@ function printCategoriesModule(es6) {
     const i = cc.indexOf(cat)
     return [lc, i === -1 ? cat : `_${i}`]
   })
-  const cm = categories.map(([lc, cat]) => `${property(null, lc)}: ${cat}`)
   if (es6) {
     write(cc.map((c, i) => `const _${i} = ${c};`).join('\n'), '\n\n')
+    const cm = []
+    for (const [lc, cat] of categories) {
+      const id = identifier(lc)
+      const prop = property(null, lc)
+      write(`export const ${id} = ${cat};`, '\n')
+      cm.push(id === prop ? id : `${prop}: ${id}`)
+    }
+    write('\n')
     write(es6module(cm.join(',\n')), '\n')
   } else {
     write(cc.map((c, i) => `var _${i} = ${c};`).join('\n'), '\n\n')
+    const cm = categories.map(([lc, cat]) => `${property(null, lc)}: ${cat}`)
     write(umd('pluralCategories', cm.join(',\n')), '\n')
   }
 }
