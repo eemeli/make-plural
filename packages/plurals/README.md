@@ -13,19 +13,18 @@ The categorization functions are pre-compiled, require no runtime dependencies, 
 npm install make-plural
 ```
 
-The "main" export `umd/plurals.js` contains an UMD module that can be included with node's `require` or AMD's `define`. In a browser environment, it will populate a global object `plurals`. Said module contains approximately 200 functions (one per [language]), each taking as a first parameter the value to be classified (either a number or a string), and as an optional second parameter, a boolean that if true, applies ordinal rather than cardinal rules.
+The "main" export provides approximately 200 functions (one per [language]), each taking as a first parameter the value to be classified (either a number or a string), and as an optional second parameter, a boolean that if true, applies ordinal rather than cardinal rules. In Webpack, Rollup, and other environments that support it, this will resolve to `plurals.mjs`, an ES6 module. Elsewhere, this will resolve to `plurals.js`, an UMD module.
 
-`umd/pluralCategories.js` has a similar structure to `umd/plurals.js`, but contains an array of the pluralization categories the cardinal and ordinal rules each language's pluralization function may output.
+`make-plural/pluralCategories` has a similar structure to the main export `make-plural/plurals`, but contains for each language an array of the pluralization categories the cardinal and ordinal rules that that language's pluralization function may output. It is also provided in `.mjs` and `.js` variants.
 
-`es6/plurals.js` and `es6/pluralCategories.js` are the ES6 module equivalents of the above.
-
-If your language isn't directly included in the plural rules, try removing any trailing parts that are separated from the stem by `-` or `_`. Note also that the [capitalization of locale codes] is lowercase for the language, but uppercase for the country, so for example the code for Portugese as spoken in Portugal is `pt-PT`.
+The pluralization functions are almost all named using the corresponding 2-3 character [language code]. Due to JavaScript identifier restrictions, there are two exceptions: the function for Portugese as spoken in Portugal (`pt-PT`; `pt` is Brazilian Portuguese) is available as `pt_PT()`, and the now-deprecated `in` subtag for Indonesian (preferred: `id`) is available as `_in()`. The exact `identifier()` transformation used for these names is available from [safe-identifier] package on npm.
 
 [language]: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
-[capitalization of locale codes]: https://tools.ietf.org/html/bcp47#section-2.1.1
+[language code]: https://www.unicode.org/cldr/charts/latest/supplemental/languages_and_scripts.html
+[safe-identifier]: https://www.npmjs.com/package/safe-identifier
 
 ```js
-var plurals = require('make-plural')
+import * as plurals from 'make-plural'
 // { af: [Function],
 //   ak: [Function],
 //   am: [Function],
@@ -43,8 +42,8 @@ plurals.en(2)
 plurals.en(2, true) // 2nd param, if true-ish, is for ordinal rules
 // 'two'
 
-console.log(plurals.en.toString())
-// function (n, ord) {
+String(plurals.en)
+// function en(n, ord) {
 //   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n,
 //       n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
 //   if (ord) return (n10 == 1 && n100 != 11) ? 'one'
@@ -54,7 +53,7 @@ console.log(plurals.en.toString())
 //   return (n == 1 && v0) ? 'one' : 'other';
 // }
 
-var pluralCategories = require('make-plural/umd/pluralCategories')
+import * as pluralCategories from 'make-plural/pluralCategories'
 // { af: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
 //   ak: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
 //   am: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
@@ -64,4 +63,12 @@ var pluralCategories = require('make-plural/umd/pluralCategories')
 // snip 255 lines...
 //   zh: { cardinal: [ 'other' ], ordinal: [ 'other' ] },
 //   zu: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] } }
+```
+
+## Optimization and Tree Shaking
+
+The package file paths and exports are structured in a manner that should allow transparent usage in any module system. In particular, when importing as an ES6 module, tree shaking should be able drop all but the explicitly used functions from the output, provided that named rather than wildcard imports are used:
+
+```js
+import { en, fi } from 'make-plural'
 ```
