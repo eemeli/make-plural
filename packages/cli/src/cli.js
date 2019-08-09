@@ -43,12 +43,6 @@ function write(str, end) {
   if (end) process.stdout.write(end)
 }
 
-const es6module = value => source`
-  export default {
-    ${value}
-  }
-`
-
 // UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
 const umd = (global, value) => source`
   (function (root, ${global}) {
@@ -84,21 +78,16 @@ function printPluralsModule(es6) {
     write(cp[i].replace(/^function\b/, `function _${i}`), '\n\n')
   }
   if (es6) {
-    const exp = []
     for (const [lc, fn] of plurals) {
-      const id = identifier(lc)
-      const prop = property(null, lc)
       if (fn[0] === '_') {
+        const id = identifier(lc)
         write(`export const ${id} = ${fn};`, '\n')
       } else {
         write(`export ${fn}`, '\n')
       }
-      exp.push(id === prop ? id : `${prop}: ${id}`)
     }
-    write('\n')
-    write(es6module(exp.join(',\n')), '\n')
   } else {
-    const pm = plurals.map(([lc, fn]) => `${property(null, lc)}: ${fn}`)
+    const pm = plurals.map(([lc, fn]) => `${identifier(lc)}: ${fn}`)
     write(umd('plurals', pm.join(',\n\n')), '\n')
   }
 }
@@ -117,18 +106,13 @@ function printCategoriesModule(es6) {
   })
   if (es6) {
     write(cc.map((c, i) => `const _${i} = ${c};`).join('\n'), '\n\n')
-    const cm = []
     for (const [lc, cat] of categories) {
       const id = identifier(lc)
-      const prop = property(null, lc)
       write(`export const ${id} = ${cat};`, '\n')
-      cm.push(id === prop ? id : `${prop}: ${id}`)
     }
-    write('\n')
-    write(es6module(cm.join(',\n')), '\n')
   } else {
     write(cc.map((c, i) => `var _${i} = ${c};`).join('\n'), '\n\n')
-    const cm = categories.map(([lc, cat]) => `${property(null, lc)}: ${cat}`)
+    const cm = categories.map(([lc, cat]) => `${identifier(lc)}: ${cat}`)
     write(umd('pluralCategories', cm.join(',\n')), '\n')
   }
 }

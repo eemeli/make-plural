@@ -4,8 +4,7 @@ import expect from 'expect.js'
 import { identifier } from 'safe-identifier'
 
 import MakePlural from 'make-plural-compiler/src/compiler'
-import umdPlurals from 'make-plural/umd/plurals'
-import * as esmPlurals from 'make-plural/es6/plurals'
+import plurals from 'make-plural/plurals'
 
 MakePlural.load(cardinalData, ordinalData)
 
@@ -49,9 +48,7 @@ function testPluralData(type, lc, getPlural) {
 
 describe('MakePlural data self-test', () => {
   for (const [name, getPlural] of [
-    ['UMD export', lc => umdPlurals[lc]],
-    ['ESM default export', lc => esmPlurals.default[lc]],
-    ['ESM named exports', lc => esmPlurals[identifier(lc)]]
+    ['UMD export', lc => plurals[identifier(lc)]]
   ]) {
     describe(name, () => {
       describe('Cardinal rules', () => {

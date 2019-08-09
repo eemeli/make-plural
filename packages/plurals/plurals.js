@@ -392,7 +392,7 @@ ig: _0,
 
 ii: _0,
 
-"in": _0,
+_in: _0,
 
 io: _3,
 
@@ -695,7 +695,7 @@ pt: function pt(n, ord) {
           || i == 1)) ? 'one' : 'other';
 },
 
-"pt-PT": _3,
+pt_PT: _3,
 
 rm: _1,
 
