@@ -34,6 +34,7 @@ var argv = require('minimist')(process.argv.slice(2), {
   boolean: ['categories', 'es6']
 })
 
+const aliases = require('cldr-core/supplemental/aliases.json')
 const pluralData = require('cldr-core/supplemental/plurals.json')
 const ordinalData = require('cldr-core/supplemental/ordinals.json')
 const MakePlural = require('make-plural-compiler').load(pluralData, ordinalData)
@@ -41,6 +42,14 @@ const MakePlural = require('make-plural-compiler').load(pluralData, ordinalData)
 function write(str, end) {
   process.stdout.write(str)
   if (end) process.stdout.write(end)
+}
+
+const { languageAlias } = aliases.supplemental.metadata.alias
+function getAlias(lc) {
+  const alias = languageAlias[lc]
+  if (!alias) return null
+  const r = alias._replacement
+  return MakePlural.rules.cardinal[r] ? r : null // https://unicode-org.atlassian.net/browse/CLDR-13227
 }
 
 // UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
@@ -62,7 +71,13 @@ function printPluralsModule(es6) {
   const { plurals: cp } = MakePlural.ordinals
     ? common.combined
     : common.cardinals
+  const aliased = []
   const plurals = Object.keys(MakePlural.rules.cardinal).map(lc => {
+    const alias = getAlias(lc)
+    if (alias) {
+      aliased.push([lc, alias])
+      return [lc, alias]
+    }
     const mpc = new MakePlural(lc)
     const fn = mpc.compile().toString()
     mpc.test()
@@ -75,15 +90,28 @@ function printPluralsModule(es6) {
     ]
   })
   for (let i = 0; i < cp.length; ++i) {
-    write(cp[i].replace(/^function\b/, `function _${i}`), '\n\n')
+    write(cp[i].replace(/^function\b/, `function _${i}`), '\n')
   }
+  for (const [src, tgt] of aliased) {
+    const idx = plurals.findIndex(pl => pl[0] === tgt)
+    process.stderr.write(JSON.stringify({ tgt, idx }) + '\n')
+    const [lc, fn] = plurals[idx]
+    if (fn.startsWith('_')) {
+      const jdx = plurals.findIndex(pl => pl[0] === src)
+      plurals[jdx][1] = fn
+    } else if (!es6) {
+      write(fn, '\n')
+      plurals[idx][1] = identifier(lc)
+    }
+  }
+  write('\n')
   if (es6) {
     for (const [lc, fn] of plurals) {
-      if (fn[0] === '_') {
+      if (fn.startsWith('function')) {
+        write(`export ${fn}`, '\n')
+      } else {
         const id = identifier(lc)
         write(`export const ${id} = ${fn};`, '\n')
-      } else {
-        write(`export ${fn}`, '\n')
       }
     }
   } else {
