@@ -1,7 +1,7 @@
 import aliases from 'cldr-core/supplemental/aliases.json'
 import { identifier } from 'safe-identifier'
 import * as common from './common'
-import umd from './print-umd'
+import printUMD from './print-umd'
 
 function getAlias(MakePlural, lc) {
   const alias = aliases.supplemental.metadata.alias.languageAlias[lc]
@@ -10,7 +10,7 @@ function getAlias(MakePlural, lc) {
   return MakePlural.rules.cardinal[r] ? r : null // https://unicode-org.atlassian.net/browse/CLDR-13227
 }
 
-export default function printPluralsModule(MakePlural, { es6 }) {
+export default function printPluralsModule(MakePlural, { umd }) {
   const { plurals: cp } = MakePlural.ordinals
     ? common.combined
     : common.cardinals
@@ -39,18 +39,20 @@ export default function printPluralsModule(MakePlural, { es6 }) {
   }
   for (const [src, tgt] of aliased) {
     const idx = plurals.findIndex(pl => pl[0] === tgt)
-    process.stderr.write(JSON.stringify({ tgt, idx }) + '\n')
     const [lc, fn] = plurals[idx]
     if (fn.startsWith('_')) {
       const jdx = plurals.findIndex(pl => pl[0] === src)
       plurals[jdx][1] = fn
-    } else if (!es6) {
+    } else if (umd) {
       str += `${fn}\n`
       plurals[idx][1] = identifier(lc)
     }
   }
   str += '\n'
-  if (es6) {
+  if (umd) {
+    const pm = plurals.map(([lc, fn]) => `${identifier(lc)}: ${fn}`)
+    str += printUMD('plurals', pm.join(',\n\n')) + '\n'
+  } else {
     for (const [lc, fn] of plurals) {
       if (fn.startsWith('function')) {
         str += `export ${fn}\n`
@@ -59,9 +61,6 @@ export default function printPluralsModule(MakePlural, { es6 }) {
         str += `export const ${id} = ${fn};\n`
       }
     }
-  } else {
-    const pm = plurals.map(([lc, fn]) => `${identifier(lc)}: ${fn}`)
-    str += umd('plurals', pm.join(',\n\n')) + '\n'
   }
   return str
 }

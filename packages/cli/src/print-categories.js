@@ -1,8 +1,8 @@
 import { identifier } from 'safe-identifier'
 import * as common from './common'
-import umd from './print-umd'
+import printUMD from './print-umd'
 
-export default function printCategoriesModule(MakePlural, { es6 }) {
+export default function printCategoriesModule(MakePlural, { umd }) {
   const { categories: cc } = MakePlural.ordinals
     ? common.combined
     : common.cardinals
@@ -16,16 +16,16 @@ export default function printCategoriesModule(MakePlural, { es6 }) {
   })
 
   let str
-  if (es6) {
+  if (umd) {
+    str = cc.map((c, i) => `var _${i} = ${c};`).join('\n') + '\n\n'
+    const cm = categories.map(([lc, cat]) => `${identifier(lc)}: ${cat}`)
+    str += printUMD('pluralCategories', cm.join(',\n')) + '\n'
+  } else {
     str = cc.map((c, i) => `const _${i} = ${c};`).join('\n') + '\n\n'
     for (const [lc, cat] of categories) {
       const id = identifier(lc)
       str += `export const ${id} = ${cat};\n`
     }
-  } else {
-    str = cc.map((c, i) => `var _${i} = ${c};`).join('\n') + '\n\n'
-    const cm = categories.map(([lc, cat]) => `${identifier(lc)}: ${cat}`)
-    str += umd('pluralCategories', cm.join(',\n')) + '\n'
   }
   return str
 }
