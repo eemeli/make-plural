@@ -10,12 +10,17 @@ function getAlias(MakePlural, lc) {
   return MakePlural.rules.cardinal[r] ? r : null // https://unicode-org.atlassian.net/browse/CLDR-13227
 }
 
-export default function printPluralsModule(MakePlural, { umd }) {
-  const { plurals: cp } = MakePlural.ordinals
-    ? common.combined
-    : common.cardinals
+export default function printPluralsModule(
+  MakePlural,
+  { cardinals, locale, ordinals, umd }
+) {
+  const locales =
+    locale.length === 0 ? Object.keys(MakePlural.rules.cardinal) : locale.sort()
+  const commonPlurals =
+    cardinals && ordinals ? common.combined.plurals : common.cardinals.plurals
   const aliased = []
-  const plurals = Object.keys(MakePlural.rules.cardinal).map(lc => {
+  const usedCommonPlurals = {}
+  const plurals = locales.map(lc => {
     const alias = getAlias(MakePlural, lc)
     if (alias) {
       aliased.push([lc, alias])
@@ -24,18 +29,19 @@ export default function printPluralsModule(MakePlural, { umd }) {
     const mpc = new MakePlural(lc)
     const fn = mpc.compile().toString()
     mpc.test()
-    const i = cp.indexOf(fn)
-    return [
-      lc,
-      i === -1
-        ? fn.replace(/^function\b/, `function ${identifier(lc)}`)
-        : `_${i}`
-    ]
+    const i = commonPlurals.indexOf(fn)
+    if (i === -1) {
+      return [lc, fn.replace(/^function\b/, `function ${identifier(lc)}`)]
+    } else {
+      usedCommonPlurals[i] = true
+      return [lc, `_${i}`]
+    }
   })
 
   let str = ''
-  for (let i = 0; i < cp.length; ++i) {
-    str += cp[i].replace(/^function\b/, `function _${i}`) + '\n'
+  for (let i = 0; i < commonPlurals.length; ++i) {
+    if (usedCommonPlurals[i])
+      str += commonPlurals[i].replace(/^function\b/, `function _${i}`) + '\n'
   }
   for (const [src, tgt] of aliased) {
     const idx = plurals.findIndex(pl => pl[0] === tgt)
@@ -48,7 +54,7 @@ export default function printPluralsModule(MakePlural, { umd }) {
       plurals[idx][1] = identifier(lc)
     }
   }
-  str += '\n'
+  if (str) str += '\n'
   if (umd) {
     const pm = plurals.map(([lc, fn]) => `${identifier(lc)}: ${fn}`)
     str += printUMD('plurals', pm.join(',\n\n')) + '\n'

@@ -61,13 +61,18 @@ const moduleOptions = {
   }
 }
 
+const lcOpt = {
+  desc:
+    'Identifiers for locales to include in the module. If left empty, all available locales will be included.'
+}
+
 yargs
   .command(valueCommand('cardinal'))
   .command(valueCommand('ordinal'))
   .command({
-    command: 'plurals',
+    command: 'plurals [locale...]',
     desc: 'Print the plural functions as the source of a JS module',
-    builder: yargs => yargs.options(moduleOptions),
+    builder: yargs => yargs.positional('locale', lcOpt).options(moduleOptions),
     handler(args) {
       const MakePlural = buildMakePlural(args)
       const str = printPluralsModule(MakePlural, args)
@@ -75,9 +80,9 @@ yargs
     }
   })
   .command({
-    command: 'categories',
+    command: 'categories [locale...]',
     desc: 'Print the plural categories as the source of a JS module',
-    builder: yargs => yargs.options(moduleOptions),
+    builder: yargs => yargs.positional('locale', lcOpt).options(moduleOptions),
     handler(args) {
       const MakePlural = buildMakePlural(args)
       const str = printCategoriesModule(MakePlural, args)
