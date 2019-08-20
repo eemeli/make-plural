@@ -19,39 +19,17 @@ import * as common from './common'
 
 const MakePlural = MakePluralCompiler.load(pluralData, ordinalData)
 
-var argv = minimist(process.argv.slice(2), {
-  default: {
-    locale: null,
-    value: null,
-    ordinal: null,
-    cardinal: null,
-    categories: false,
-    es6: false,
-    width: null
-  },
-  alias: {
-    locale: 'l',
-    value: 'v',
-    ordinal: 'o',
-    cardinal: 'c',
-    es6: 'e',
-    width: 'w'
-  },
-  string: ['locale', 'value', 'width'],
-  boolean: ['categories', 'es6']
-})
-
-function write(str, end) {
-  process.stdout.write(str)
-  if (end) process.stdout.write(end)
-}
-
 const { languageAlias } = aliases.supplemental.metadata.alias
 function getAlias(lc) {
   const alias = languageAlias[lc]
   if (!alias) return null
   const r = alias._replacement
   return MakePlural.rules.cardinal[r] ? r : null // https://unicode-org.atlassian.net/browse/CLDR-13227
+}
+
+function write(str, end) {
+  process.stdout.write(str)
+  if (end) process.stdout.write(end)
 }
 
 // UMD pattern adapted from https://github.com/umdjs/umd/blob/master/returnExports.js
@@ -152,35 +130,63 @@ function truthy(v) {
   return !!v
 }
 
-argv._.forEach(a => {
-  if (argv.locale === null) argv.locale = a
-  else if (argv.value === null) argv.value = a
-  else if (argv.ordinal === null) argv.ordinal = a
-})
+function getArguments() {
+  var args = minimist(process.argv.slice(2), {
+    default: {
+      locale: null,
+      value: null,
+      ordinal: null,
+      cardinal: null,
+      categories: false,
+      es6: false,
+      width: null
+    },
+    alias: {
+      locale: 'l',
+      value: 'v',
+      ordinal: 'o',
+      cardinal: 'c',
+      es6: 'e',
+      width: 'w'
+    },
+    string: ['locale', 'value', 'width'],
+    boolean: ['categories', 'es6', 'module']
+  })
+  args._.forEach(a => {
+    if (args.locale === null) args.locale = a
+    else if (args.value === null) args.value = a
+    else if (args.ordinal === null) args.ordinal = a
+  })
+  return args
+}
 
-MakePlural.cardinals = argv.cardinal !== null ? truthy(argv.cardinal) : true
-MakePlural.ordinals = argv.ordinal !== null ? truthy(argv.ordinal) : true
-const foldWidth = Number(argv.width)
-if (foldWidth > 0) MakePlural.foldWidth = foldWidth
+function main({ cardinal, categories, es6, locale, ordinal, value, width }) {
+  MakePlural.cardinals = cardinal !== null ? truthy(cardinal) : true
+  MakePlural.ordinals = ordinal !== null ? truthy(ordinal) : true
+  const foldWidth = Number(width)
+  if (foldWidth > 0) MakePlural.foldWidth = foldWidth
 
-if (argv.locale) {
-  const mpc = new MakePlural(argv.locale)
-  const mp = mpc.compile()
-  mpc.test()
-  if (argv.categories) {
-    const cats = mpc.categories.cardinal
-      .concat(mpc.categories.ordinal)
-      .filter((v, i, self) => self.indexOf(v) === i)
-    write(cats.join(', '))
-  } else if (argv.value !== null) {
-    write(mp(argv.value, truthy(argv.ordinal)))
+  if (locale) {
+    const mpc = new MakePlural(locale)
+    const mp = mpc.compile()
+    mpc.test()
+    if (categories) {
+      const cats = mpc.categories.cardinal
+        .concat(mpc.categories.ordinal)
+        .filter((v, i, self) => self.indexOf(v) === i)
+      write(cats.join(', '))
+    } else if (value !== null) {
+      write(mp(value, truthy(ordinal)))
+    } else {
+      write(mp.toString(locale))
+    }
   } else {
-    write(mp.toString(argv.locale))
-  }
-} else {
-  if (argv.categories) {
-    printCategoriesModule(argv.es6)
-  } else {
-    printPluralsModule(argv.es6)
+    if (categories) {
+      printCategoriesModule(es6)
+    } else {
+      printPluralsModule(es6)
+    }
   }
 }
+
+main(getArguments())
