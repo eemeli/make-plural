@@ -30,10 +30,10 @@
   "scripts": {
     "build": "npm run mjs && npm run umd",
     "mjs": "npm run mjs:plurals && npm run mjs:plural-categories",
-    "mjs:plurals": "../cli/make-plural -w118 --es6 > plurals.mjs",
-    "mjs:plural-categories": "../cli/make-plural --es6 --categories > pluralCategories.mjs",
+    "mjs:plurals": "../cli/make-plural plurals -w118 > plurals.mjs",
+    "mjs:plural-categories": "../cli/make-plural categories > pluralCategories.mjs",
     "umd": "npm run umd:plurals && npm run umd:plural-categories",
-    "umd:plurals": "../cli/make-plural -w118 > plurals.js",
-    "umd:plural-categories": "../cli/make-plural --categories > pluralCategories.js"
+    "umd:plurals": "../cli/make-plural plurals --umd -w118 > plurals.js",
+    "umd:plural-categories": "../cli/make-plural categories --umd > pluralCategories.js"
   }
 }
