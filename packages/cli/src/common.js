@@ -28,12 +28,6 @@ export const combined = {
         return (n == 1 && v0) ? 'one' : 'other';
       }
     `
-  ],
-  categories: [
-    '{cardinal:["other"],ordinal:["other"]}',
-    '{cardinal:["one","other"],ordinal:["other"]}',
-    '{cardinal:["one","other"],ordinal:["one","other"]}',
-    '{cardinal:["one","two","other"],ordinal:["other"]}'
   ]
 }
 
@@ -61,11 +55,5 @@ export const cardinals = {
         return (n == 1 && v0) ? 'one' : 'other';
       }
     `
-  ],
-  categories: [
-    '{cardinal:["other"],ordinal:[]}',
-    '{cardinal:["one","other"],ordinal:[]}',
-    '{cardinal:["one","other"],ordinal:[]}',
-    '{cardinal:["one","two","other"],ordinal:[]}'
   ]
 }
