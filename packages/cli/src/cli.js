@@ -8,11 +8,18 @@
  *    ./bin/make-plural [lc] [n] [ord]  // prints the (ORD ? ordinal : plural) category for N in locale LC
  */
 
+import aliases from 'cldr-core/supplemental/aliases.json'
+import pluralData from 'cldr-core/supplemental/plurals.json'
+import ordinalData from 'cldr-core/supplemental/ordinals.json'
 import { source } from 'common-tags'
-import { identifier, property } from 'safe-identifier'
+import MakePluralCompiler from 'make-plural-compiler'
+import minimist from 'minimist'
+import { identifier } from 'safe-identifier'
 import * as common from './common'
 
-var argv = require('minimist')(process.argv.slice(2), {
+const MakePlural = MakePluralCompiler.load(pluralData, ordinalData)
+
+var argv = minimist(process.argv.slice(2), {
   default: {
     locale: null,
     value: null,
@@ -33,11 +40,6 @@ var argv = require('minimist')(process.argv.slice(2), {
   string: ['locale', 'value', 'width'],
   boolean: ['categories', 'es6']
 })
-
-const aliases = require('cldr-core/supplemental/aliases.json')
-const pluralData = require('cldr-core/supplemental/plurals.json')
-const ordinalData = require('cldr-core/supplemental/ordinals.json')
-const MakePlural = require('make-plural-compiler').load(pluralData, ordinalData)
 
 function write(str, end) {
   process.stdout.write(str)
@@ -169,11 +171,11 @@ if (argv.locale) {
     const cats = mpc.categories.cardinal
       .concat(mpc.categories.ordinal)
       .filter((v, i, self) => self.indexOf(v) === i)
-    console.log(cats.join(', '))
+    write(cats.join(', '))
   } else if (argv.value !== null) {
-    console.log(mp(argv.value, truthy(argv.ordinal)))
+    write(mp(argv.value, truthy(argv.ordinal)))
   } else {
-    console.log(mp.toString(argv.locale))
+    write(mp.toString(argv.locale))
   }
 } else {
   if (argv.categories) {
