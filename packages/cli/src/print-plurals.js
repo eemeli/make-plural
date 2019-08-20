@@ -1,6 +1,6 @@
 import aliases from 'cldr-core/supplemental/aliases.json'
 import { identifier } from 'safe-identifier'
-import * as common from './common'
+import { cardinalPlurals, combinedPlurals } from './common-plurals'
 import getCompiler from './get-compiler'
 import printUMD from './print-umd'
 
@@ -17,7 +17,7 @@ export default function printPluralsModule(args) {
   const locales =
     locale.length === 0 ? Object.keys(MakePlural.rules.cardinal) : locale.sort()
   const commonPlurals =
-    cardinals && ordinals ? common.combined.plurals : common.cardinals.plurals
+    cardinals && ordinals ? combinedPlurals : cardinalPlurals
 
   const aliased = []
   const usedCommonPlurals = {}
