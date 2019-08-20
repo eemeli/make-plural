@@ -1,16 +1,17 @@
 import { identifier } from 'safe-identifier'
 import * as common from './common'
+import getCompiler from './get-compiler'
 import printUMD from './print-umd'
 
-export default function printCategoriesModule(
-  MakePlural,
-  { locale, ordinals, umd }
-) {
+export default function printCategoriesModule(args) {
+  const MakePlural = getCompiler(args)
+  const { locale, ordinals, umd } = args
   const locales =
     locale.length === 0 ? Object.keys(MakePlural.rules.cardinal) : locale.sort()
   const commonCategories = ordinals
     ? common.combined.categories
     : common.cardinals.categories
+
   const usedCommonCategories = {}
   const categories = locales.map(lc => {
     const mpc = new MakePlural(lc)

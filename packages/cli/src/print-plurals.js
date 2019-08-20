@@ -1,6 +1,7 @@
 import aliases from 'cldr-core/supplemental/aliases.json'
 import { identifier } from 'safe-identifier'
 import * as common from './common'
+import getCompiler from './get-compiler'
 import printUMD from './print-umd'
 
 function getAlias(MakePlural, lc) {
@@ -10,14 +11,14 @@ function getAlias(MakePlural, lc) {
   return MakePlural.rules.cardinal[r] ? r : null // https://unicode-org.atlassian.net/browse/CLDR-13227
 }
 
-export default function printPluralsModule(
-  MakePlural,
-  { cardinals, locale, ordinals, umd }
-) {
+export default function printPluralsModule(args) {
+  const MakePlural = getCompiler(args)
+  const { cardinals, locale, ordinals, umd } = args
   const locales =
     locale.length === 0 ? Object.keys(MakePlural.rules.cardinal) : locale.sort()
   const commonPlurals =
     cardinals && ordinals ? common.combined.plurals : common.cardinals.plurals
+
   const aliased = []
   const usedCommonPlurals = {}
   const plurals = locales.map(lc => {
