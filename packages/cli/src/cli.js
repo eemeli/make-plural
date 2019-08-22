@@ -5,9 +5,11 @@ import getCompiler from './get-compiler'
 import printCategoriesModule from './print-categories'
 import printPluralsModule from './print-plurals'
 
-function valueCommand(type) {
+function valueCommand(type, alias) {
+  const aliases = alias ? [alias] : null
   const valueDesc = `A numerical value. If left empty, all ${type} plural categories will be printed.`
   return {
+    aliases,
     command: `${type} [value]`,
     desc: `Print the ${type} plural category of a value`,
     builder: yargs =>
@@ -58,7 +60,7 @@ const moduleCommandBuilder = yargs =>
     })
 
 yargs
-  .command(valueCommand('cardinal'))
+  .command(valueCommand('cardinal', 'plural'))
   .command(valueCommand('ordinal'))
   .command({
     command: 'plurals [locale...]',

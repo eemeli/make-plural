@@ -1,24 +1,31 @@
-function _0(n, ord) {
-  if (ord) return 'other';
-  return 'other';
-}
-function _1(n, ord) {
+function a(n, ord) {
   if (ord) return 'other';
   return (n == 1) ? 'one' : 'other';
 }
-function _2(n, ord) {
+function b(n, ord) {
   if (ord) return 'other';
   return ((n == 0
           || n == 1)) ? 'one' : 'other';
 }
-function _3(n, ord) {
+function c(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return 'other';
   return (n == 1 && v0) ? 'one' : 'other';
 }
+function d(n, ord) {
+  if (ord) return 'other';
+  return 'other';
+}
+function e(n, ord) {
+  if (ord) return 'other';
+  return (n == 1) ? 'one'
+      : (n == 2) ? 'two'
+      : 'other';
+}
 
-export const af = _1;
-export const ak = _2;
+export const _in = d;
+export const af = a;
+export const ak = b;
 export function am(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
@@ -53,8 +60,8 @@ export function as(n, ord) {
       : 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
 }
-export const asa = _1;
-export const ast = _3;
+export const asa = a;
+export const ast = c;
 export function az(n, ord) {
   var s = String(n).split('.'), i = s[0], i10 = i.slice(-1), i100 = i.slice(-2), i1000 = i.slice(-3);
   if (ord) return ((i10 == 1 || i10 == 2 || i10 == 5 || i10 == 7 || i10 == 8) || (i100 == 20 || i100 == 50
@@ -79,11 +86,11 @@ export function be(n, ord) {
           || (n100 >= 11 && n100 <= 14)) ? 'many'
       : 'other';
 }
-export const bem = _1;
-export const bez = _1;
-export const bg = _1;
-export const bh = _2;
-export const bm = _0;
+export const bem = a;
+export const bez = a;
+export const bg = a;
+export const bh = b;
+export const bm = d;
 export function bn(n, ord) {
   if (ord) return ((n == 1 || n == 5 || n == 7 || n == 8 || n == 9
           || n == 10)) ? 'one'
@@ -94,7 +101,7 @@ export function bn(n, ord) {
       : 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
 }
-export const bo = _0;
+export const bo = d;
 export function br(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2),
       n1000000 = t0 && s[0].slice(-6);
@@ -106,7 +113,7 @@ export function br(n, ord) {
       : (n != 0 && t0 && n1000000 == 0) ? 'many'
       : 'other';
 }
-export const brx = _1;
+export const brx = a;
 export function bs(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2),
       f10 = f.slice(-1), f100 = f.slice(-2);
@@ -126,10 +133,10 @@ export function ca(n, ord) {
       : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
 }
-export const ce = _1;
-export const cgg = _1;
-export const chr = _1;
-export const ckb = _1;
+export const ce = a;
+export const cgg = a;
+export const chr = a;
+export const ckb = a;
 export function cs(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1];
   if (ord) return 'other';
@@ -161,7 +168,7 @@ export function da(n, ord) {
   return (n == 1 || !t0 && (i == 0
           || i == 1)) ? 'one' : 'other';
 }
-export const de = _3;
+export const de = c;
 export function dsb(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
   if (ord) return 'other';
@@ -173,10 +180,10 @@ export function dsb(n, ord) {
           || f100 == 4)) ? 'few'
       : 'other';
 }
-export const dv = _1;
-export const dz = _0;
-export const ee = _1;
-export const el = _1;
+export const dv = a;
+export const dz = d;
+export const ee = a;
+export const el = a;
 export function en(n, ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1),
       n100 = t0 && s[0].slice(-2);
@@ -186,10 +193,10 @@ export function en(n, ord) {
       : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
 }
-export const eo = _1;
-export const es = _1;
-export const et = _3;
-export const eu = _1;
+export const eo = a;
+export const es = a;
+export const et = c;
+export const eu = a;
 export function fa(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
@@ -198,20 +205,20 @@ export function ff(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n < 2) ? 'one' : 'other';
 }
-export const fi = _3;
+export const fi = c;
 export function fil(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
   if (ord) return (n == 1) ? 'one' : 'other';
   return (v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9
           || !v0 && f10 != 4 && f10 != 6 && f10 != 9) ? 'one' : 'other';
 }
-export const fo = _1;
+export const fo = a;
 export function fr(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return (n >= 0 && n < 2) ? 'one' : 'other';
 }
-export const fur = _1;
-export const fy = _3;
+export const fur = a;
+export const fy = c;
 export function ga(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return (n == 1) ? 'one' : 'other';
@@ -238,8 +245,8 @@ export function gd(n, ord) {
           || (t0 && n >= 13 && n <= 19))) ? 'few'
       : 'other';
 }
-export const gl = _3;
-export const gsw = _1;
+export const gl = c;
+export const gsw = a;
 export function gu(n, ord) {
   if (ord) return (n == 1) ? 'one'
       : ((n == 2
@@ -249,7 +256,7 @@ export function gu(n, ord) {
       : 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
 }
-export const guw = _2;
+export const guw = b;
 export function gv(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -260,8 +267,8 @@ export function gv(n, ord) {
       : (!v0) ? 'many'
       : 'other';
 }
-export const ha = _1;
-export const haw = _1;
+export const ha = a;
+export const haw = a;
 export function he(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
   if (ord) return 'other';
@@ -310,12 +317,11 @@ export function hy(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return (n >= 0 && n < 2) ? 'one' : 'other';
 }
-export const ia = _3;
-export const id = _0;
-export const ig = _0;
-export const ii = _0;
-export const _in = _0;
-export const io = _3;
+export const ia = c;
+export const id = d;
+export const ig = d;
+export const ii = d;
+export const io = c;
 export function is(n, ord) {
   var s = String(n).split('.'), i = s[0], t0 = Number(s[0]) == n, i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -328,20 +334,23 @@ export function it(n, ord) {
           || n == 800)) ? 'many' : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
 }
-export function iu(n, ord) {
+export const iu = e;
+export function iw(n, ord) {
+  var s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
   if (ord) return 'other';
-  return (n == 1) ? 'one'
-      : (n == 2) ? 'two'
+  return (n == 1 && v0) ? 'one'
+      : (i == 2 && v0) ? 'two'
+      : (v0 && (n < 0
+          || n > 10) && t0 && n10 == 0) ? 'many'
       : 'other';
 }
-export const iw = he;
-export const ja = _0;
-export const jbo = _0;
-export const jgo = _1;
-export const ji = _3;
-export const jmc = _1;
-export const jv = _0;
-export const jw = _0;
+export const ja = d;
+export const jbo = d;
+export const jgo = a;
+export const ji = c;
+export const jmc = a;
+export const jv = d;
+export const jw = d;
 export function ka(n, ord) {
   var s = String(n).split('.'), i = s[0], i100 = i.slice(-2);
   if (ord) return (i == 1) ? 'one'
@@ -354,40 +363,35 @@ export function kab(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n < 2) ? 'one' : 'other';
 }
-export const kaj = _1;
-export const kcg = _1;
-export const kde = _0;
-export const kea = _0;
+export const kaj = a;
+export const kcg = a;
+export const kde = d;
+export const kea = d;
 export function kk(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
   if (ord) return (n10 == 6 || n10 == 9
           || t0 && n10 == 0 && n != 0) ? 'many' : 'other';
   return (n == 1) ? 'one' : 'other';
 }
-export const kkj = _1;
-export const kl = _1;
-export const km = _0;
+export const kkj = a;
+export const kl = a;
+export const km = d;
 export function kn(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
 }
-export const ko = _0;
-export const ks = _1;
-export const ksb = _1;
+export const ko = d;
+export const ks = a;
+export const ksb = a;
 export function ksh(n, ord) {
   if (ord) return 'other';
   return (n == 0) ? 'zero'
       : (n == 1) ? 'one'
       : 'other';
 }
-export const ku = _1;
-export function kw(n, ord) {
-  if (ord) return 'other';
-  return (n == 1) ? 'one'
-      : (n == 2) ? 'two'
-      : 'other';
-}
-export const ky = _1;
+export const ku = a;
+export const kw = e;
+export const ky = a;
 export function lag(n, ord) {
   var s = String(n).split('.'), i = s[0];
   if (ord) return 'other';
@@ -396,10 +400,10 @@ export function lag(n, ord) {
           || i == 1) && n != 0) ? 'one'
       : 'other';
 }
-export const lb = _1;
-export const lg = _1;
-export const lkt = _0;
-export const ln = _2;
+export const lb = a;
+export const lg = a;
+export const lkt = d;
+export const ln = b;
 export function lo(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return 'other';
@@ -425,9 +429,9 @@ export function lv(n, ord) {
           || v != 2 && f10 == 1) ? 'one'
       : 'other';
 }
-export const mas = _1;
-export const mg = _2;
-export const mgo = _1;
+export const mas = a;
+export const mg = b;
+export const mgo = a;
 export function mk(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2),
       f10 = f.slice(-1), f100 = f.slice(-2);
@@ -439,8 +443,8 @@ export function mk(n, ord) {
   return (v0 && i10 == 1 && i100 != 11
           || f10 == 1 && f100 != 11) ? 'one' : 'other';
 }
-export const ml = _1;
-export const mn = _1;
+export const ml = a;
+export const mn = a;
 export function mo(n, ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return (n == 1) ? 'one' : 'other';
@@ -470,31 +474,26 @@ export function mt(n, ord) {
       : ((n100 >= 11 && n100 <= 19)) ? 'many'
       : 'other';
 }
-export const my = _0;
-export const nah = _1;
-export function naq(n, ord) {
-  if (ord) return 'other';
-  return (n == 1) ? 'one'
-      : (n == 2) ? 'two'
-      : 'other';
-}
-export const nb = _1;
-export const nd = _1;
+export const my = d;
+export const nah = a;
+export const naq = e;
+export const nb = a;
+export const nd = a;
 export function ne(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return ((t0 && n >= 1 && n <= 4)) ? 'one' : 'other';
   return (n == 1) ? 'one' : 'other';
 }
-export const nl = _3;
-export const nn = _1;
-export const nnh = _1;
-export const no = _1;
-export const nqo = _0;
-export const nr = _1;
-export const nso = _2;
-export const ny = _1;
-export const nyn = _1;
-export const om = _1;
+export const nl = c;
+export const nn = a;
+export const nnh = a;
+export const no = a;
+export const nqo = d;
+export const nr = a;
+export const nso = b;
+export const ny = a;
+export const nyn = a;
+export const om = a;
 export function or(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return ((n == 1 || n == 5
@@ -506,9 +505,9 @@ export function or(n, ord) {
       : 'other';
   return (n == 1) ? 'one' : 'other';
 }
-export const os = _1;
-export const pa = _2;
-export const pap = _1;
+export const os = a;
+export const pa = b;
+export const pap = a;
 export function pl(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -529,15 +528,15 @@ export function prg(n, ord) {
           || v != 2 && f10 == 1) ? 'one'
       : 'other';
 }
-export const ps = _1;
+export const ps = a;
 export function pt(n, ord) {
   var s = String(n).split('.'), i = s[0];
   if (ord) return 'other';
   return ((i == 0
           || i == 1)) ? 'one' : 'other';
 }
-export const pt_PT = _3;
-export const rm = _1;
+export const pt_PT = c;
+export const rm = a;
 export function ro(n, ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return (n == 1) ? 'one' : 'other';
@@ -546,8 +545,8 @@ export function ro(n, ord) {
           || n != 1 && (n100 >= 1 && n100 <= 19)) ? 'few'
       : 'other';
 }
-export const rof = _1;
-export const root = _0;
+export const rof = a;
+export const root = d;
 export function ru(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -558,9 +557,9 @@ export function ru(n, ord) {
           || v0 && (i100 >= 11 && i100 <= 14)) ? 'many'
       : 'other';
 }
-export const rwk = _1;
-export const sah = _0;
-export const saq = _1;
+export const rwk = a;
+export const sah = d;
+export const saq = a;
 export function sc(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return ((n == 11 || n == 8 || n == 80
@@ -573,17 +572,12 @@ export function scn(n, ord) {
           || n == 800)) ? 'many' : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
 }
-export const sd = _1;
-export const sdh = _1;
-export function se(n, ord) {
-  if (ord) return 'other';
-  return (n == 1) ? 'one'
-      : (n == 2) ? 'two'
-      : 'other';
-}
-export const seh = _1;
-export const ses = _0;
-export const sg = _0;
+export const sd = a;
+export const sdh = a;
+export const se = e;
+export const seh = a;
+export const ses = d;
+export const sg = d;
 export function sh(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2),
       f10 = f.slice(-1), f100 = f.slice(-2);
@@ -624,38 +618,13 @@ export function sl(n, ord) {
           || !v0) ? 'few'
       : 'other';
 }
-export function sma(n, ord) {
-  if (ord) return 'other';
-  return (n == 1) ? 'one'
-      : (n == 2) ? 'two'
-      : 'other';
-}
-export function smi(n, ord) {
-  if (ord) return 'other';
-  return (n == 1) ? 'one'
-      : (n == 2) ? 'two'
-      : 'other';
-}
-export function smj(n, ord) {
-  if (ord) return 'other';
-  return (n == 1) ? 'one'
-      : (n == 2) ? 'two'
-      : 'other';
-}
-export function smn(n, ord) {
-  if (ord) return 'other';
-  return (n == 1) ? 'one'
-      : (n == 2) ? 'two'
-      : 'other';
-}
-export function sms(n, ord) {
-  if (ord) return 'other';
-  return (n == 1) ? 'one'
-      : (n == 2) ? 'two'
-      : 'other';
-}
-export const sn = _1;
-export const so = _1;
+export const sma = e;
+export const smi = e;
+export const smj = e;
+export const smn = e;
+export const sms = e;
+export const sn = a;
+export const so = a;
 export function sq(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   if (ord) return (n == 1) ? 'one'
@@ -673,9 +642,9 @@ export function sr(n, ord) {
           || f100 > 14)) ? 'few'
       : 'other';
 }
-export const ss = _1;
-export const ssy = _1;
-export const st = _1;
+export const ss = a;
+export const ssy = a;
+export const st = a;
 export function sv(n, ord) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1),
       n100 = t0 && s[0].slice(-2);
@@ -683,32 +652,37 @@ export function sv(n, ord) {
           || n10 == 2) && n100 != 11 && n100 != 12) ? 'one' : 'other';
   return (n == 1 && v0) ? 'one' : 'other';
 }
-export const sw = _3;
-export const syr = _1;
-export const ta = _1;
-export const te = _1;
-export const teo = _1;
-export const th = _0;
-export const ti = _2;
-export const tig = _1;
+export const sw = c;
+export const syr = a;
+export const ta = a;
+export const te = a;
+export const teo = a;
+export const th = d;
+export const ti = b;
+export const tig = a;
 export function tk(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
   if (ord) return ((n10 == 6 || n10 == 9)
           || n == 10) ? 'few' : 'other';
   return (n == 1) ? 'one' : 'other';
 }
-export const tl = fil;
-export const tn = _1;
-export const to = _0;
-export const tr = _1;
-export const ts = _1;
+export function tl(n, ord) {
+  var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
+  if (ord) return (n == 1) ? 'one' : 'other';
+  return (v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9
+          || !v0 && f10 != 4 && f10 != 6 && f10 != 9) ? 'one' : 'other';
+}
+export const tn = a;
+export const to = d;
+export const tr = a;
+export const ts = a;
 export function tzm(n, ord) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return 'other';
   return ((n == 0 || n == 1)
           || (t0 && n >= 11 && n <= 99)) ? 'one' : 'other';
 }
-export const ug = _1;
+export const ug = a;
 export function uk(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1),
       n100 = t0 && s[0].slice(-2), i10 = i.slice(-1), i100 = i.slice(-2);
@@ -720,24 +694,24 @@ export function uk(n, ord) {
           || v0 && (i100 >= 11 && i100 <= 14)) ? 'many'
       : 'other';
 }
-export const ur = _3;
-export const uz = _1;
-export const ve = _1;
+export const ur = c;
+export const uz = a;
+export const ve = a;
 export function vi(n, ord) {
   if (ord) return (n == 1) ? 'one' : 'other';
   return 'other';
 }
-export const vo = _1;
-export const vun = _1;
-export const wa = _2;
-export const wae = _1;
-export const wo = _0;
-export const xh = _1;
-export const xog = _1;
-export const yi = _3;
-export const yo = _0;
-export const yue = _0;
-export const zh = _0;
+export const vo = a;
+export const vun = a;
+export const wa = b;
+export const wae = a;
+export const wo = d;
+export const xh = a;
+export const xog = a;
+export const yi = c;
+export const yo = d;
+export const yue = d;
+export const zh = d;
 export function zu(n, ord) {
   if (ord) return 'other';
   return (n >= 0 && n <= 1) ? 'one' : 'other';
