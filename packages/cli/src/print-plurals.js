@@ -2,11 +2,9 @@ import { identifier } from 'safe-identifier'
 import getCompiler from './get-compiler'
 import printUMD from './print-umd'
 
-const MAX_PLURAL_REPEAT = 5
-
 export default function printPluralsModule(args) {
   const MakePlural = getCompiler(args)
-  const { locale, umd } = args
+  const { locale, maxRepeat, umd } = args
   const locales =
     locale.length === 0 ? Object.keys(MakePlural.rules.cardinal) : locale.sort()
 
@@ -25,7 +23,7 @@ export default function printPluralsModule(args) {
   let commonId = 'a'
   const plurals = []
   for (const [fn, locales] of Object.entries(localesByFn)) {
-    if (locales.length > MAX_PLURAL_REPEAT) {
+    if (locales.length > maxRepeat && commonId <= 'z') {
       str += fn.replace(/^function\b/, `function ${commonId}`) + '\n'
       for (const lc of locales) plurals.push({ lc, id: commonId })
       commonId = String.fromCharCode(commonId.charCodeAt(0) + 1)

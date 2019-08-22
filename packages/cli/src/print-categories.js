@@ -2,7 +2,6 @@ import { identifier } from 'safe-identifier'
 import getCompiler from './get-compiler'
 import printUMD from './print-umd'
 
-const MAX_CATEGORIES_REPEAT = 5
 const NAMES = { zero: 'z', one: 'o', two: 't', few: 'f', many: 'm', other: 'x' }
 
 function stringifyCategories({ cardinal, ordinal }) {
@@ -15,7 +14,7 @@ function stringifyCategories({ cardinal, ordinal }) {
 
 export default function printCategoriesModule(args) {
   const MakePlural = getCompiler(args)
-  const { locale, umd } = args
+  const { locale, maxRepeat, umd } = args
   const locales =
     locale.length === 0 ? Object.keys(MakePlural.rules.cardinal) : locale.sort()
 
@@ -37,7 +36,7 @@ export default function printCategoriesModule(args) {
   let commonId = 'a'
   const categories = []
   for (const [cat, locales] of Object.entries(localesByCat)) {
-    if (locales.length > MAX_CATEGORIES_REPEAT && commonId <= 'z') {
+    if (locales.length > maxRepeat && commonId <= 'z') {
       str += `${varType} ${commonId} = ${cat};\n`
       for (const lc of locales) categories.push({ lc, cat: commonId })
       do {

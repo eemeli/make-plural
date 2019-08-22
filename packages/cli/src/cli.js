@@ -43,6 +43,11 @@ const moduleCommandBuilder = yargs =>
         desc: 'Include cardinal plurals',
         type: 'boolean'
       },
+      'max-repeat': {
+        default: 5,
+        desc: 'Maximum number of allowed repeats for plural functions & cagetories',
+        type: 'number'
+      },
       ordinals: {
         default: true,
         desc: 'Include ordinal plurals',
