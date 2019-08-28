@@ -21,7 +21,8 @@
     "url": "https://github.com/eemeli/make-plural/issues"
   },
   "files": [
-    "lib/"
+    "lib/",
+    "make-plural"
   ],
   "bin": {
     "make-plural": "./make-plural"
