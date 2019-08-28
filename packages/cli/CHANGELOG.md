@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0-beta.2](https://github.com/eemeli/make-plural/compare/make-plural-cli@6.0.0-beta.1...make-plural-cli@6.0.0-beta.2) (2019-08-28)
+
+
+### Bug Fixes
+
+* **cli:** Make sure to include all files in package ([9ad2946](https://github.com/eemeli/make-plural/commit/9ad2946))
+
+
+
+
+
 # [6.0.0-beta.1](https://github.com/eemeli/make-plural/compare/make-plural-cli@5.0.0...make-plural-cli@6.0.0-beta.1) (2019-08-28)
 
 
