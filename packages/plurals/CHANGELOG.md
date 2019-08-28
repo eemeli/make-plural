@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0-beta.1](https://github.com/eemeli/make-plural/compare/make-plural@5.0.0...make-plural@6.0.0-beta.1) (2019-08-28)
+
+
+### Bug Fixes
+
+* **plurals:** Update for CLI changes ([9d151d0](https://github.com/eemeli/make-plural/commit/9d151d0))
+
+
+### Features
+
+* **cli:** Automate common-categories detection ([3421285](https://github.com/eemeli/make-plural/commit/3421285))
+* **cli:** Automate common-plurals detection ([a6838a1](https://github.com/eemeli/make-plural/commit/a6838a1))
+* **cli:** Improve category printing, including vars for strings ([9c0a8d8](https://github.com/eemeli/make-plural/commit/9c0a8d8))
+* Account for aliased locale codes ([f538772](https://github.com/eemeli/make-plural/commit/f538772))
+* **cli:** Harmonise ES6 & UMD exports ([c24b666](https://github.com/eemeli/make-plural/commit/c24b666))
+* **plurals:** Change output paths ([3b4c7e9](https://github.com/eemeli/make-plural/commit/3b4c7e9))
+* Add named exports to ES6 modules, for tree-shaking ([37021e6](https://github.com/eemeli/make-plural/commit/37021e6))
+
+
+### BREAKING CHANGES
+
+* **cli:** This drops the default export of the ES6 module, and
+for the UMD module renames "pt-PT" as pt_PT & "in" as _in.
+* **plurals:** This drops the umd/ and es6/ directories, in favour of
+serving the plurals and pluralCategories files from the package root.
+They are now distinguished by extension: .mjs for ES6 modules, and .js
+for UMD packaging.
+
+
+
+
+
 # [5.0.0](https://github.com/eemeli/make-plural/compare/9cbae0d...make-plural@5.0.0) (2019-07-15)
 
 
