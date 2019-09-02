@@ -28,12 +28,16 @@
   "module": "plurals.mjs",
   "sideEffects": false,
   "scripts": {
-    "build": "npm run mjs && npm run umd",
-    "mjs": "npm run mjs:plurals && npm run mjs:plural-categories",
-    "mjs:plurals": "../cli/make-plural plurals -w118 > plurals.mjs",
-    "mjs:plural-categories": "../cli/make-plural categories > pluralCategories.mjs",
-    "umd": "npm run umd:plurals && npm run umd:plural-categories",
-    "umd:plurals": "../cli/make-plural plurals --umd -w118 > plurals.js",
-    "umd:plural-categories": "../cli/make-plural categories --umd > pluralCategories.js"
+    "build": "npm run build:mjs && npm run build:umd",
+    "build:mjs": "npm run cardinals:mjs && npm run ordinals:mjs && npm run plurals:mjs && npm run plural-categories:mjs",
+    "build:umd": "npm run cardinals:umd && npm run ordinals:umd && npm run plurals:umd && npm run plural-categories:umd",
+    "cardinals:mjs": "../cli/make-plural plurals --no-ordinals -w118 > cardinals.mjs",
+    "cardinals:umd": "../cli/make-plural plurals --no-ordinals --umd -w118 > cardinals.js",
+    "ordinals:mjs": "../cli/make-plural plurals --no-cardinals -w118 > ordinals.mjs",
+    "ordinals:umd": "../cli/make-plural plurals --no-cardinals --umd -w118 > ordinals.js",
+    "plurals:mjs": "../cli/make-plural plurals -w118 > plurals.mjs",
+    "plurals:umd": "../cli/make-plural plurals --umd -w118 > plurals.js",
+    "plural-categories:mjs": "../cli/make-plural categories > pluralCategories.mjs",
+    "plural-categories:umd": "../cli/make-plural categories --umd > pluralCategories.js"
   }
 }
