@@ -4,9 +4,11 @@ import printUMD from './print-umd'
 
 export default function printPluralsModule(args) {
   const MakePlural = getCompiler(args)
-  const { locale, maxRepeat, umd } = args
+  const { cardinals, locale, maxRepeat, umd } = args
   const locales =
-    locale.length === 0 ? Object.keys(MakePlural.rules.cardinal) : locale.sort()
+    locale.length === 0
+      ? Object.keys(MakePlural.rules[cardinals ? 'cardinal' : 'ordinal'])
+      : locale.sort()
 
   const localesByFn = {}
   for (const lc of locales) {
