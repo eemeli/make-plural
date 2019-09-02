@@ -15,20 +15,30 @@ The categorization functions are pre-compiled, require no runtime dependencies, 
 npm install make-plural
 ```
 
-The package's "main" export provides approximately 200 functions (one per [language]), each taking as a first parameter the value to be classified (either a number or a string), and as an optional second parameter, a boolean that if true, applies ordinal rather than cardinal rules. In Webpack, Rollup, and other environments that support it, this will resolve to `plurals.mjs`, an ES6 module. Elsewhere, this will resolve to `plurals.js`, an UMD module.
+```js
+import * as Plurals from 'make-plural/plurals' // or just 'make-plural'
+import * as Cardinals from 'make-plural/cardinals'
+import * as Ordinals from 'make-plural/ordinals'
+import * as Categories from 'make-plural/pluralCategories'
+```
 
-`make-plural/pluralCategories` has a similar structure to the main export `make-plural/plurals`, but contains for each language an array of the pluralization categories the cardinal and ordinal rules that that language's pluralization function may output. It is also provided in `.mjs` and `.js` variants.
+Each of the endpoints is available with both UMD (.js) and ES (.mjs) packaging. `Cardinals`, `Ordinals` and `Plurals` each export a set of functions keyed by locale code, returning the pluralization category for the input (either a number or a string representation of a number). `Plurals` functions also accept a second boolean parameter to return the ordinal (`true`) rather than cardinal (`false`, default) plural category. Note that `Ordinals` includes a slightly smaller subset of locales than `Cardinals` and `Plurals`, due to a lack of data in the CLDR.
 
-The pluralization functions are almost all named using the corresponding 2-3 character [language code]. Due to JavaScript identifier restrictions, there are two exceptions: the function for Portugese as spoken in Portugal (`pt-PT`; `pt` is Brazilian Portuguese) is available as `pt_PT()`, and the now-deprecated `in` subtag for Indonesian (preferred: `id`) is available as `_in()`. The exact `identifier()` transformation used for these names is available from [safe-identifier] package on npm.
+`Categories` has a similar structure, but contains for each language an array of the pluralization categories the cardinal and ordinal rules that that language's pluralization function may output.
+
+The object keys are named using the corresponding 2-3 character [language code]. Due to JavaScript identifier restrictions, there are two exceptions: Portugese as spoken in Portugal (`pt-PT`; `pt` is Brazilian Portuguese) is available as `pt_PT`, and the now-deprecated `in` subtag for Indonesian (preferred: `id`) is available as `_in`. The transformation used for these names is available as [safe-identifier] on npm.
 
 [language]: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
 [language code]: https://www.unicode.org/cldr/charts/latest/supplemental/languages_and_scripts.html
 [safe-identifier]: https://www.npmjs.com/package/safe-identifier
 
+The package file paths and exports are structured in a manner that should allow transparent usage in any module system. In particular, when importing as an ES6 module, tree shaking should be able drop all but the explicitly used functions from the output, provided that **named rather than wildcard imports** are used.
+
 ```js
 import { en } from 'make-plural'
 
 en(1) // 'one'
+en('1.0') // 'other'
 en(2) // 'other'
 en(2, true) // 'two' (ordinal)
 
@@ -43,7 +53,11 @@ String(en)
 //   return (n == 1 && v0) ? 'one' : 'other';
 // }
 
-import * as categories from 'make-plural/pluralCategories'
+import { en as ordinalEn } from 'make-plural/ordinals'
+
+ordinalEn(3) // 'few'
+
+import * as Categories from 'make-plural/pluralCategories'
 // { _in: { cardinal: [ 'other' ], ordinal: [ 'other' ] },
 //   af: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
 //   ak: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
@@ -60,7 +74,3 @@ import * as categories from 'make-plural/pluralCategories'
 //   zh: { cardinal: [ 'other' ], ordinal: [ 'other' ] },
 //   zu: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] } }
 ```
-
-## Optimization and Tree Shaking
-
-The package file paths and exports are structured in a manner that should allow transparent usage in any module system. In particular, when importing as an ES6 module, tree shaking should be able drop all but the explicitly used functions from the output, provided that named rather than wildcard imports are used.
