@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0-beta.2](https://github.com/eemeli/make-plural/compare/make-plural@6.0.0-beta.1...make-plural@6.0.0-beta.2) (2019-09-02)
+
+
+### Features
+
+* **plurals:** Include separate exports for cardinals & ordinals ([ea23050](https://github.com/eemeli/make-plural/commit/ea23050))
+
+
+
+
+
 # [6.0.0-beta.1](https://github.com/eemeli/make-plural/compare/make-plural@5.0.0...make-plural@6.0.0-beta.1) (2019-08-28)
 
 
