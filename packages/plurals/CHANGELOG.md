@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0-beta.3](https://github.com/eemeli/make-plural/compare/make-plural@6.0.0-beta.2...make-plural@6.0.0-beta.3) (2019-09-04)
+
+
+### Bug Fixes
+
+* **plurals:** Oops, add missing files to release ([d4f3050](https://github.com/eemeli/make-plural/commit/d4f3050))
+
+
+
+
+
 # [6.0.0-beta.2](https://github.com/eemeli/make-plural/compare/make-plural@6.0.0-beta.1...make-plural@6.0.0-beta.2) (2019-09-02)
 
 
