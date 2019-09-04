@@ -21,6 +21,8 @@
     "url": "https://github.com/eemeli/make-plural/issues"
   },
   "files": [
+    "cardinals.*",
+    "ordinals.*",
     "plurals.*",
     "pluralCategories.*"
   ],
