@@ -22,15 +22,15 @@
     "make-plural-compiler": "file:packages/compiler"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/register": "^7.5.5",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/register": "^7.6.2",
     "chai": "^4.2.0",
     "cldr-core": "^36.0.0",
-    "lerna": "^3.16.4",
-    "mocha": "^6.2.0",
+    "lerna": "^3.18.1",
+    "mocha": "^6.2.1",
     "prettier": "^1.18.2"
   }
 }

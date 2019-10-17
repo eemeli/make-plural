@@ -32,6 +32,6 @@
     "common-tags": "^1.8.0",
     "make-plural-compiler": "file:../compiler",
     "safe-identifier": "^0.1.0",
-    "yargs": "^14.0.0"
+    "yargs": "^14.2.0"
   }
 }
