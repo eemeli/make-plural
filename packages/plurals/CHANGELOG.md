@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/eemeli/make-plural/compare/make-plural@6.0.0-beta.3...make-plural@6.0.0) (2019-10-17)
+
+
+### Features
+
+* Update cldr-core from 34 to 36 ([a9d2547](https://github.com/eemeli/make-plural/commit/a9d25474efde9b415dd5e4e63b825bcad06f7b07))
+
+
+
+
+
 # [6.0.0-beta.3](https://github.com/eemeli/make-plural/compare/make-plural@6.0.0-beta.2...make-plural@6.0.0-beta.3) (2019-09-04)
 
 
