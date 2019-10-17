@@ -28,7 +28,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/register": "^7.5.5",
     "chai": "^4.2.0",
-    "cldr-core": "^34.0.0",
+    "cldr-core": "^36.0.0",
     "lerna": "^3.16.4",
     "mocha": "^6.2.0",
     "prettier": "^1.18.2"

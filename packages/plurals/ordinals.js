@@ -20,6 +20,8 @@ af: a,
 
 am: a,
 
+an: a,
+
 ar: a,
 
 as: function as(n) {
@@ -201,6 +203,16 @@ km: a,
 kn: a,
 
 ko: a,
+
+kw: function kw(n) {
+  var s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
+  return ((t0 && n >= 1 && n <= 4) || ((n100 >= 1 && n100 <= 4) || (n100 >= 21 && n100 <= 24)
+          || (n100 >= 41 && n100 <= 44) || (n100 >= 61 && n100 <= 64)
+          || (n100 >= 81 && n100 <= 84))) ? 'one'
+      : (n == 5
+          || n100 == 5) ? 'many'
+      : 'other';
+},
 
 ky: a,
 

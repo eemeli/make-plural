@@ -8,6 +8,7 @@ function b(n) {
 export const _in = a;
 export const af = a;
 export const am = a;
+export const an = a;
 export const ar = a;
 export function as(n) {
   return ((n == 1 || n == 5 || n == 7 || n == 8 || n == 9
@@ -144,6 +145,15 @@ export function kk(n) {
 export const km = a;
 export const kn = a;
 export const ko = a;
+export function kw(n) {
+  var s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
+  return ((t0 && n >= 1 && n <= 4) || ((n100 >= 1 && n100 <= 4) || (n100 >= 21 && n100 <= 24)
+          || (n100 >= 41 && n100 <= 44) || (n100 >= 61 && n100 <= 64)
+          || (n100 >= 81 && n100 <= 84))) ? 'one'
+      : (n == 5
+          || n100 == 5) ? 'many'
+      : 'other';
+}
 export const ky = a;
 export const lo = b;
 export const lt = a;

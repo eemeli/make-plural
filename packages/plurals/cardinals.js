@@ -38,6 +38,8 @@ ak: b,
 
 am: c,
 
+an: a,
+
 ar: function ar(n) {
   var s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return (n == 0) ? 'zero'
@@ -82,7 +84,7 @@ bez: a,
 
 bg: a,
 
-bh: b,
+bho: b,
 
 bm: e,
 
@@ -116,6 +118,12 @@ bs: function bs(n) {
 ca: d,
 
 ce: a,
+
+ceb: function ceb(n) {
+  var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
+  return (v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9
+          || !v0 && f10 != 4 && f10 != 6 && f10 != 9) ? 'one' : 'other';
+},
 
 cgg: a,
 
@@ -362,7 +370,21 @@ ksh: function ksh(n) {
 
 ku: a,
 
-kw: f,
+kw: function kw(n) {
+  var s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2), n1000 = t0 && s[0].slice(-3),
+      n100000 = t0 && s[0].slice(-5), n1000000 = t0 && s[0].slice(-6);
+  return (n == 0) ? 'zero'
+      : (n == 1) ? 'one'
+      : ((n100 == 2 || n100 == 22 || n100 == 42 || n100 == 62 || n100 == 82)
+          || t0 && n1000 == 0 && ((n100000 >= 1000 && n100000 <= 20000) || n100000 == 40000 || n100000 == 60000
+          || n100000 == 80000)
+          || n != 0 && n1000000 == 100000) ? 'two'
+      : ((n100 == 3 || n100 == 23 || n100 == 43 || n100 == 63
+          || n100 == 83)) ? 'few'
+      : (n != 1 && (n100 == 1 || n100 == 21 || n100 == 41 || n100 == 61
+          || n100 == 81)) ? 'many'
+      : 'other';
+},
 
 ky: a,
 
@@ -426,11 +448,11 @@ mo: function mo(n) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return (n == 1 && v0) ? 'one'
       : (!v0 || n == 0
-          || n != 1 && (n100 >= 1 && n100 <= 19)) ? 'few'
+          || (n100 >= 2 && n100 <= 19)) ? 'few'
       : 'other';
 },
 
-mr: c,
+mr: a,
 
 ms: e,
 
@@ -479,6 +501,8 @@ or: a,
 
 os: a,
 
+osa: e,
+
 pa: b,
 
 pap: a,
@@ -519,7 +543,7 @@ ro: function ro(n) {
   var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return (n == 1 && v0) ? 'one'
       : (!v0 || n == 0
-          || n != 1 && (n100 >= 1 && n100 <= 19)) ? 'few'
+          || (n100 >= 2 && n100 <= 19)) ? 'few'
       : 'other';
 },
 
@@ -630,6 +654,8 @@ ss: a,
 ssy: a,
 
 st: a,
+
+su: e,
 
 sv: d,
 
