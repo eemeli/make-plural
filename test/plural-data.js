@@ -4,7 +4,7 @@ import ordinalData from 'cldr-core/supplemental/ordinals.json'
 import { identifier } from 'safe-identifier'
 
 import MakePlural from 'make-plural-compiler/src/compiler'
-import plurals from 'make-plural/plurals'
+import * as Plurals from 'make-plural/plurals'
 
 MakePlural.load(cardinalData, ordinalData)
 
@@ -42,22 +42,18 @@ function testPluralData(type, lc, getPlural) {
   }
 }
 
-describe('MakePlural data self-test', () => {
-  for (const [name, getPlural] of [
-    ['UMD export', lc => plurals[identifier(lc)]]
-  ]) {
-    describe(name, () => {
-      describe('Cardinal rules', () => {
-        for (var lc in cardinalData.supplemental['plurals-type-cardinal']) {
-          describe(lc, () => testPluralData('cardinal', lc, getPlural))
-        }
-      })
+describe('MakePlural data self-test (UMD export)', () => {
+  const getPlural = lc => Plurals[identifier(lc)]
 
-      describe('Ordinal rules', () => {
-        for (var lc in ordinalData.supplemental['plurals-type-ordinal']) {
-          describe(lc, () => testPluralData('ordinal', lc, getPlural))
-        }
-      })
-    })
-  }
+  describe('Cardinal rules', () => {
+    for (var lc in cardinalData.supplemental['plurals-type-cardinal']) {
+      describe(lc, () => testPluralData('cardinal', lc, getPlural))
+    }
+  })
+
+  describe('Ordinal rules', () => {
+    for (var lc in ordinalData.supplemental['plurals-type-ordinal']) {
+      describe(lc, () => testPluralData('ordinal', lc, getPlural))
+    }
+  })
 })

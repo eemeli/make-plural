@@ -7,6 +7,8 @@ export default function umd(global, value) {
       if (typeof define === 'function' && define.amd) {
         define(${global});
       } else if (typeof exports === 'object') {
+        if (Object.defineProperty) Object.defineProperty(${global}, '__esModule', { value: true });
+        else ${global}.__esModule = true;
         module.exports = ${global};
       } else {
         root.${global} = ${global};

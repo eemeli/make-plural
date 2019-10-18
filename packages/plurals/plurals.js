@@ -27,6 +27,8 @@ function e(n, ord) {
   if (typeof define === 'function' && define.amd) {
     define(plurals);
   } else if (typeof exports === 'object') {
+    if (Object.defineProperty) Object.defineProperty(plurals, '__esModule', { value: true });
+    else plurals.__esModule = true;
     module.exports = plurals;
   } else {
     root.plurals = plurals;
