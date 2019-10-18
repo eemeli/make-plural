@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/eemeli/make-plural/compare/make-plural@6.0.0...make-plural@6.0.1) (2019-10-18)
+
+
+### Bug Fixes
+
+* Include __esModule: true in CommonJS export (eemeli/intl-pluralrules[#12](https://github.com/eemeli/make-plural/issues/12)) ([70daa3d](https://github.com/eemeli/make-plural/commit/70daa3df0d985b2d4b4fd9d6cf8659a5f58a79f4))
+
+
+
+
+
 # [6.0.0](https://github.com/eemeli/make-plural/compare/make-plural@6.0.0-beta.3...make-plural@6.0.0) (2019-10-17)
 
 
