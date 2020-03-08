@@ -45,7 +45,8 @@ const moduleCommandBuilder = yargs =>
       },
       'max-repeat': {
         default: 5,
-        desc: 'Maximum number of allowed repeats for plural functions & cagetories',
+        desc:
+          'Maximum number of allowed repeats for plural functions & cagetories',
         type: 'number'
       },
       ordinals: {
