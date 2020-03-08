@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/eemeli/make-plural/compare/make-plural-compiler@5.0.0...make-plural-compiler@5.1.0) (2020-03-08)
+
+
+### Features
+
+* **compiler:** Drop line folding & unnecessary (wrapping) ([c5d31f6](https://github.com/eemeli/make-plural/commit/c5d31f69d6f1032e291cb911cae8cc34b20099ed))
+
+
+
+
+
 # [5.0.0](https://github.com/eemeli/make-plural/compare/9cbae0d...make-plural-compiler@5.0.0) (2019-07-15)
 
 ### BREAKING CHANGES
