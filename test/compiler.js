@@ -49,6 +49,9 @@ describe('MakePlural compiler', function() {
       expect(() => MakePlural.getRules('nonesuch', 'xx')).to.throw()
       expect(() => MakePlural.getRules('cardinal', 'xx')).to.not.throw()
     })
+    it('should return null for no locale', function() {
+      expect(MakePlural.getRules('cardinal', '')).to.equal(null)
+    })
     it('should return rules for "cardinal", "en"', function() {
       var en = MakePlural.getRules('cardinal', 'en')
       expect(en).to.be.an('object')
@@ -65,10 +68,35 @@ describe('MakePlural compiler', function() {
     it('should require `new`', function() {
       expect(MakePlural).to.throw(TypeError, /Class/)
     })
-    it('should require a locale', function() {
-      var new_mp = lc => new MakePlural(lc)
-      expect(new_mp).to.throw()
-      expect(() => new_mp('en')).to.not.throw()
+    it('should require a locale', () => {
+      expect(() => new MakePlural()).to.throw('A locale is required')
+      expect(() => new MakePlural('en')).not.to.throw()
+    })
+    it('should require at least one of cardinals or ordinals', () => {
+      expect(
+        () => new MakePlural('en', { cardinals: false, ordinals: false })
+      ).to.throw('At least one type of plural is required')
+    })
+    it('should require rules when compiling', () => {
+      expect(() => new MakePlural('xx').compile()).to.throw(
+        'Locale "xx" cardinal rules not found'
+      )
+      expect(() => new MakePlural('en').compile()).not.to.throw()
+    })
+    it('should accept missing ordinal rules when compiling both', () => {
+      const lc = 'yo' // based on CLDR v36 data
+      expect(
+        cardinalData.supplemental['plurals-type-cardinal'][lc]
+      ).to.include.keys(['pluralRule-count-other'])
+      expect(ordinalData.supplemental['plurals-type-ordinal'][lc]).to.equal(
+        undefined
+      )
+      expect(() =>
+        new MakePlural(lc, { cardinals: false, ordinals: true }).compile()
+      ).to.throw(`Locale "${lc}" ordinal rules not found`)
+      expect(() =>
+        new MakePlural(lc, { cardinals: true, ordinals: true }).compile()
+      ).not.to.throw()
     })
     it('should return a pluralization function', function() {
       var mp = new MakePlural('en').compile()
@@ -84,6 +112,11 @@ describe('MakePlural compiler', function() {
       var mp = new MakePlural('en').compile()
       expect(mp(2, true)).to.equal('two')
       MakePlural.ordinals = false
+    })
+    it('should cache compilation results', () => {
+      const en = new MakePlural('en')
+      const fn = en.compile()
+      expect(en.compile()).to.equal(fn)
     })
   })
 
@@ -120,10 +153,11 @@ describe('MakePlural compiler', function() {
     })
     it("which can be eval'd as a function", function() {
       var mp = new MakePlural('en', { ordinals: true }).compile()
-      var fn = eval('(' + mp.toString() + ')')
+      var fn = eval('(' + mp.toString('EN') + ')')
       expect(fn).to.be.an.instanceOf(Function)
       expect(fn(1)).to.equal('one')
       expect(fn(2, true)).to.equal('two')
+      expect(fn.name).to.equal('EN')
     })
   })
 })

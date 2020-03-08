@@ -21,6 +21,7 @@ export default class Tests {
     try {
       var r = fn(n, type === 'ordinal')
     } catch (error) {
+      /* istanbul ignore next: should not happen unless CLDR data is broken */
       throw this.error(n, type, error)
     }
     if (r !== expResult) {

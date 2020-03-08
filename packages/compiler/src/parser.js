@@ -30,6 +30,7 @@ export default class Parser {
       })
       .replace(/(\w+) (!?)= ([0-9]+)\.\.([0-9]+)/g, (m, sym, noteq, x0, x1) => {
         if (Number(x0) + 1 === Number(x1)) {
+          /* istanbul ignore if: noteq is not used in current CLDR */
           if (noteq) return `${sym} != ${x0} && ${sym} != ${x1}`
           return `(${sym} == ${x0} || ${sym} == ${x1})`
         }
@@ -49,6 +50,7 @@ export default class Parser {
     let vars = []
     if (this.i) vars.push('i = s[0]')
     if (this.f || this.v) vars.push("f = s[1] || ''")
+    /* istanbul ignore if: t is not used in current CLDR */
     if (this.t) vars.push("t = (s[1] || '').replace(/0+$/, '')")
     if (this.v) vars.push('v = f.length')
     if (this.v0) vars.push('v0 = !s[1]')

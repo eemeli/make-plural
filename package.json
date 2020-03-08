@@ -14,7 +14,7 @@
     "clean": "git clean -fdx packages/",
     "prettier": "prettier --write '{test,packages/*/src}/*.js'",
     "preversion": "npm run clean && npm run build && npm test",
-    "test": "mocha"
+    "test": "nyc mocha"
   },
   "dependencies": {
     "make-plural": "file:packages/plurals",
@@ -31,6 +31,7 @@
     "cldr-core": "^36.0.0",
     "lerna": "^3.20.2",
     "mocha": "^7.1.0",
+    "nyc": "^15.0.0",
     "prettier": "^1.19.1",
     "safe-identifier": "^0.3.1"
   }
