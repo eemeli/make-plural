@@ -57,11 +57,6 @@ const moduleCommandBuilder = yargs =>
       umd: {
         desc: 'Output an UMD rather than an ES module',
         type: 'boolean'
-      },
-      width: {
-        alias: 'w',
-        desc: 'Fold width for the output',
-        type: 'number'
       }
     })
 

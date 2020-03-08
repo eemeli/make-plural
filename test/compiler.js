@@ -6,12 +6,7 @@ import MakePlural from 'make-plural-compiler/src/compiler'
 
 describe('MakePlural compiler', function() {
   it('should have data members', function() {
-    expect(MakePlural).to.have.keys(
-      'cardinals',
-      'foldWidth',
-      'ordinals',
-      'rules'
-    )
+    expect(MakePlural).to.have.keys('cardinals', 'ordinals', 'rules')
   })
 
   describe('.load()', function() {

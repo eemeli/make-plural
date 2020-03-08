@@ -1,23 +1,10 @@
 import Parser from './parser'
 import Tests from './tests'
 
-function toString(fn, name) {
-  const str = Function.prototype.toString.call(fn)
-  const func = name ? `function ${name}` : 'function'
-  return str.replace(/^function(?: \w+)\(([^)]+)\)/, (_, args) => {
-    const a = args
-      .replace(/\n\/\*(``)?\*\//, '') // https://bugs.chromium.org/p/v8/issues/detail?id=2470
-      .split(',')
-      .map(arg => arg.trim())
-    return `${func}(${a.join(', ')})`
-  })
-}
-
 export default class Compiler {
   static cardinals = true
   static ordinals = false
   static rules = { cardinal: {}, ordinal: {} }
-  static foldWidth = 78
 
   static load(...args) {
     args.forEach(cldr => {
@@ -55,7 +42,16 @@ export default class Compiler {
   compile() {
     if (!this.fn) {
       this.fn = this.buildFunction()
-      this.fn.toString = toString.bind(null, this.fn)
+      this.fn.toString = name => {
+        const str = Function.prototype.toString.call(this.fn)
+        const func = name ? `function ${name}` : 'function'
+        // The /*``*/ is present in Node 8 output, due to
+        // https://bugs.chromium.org/p/v8/issues/detail?id=2470
+        return str.replace(
+          /^function(?: \w+)\(([^)]+)\)/,
+          (_, args) => `${func}(${args.replace('/*``*/', '').trim()})`
+        )
+      }
       this.test = () => this.tests.testAll(this.fn)
     }
     return this.fn
@@ -77,38 +73,30 @@ export default class Compiler {
     }
     this.categories[type] = cases.map(c => c[1]).concat('other')
     if (cases.length === 1) {
-      return `(${cases[0][0]}) ? '${cases[0][1]}' : 'other'`
+      return `${cases[0][0]} ? '${cases[0][1]}' : 'other'`
     } else {
-      return [...cases.map(c => `(${c[0]}) ? '${c[1]}'`), "'other'"].join(
-        '\n      : '
+      return [...cases.map(c => `${c[0]} ? '${c[1]}'`), "'other'"].join(
+        '\n    : '
       )
     }
   }
 
   buildFunction() {
     const { cardinals, ordinals } = this.types
-    const compile = c =>
-      c ? (c[1] ? 'return ' : 'if (ord) return ') + this.buildBody(...c) : ''
-    const fold = {
-      vars(str) {
-        var re = new RegExp(`(.{1,${Compiler.foldWidth}})(,|$) ?`, 'g')
-        return `  ${str};`.replace(re, '$1$2\n      ')
-      },
-      cond(str) {
-        var re = new RegExp(`(.{1,${Compiler.foldWidth}}) (\\|\\| |$) ?`, 'gm')
-        return `  ${str};`.replace(re, '$1\n          $2')
-      }
+    let body = ''
+    if (ordinals && cardinals) {
+      const ordBody = this.buildBody('ordinal', false)
+      const cardBody = this.buildBody('cardinal', true)
+      if (ordBody === cardBody) body = `  return ${cardBody};`
+      else body = `  if (ord) return ${ordBody};\n  return ${cardBody};`
+    } else {
+      const pt = cardinals ? 'cardinal' : 'ordinal'
+      body = `  return ${this.buildBody(pt, true)};`
     }
-    const cond = [
-      ordinals && ['ordinal', !cardinals],
-      cardinals && ['cardinal', true]
-    ]
-      .map(compile)
-      .map(fold.cond)
-    const body = [fold.vars(this.parser.vars()), ...cond]
-      .filter(line => !/^[\s;]*$/.test(line))
-      .map(line => line.replace(/\s+$/gm, ''))
-      .join('\n')
+
+    const vars = this.parser.vars()
+    if (vars) body = `  ${vars};\n${body}`
+
     const args = ordinals && cardinals ? 'n, ord' : 'n'
     return new Function(args, body) // eslint-disable-line no-new-func
   }
