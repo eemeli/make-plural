@@ -1,6 +1,6 @@
 {
   "name": "make-plural",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "Unicode CLDR pluralization rules as JavaScript functions",
   "keywords": [
     "unicode",

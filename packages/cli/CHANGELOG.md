@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/eemeli/make-plural/compare/make-plural-cli@6.1.0...make-plural-cli@6.2.0) (2020-04-05)
+
+
+### Features
+
+* Add d.ts typings for pluralCategories ([ae7472e](https://github.com/eemeli/make-plural/commit/ae7472eb12ecdb9768197faddf0be409eb2ced55))
+* Add d.ts typings for plurals ([db6e4b5](https://github.com/eemeli/make-plural/commit/db6e4b5d39994d159695ac113bdc5e005921a2f7))
+* Include type PluralCategory in all d.ts files ([9b368fc](https://github.com/eemeli/make-plural/commit/9b368fc5adafb6dc95c4bf7973a494edcab9a9f8))
+
+
+
+
+
 # [6.1.0](https://github.com/eemeli/make-plural/compare/make-plural-cli@6.0.1...make-plural-cli@6.1.0) (2020-03-08)
 
 
