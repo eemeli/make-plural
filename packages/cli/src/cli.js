@@ -4,6 +4,7 @@ import yargs from 'yargs'
 import getCompiler from './get-compiler'
 import printCategoriesModule from './print-categories'
 import printPluralsModule from './print-plurals'
+import printPluralTypes from './print-types'
 
 function valueCommand(type, alias) {
   const aliases = alias ? [alias] : null
@@ -72,7 +73,8 @@ yargs
     desc: 'Print the plural functions as the source of a JS module',
     builder: moduleCommandBuilder,
     handler(args) {
-      process.stdout.write(printPluralsModule(args))
+      const str = args.dts ? printPluralTypes(args) : printPluralsModule(args)
+      process.stdout.write(str)
     }
   })
   .command({
