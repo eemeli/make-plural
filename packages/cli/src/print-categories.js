@@ -4,9 +4,9 @@ import printUMD from './print-umd'
 
 const NAMES = { zero: 'z', one: 'o', two: 't', few: 'f', many: 'm', other: 'x' }
 
-function stringifyCategories({ cardinal, ordinal }) {
+function stringifyCategories(useVars, { cardinal, ordinal }) {
   function catList(list) {
-    const vars = list.map(name => NAMES[name])
+    const vars = list.map(name => useVars ? NAMES[name] : JSON.stringify(name))
     return vars.join(',')
   }
   return `{cardinal:[${catList(cardinal)}],ordinal:[${catList(ordinal)}]}`
@@ -14,7 +14,7 @@ function stringifyCategories({ cardinal, ordinal }) {
 
 export default function printCategoriesModule(args) {
   const MakePlural = getCompiler(args)
-  const { locale, maxRepeat, umd } = args
+  const { locale, dts, maxRepeat, umd } = args
   const locales =
     locale.length === 0 ? Object.keys(MakePlural.rules.cardinal) : locale.sort()
 
@@ -23,7 +23,7 @@ export default function printCategoriesModule(args) {
     const mpc = new MakePlural(lc)
     mpc.compile()
     mpc.test()
-    const cat = stringifyCategories(mpc.categories)
+    const cat = stringifyCategories(!dts, mpc.categories)
     const id = identifier(lc)
     const prev = localesByCat[cat]
     if (prev) prev.push(id)
@@ -36,7 +36,7 @@ export default function printCategoriesModule(args) {
   let commonId = 'a'
   const categories = []
   for (const [cat, locales] of Object.entries(localesByCat)) {
-    if (locales.length > maxRepeat && commonId <= 'z') {
+    if (!dts && locales.length > maxRepeat && commonId <= 'z') {
       str += `${varType} ${commonId} = ${cat};\n`
       for (const lc of locales) categories.push({ lc, cat: commonId })
       do {
@@ -49,7 +49,11 @@ export default function printCategoriesModule(args) {
   categories.sort((a, b) => (a.lc < b.lc ? -1 : 1))
   if (str) str += '\n'
 
-  if (umd) {
+  if (dts) {
+    str = ''
+    for (const { lc, cat } of categories)
+      str += `export const ${lc}: ${cat};\n`
+  } else if (umd) {
     const cm = categories.map(({ lc, cat }) => `${lc}: ${cat}`)
     str += printUMD('pluralCategories', cm.join(',\n')) + '\n'
   } else {

@@ -43,6 +43,10 @@ const moduleCommandBuilder = yargs =>
         desc: 'Include cardinal plurals',
         type: 'boolean'
       },
+      dts: {
+        desc: 'Output a TypeScript d.ts file',
+        type: 'boolean'
+      },
       'max-repeat': {
         default: 5,
         desc:
