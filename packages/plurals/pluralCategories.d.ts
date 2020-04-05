@@ -1,3 +1,5 @@
+export type PluralCategory = "zero" | "one" | "two" | "few" | "many" | "other";
+
 export const _in: {cardinal:["other"],ordinal:["other"]};
 export const af: {cardinal:["one","other"],ordinal:["other"]};
 export const ak: {cardinal:["one","other"],ordinal:["other"]};

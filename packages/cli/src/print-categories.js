@@ -50,7 +50,7 @@ export default function printCategoriesModule(args) {
   if (str) str += '\n'
 
   if (dts) {
-    str = ''
+    str = 'export type PluralCategory = "zero" | "one" | "two" | "few" | "many" | "other";\n\n'
     for (const { lc, cat } of categories)
       str += `export const ${lc}: ${cat};\n`
   } else if (umd) {

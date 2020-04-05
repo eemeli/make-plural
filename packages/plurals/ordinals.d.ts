@@ -1,3 +1,5 @@
+export type PluralCategory = "zero" | "one" | "two" | "few" | "many" | "other";
+
 export function af(n: number | string): "other";
 export function am(n: number | string): "other";
 export function an(n: number | string): "other";

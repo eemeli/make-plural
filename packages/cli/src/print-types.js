@@ -28,7 +28,8 @@ export default function printPluralTypes(args) {
       ? Object.keys(MakePlural.rules[cardinals ? 'cardinal' : 'ordinal'])
       : locale.sort()
 
-  let str = ''
+  let str =
+    'export type PluralCategory = "zero" | "one" | "two" | "few" | "many" | "other";\n\n'
   for (const lc of locales) {
     const mpc = new MakePlural(lc)
     mpc.compile()
