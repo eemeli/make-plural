@@ -6,7 +6,9 @@ const NAMES = { zero: 'z', one: 'o', two: 't', few: 'f', many: 'm', other: 'x' }
 
 function stringifyCategories(useVars, { cardinal, ordinal }) {
   function catList(list) {
-    const vars = list.map(name => useVars ? NAMES[name] : JSON.stringify(name))
+    const vars = list.map(name =>
+      useVars ? NAMES[name] : JSON.stringify(name)
+    )
     return vars.join(',')
   }
   return `{cardinal:[${catList(cardinal)}],ordinal:[${catList(ordinal)}]}`
@@ -50,9 +52,9 @@ export default function printCategoriesModule(args) {
   if (str) str += '\n'
 
   if (dts) {
-    str = 'export type PluralCategory = "zero" | "one" | "two" | "few" | "many" | "other";\n\n'
-    for (const { lc, cat } of categories)
-      str += `export const ${lc}: ${cat};\n`
+    str =
+      'export type PluralCategory = "zero" | "one" | "two" | "few" | "many" | "other";\n\n'
+    for (const { lc, cat } of categories) str += `export const ${lc}: ${cat};\n`
   } else if (umd) {
     const cm = categories.map(({ lc, cat }) => `${lc}: ${cat}`)
     str += printUMD('pluralCategories', cm.join(',\n')) + '\n'
