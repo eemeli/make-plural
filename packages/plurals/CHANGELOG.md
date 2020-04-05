@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.1](https://github.com/eemeli/make-plural/compare/make-plural@6.2.0...make-plural@6.2.1) (2020-04-05)
+
+
+### Bug Fixes
+
+* **exports:** Add missing type, exports & browser config to package.json ([d2f3fa3](https://github.com/eemeli/make-plural/commit/d2f3fa30e11397f15dc68016f4ed45d45b11fe42))
+
+
+
+
+
 # [6.2.0](https://github.com/eemeli/make-plural/compare/make-plural@6.1.0...make-plural@6.2.0) (2020-04-05)
 
 
