@@ -26,9 +26,53 @@
     "plurals.*",
     "pluralCategories.*"
   ],
-  "main": "plurals",
-  "module": "plurals.mjs",
+  "type": "commonjs",
   "sideEffects": false,
+  "main": "./plurals.js",
+  "module": "./plurals.mjs",
+  "exports": {
+    ".": [
+      {
+        "import": "./plurals.mjs",
+        "require": "./plurals.js"
+      },
+      "./plurals.js"
+    ],
+    "./cardinals": [
+      {
+        "import": "./cardinals.mjs",
+        "require": "./cardinals.js"
+      },
+      "./cardinals.js"
+    ],
+    "./ordinals": [
+      {
+        "import": "./ordinals.mjs",
+        "require": "./ordinals.js"
+      },
+      "./ordinals.js"
+    ],
+    "./pluralCategories": [
+      {
+        "import": "./pluralCategories.mjs",
+        "require": "./pluralCategories.js"
+      },
+      "./pluralCategories.js"
+    ],
+    "./plurals": [
+      {
+        "import": "./plurals.mjs",
+        "require": "./plurals.js"
+      },
+      "./plurals.js"
+    ]
+  },
+  "browser": {
+    "./cardinals.js": "./cardinals.mjs",
+    "./ordinals.js": "./ordinals.mjs",
+    "./pluralCategories.js": "./pluralCategories.mjs",
+    "./plurals.js": "./plurals.mjs"
+  },
   "scripts": {
     "build": "npm run build:mjs && npm run build:umd && npm run build:dts",
     "build:dts": "npm run cardinals:dts && npm run ordinals:dts && npm run plurals:dts && npm run plural-categories:dts",
