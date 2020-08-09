@@ -65,7 +65,8 @@
         "require": "./plurals.js"
       },
       "./plurals.js"
-    ]
+    ],
+    "./package.json": "./package.json"
   },
   "browser": {
     "./cardinals.js": "./cardinals.mjs",
