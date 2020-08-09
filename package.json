@@ -12,7 +12,7 @@
     "build:compiler": "babel packages/compiler/src/ -d packages/compiler/lib",
     "build": "npm run build:compiler && npm run build:cli && lerna run build",
     "clean": "git clean -fdx packages/",
-    "prettier": "prettier --write '{test,packages/*/src}/*.js'",
+    "prettier": "prettier --write .",
     "preversion": "npm run clean && npm run build && npm test",
     "test": "nyc mocha"
   },

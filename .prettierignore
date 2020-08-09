@@ -1,0 +1,4 @@
+*.md
+/.*/*
+/packages/*/lib
+/packages/plurals
