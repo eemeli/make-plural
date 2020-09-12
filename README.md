@@ -1,6 +1,3 @@
-[![ISC License](https://img.shields.io/npm/l/make-plural.svg)](http://en.wikipedia.org/wiki/ISC_license)
-[![Build Status](https://travis-ci.org/eemeli/make-plural.svg?branch=master)](https://travis-ci.org/eemeli/make-plural)
-
 # Make-plural Monorepo
 
 This is a monorepo providing the following npm packages:
@@ -18,7 +15,6 @@ This is a monorepo providing the following npm packages:
 git clone https://github.com/eemeli/make-plural.git
 cd make-plural
 npm install
-npx lerna bootstrap
 npm run build
 ```
 
