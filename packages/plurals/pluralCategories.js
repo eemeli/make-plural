@@ -7,13 +7,9 @@ var e = {cardinal:[o,t,x],ordinal:[x]};
 
 (function (root, pluralCategories) {
   Object.defineProperty(pluralCategories, '__esModule', { value: true });
-  if (typeof define === 'function' && define.amd) {
-    define(pluralCategories);
-  } else if (typeof exports === 'object') {
-    module.exports = pluralCategories;
-  } else {
-    root.pluralCategories = pluralCategories;
-  }
+  if (typeof define === 'function' && define.amd) define(pluralCategories);
+  else if (typeof exports === 'object') module.exports = pluralCategories;
+  else root.pluralCategories = pluralCategories;
 }(this, {
 _in: b,
 af: a,

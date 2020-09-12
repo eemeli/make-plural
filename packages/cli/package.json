@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "cldr-core": "^36.0.0",
-    "common-tags": "^1.8.0",
     "make-plural-compiler": "file:../compiler",
     "safe-identifier": "^0.4.2",
     "yargs": "^15.3.1"

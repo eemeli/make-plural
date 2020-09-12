@@ -23,13 +23,9 @@ function e(n, ord) {
 
 (function (root, plurals) {
   Object.defineProperty(plurals, '__esModule', { value: true });
-  if (typeof define === 'function' && define.amd) {
-    define(plurals);
-  } else if (typeof exports === 'object') {
-    module.exports = plurals;
-  } else {
-    root.plurals = plurals;
-  }
+  if (typeof define === 'function' && define.amd) define(plurals);
+  else if (typeof exports === 'object') module.exports = plurals;
+  else root.plurals = plurals;
 }(this, {
 _in: d,
 
