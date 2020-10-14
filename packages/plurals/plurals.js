@@ -604,6 +604,11 @@ pa: b,
 
 pap: a,
 
+pcm: function pcm(n, ord) {
+  if (ord) return 'other';
+  return n >= 0 && n <= 1 ? 'one' : 'other';
+},
+
 pl: function pl(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -659,6 +664,8 @@ rwk: a,
 sah: d,
 
 saq: a,
+
+sat: e,
 
 sc: function sc(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];

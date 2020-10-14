@@ -460,6 +460,8 @@ pa: b,
 
 pap: a,
 
+pcm: c,
+
 pl: function pl(n) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   return n == 1 && v0 ? 'one'
@@ -510,6 +512,8 @@ rwk: a,
 sah: e,
 
 saq: a,
+
+sat: f,
 
 sc: d,
 

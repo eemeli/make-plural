@@ -316,6 +316,7 @@ export const os = a;
 export const osa = e;
 export const pa = b;
 export const pap = a;
+export const pcm = c;
 export function pl(n) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   return n == 1 && v0 ? 'one'
@@ -354,6 +355,7 @@ export function ru(n) {
 export const rwk = a;
 export const sah = e;
 export const saq = a;
+export const sat = f;
 export const sc = d;
 export const scn = d;
 export const sd = a;

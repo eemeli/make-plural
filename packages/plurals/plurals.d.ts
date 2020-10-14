@@ -138,6 +138,7 @@ export function os(n: number | string, ord?: boolean): "one" | "other";
 export function osa(n: number | string, ord?: boolean): "other";
 export function pa(n: number | string, ord?: boolean): "one" | "other";
 export function pap(n: number | string, ord?: boolean): "one" | "other";
+export function pcm(n: number | string, ord?: boolean): "one" | "other";
 export function pl(n: number | string, ord?: boolean): "one" | "few" | "many" | "other";
 export function prg(n: number | string, ord?: boolean): "zero" | "one" | "other";
 export function ps(n: number | string, ord?: boolean): "one" | "other";
@@ -151,6 +152,7 @@ export function ru(n: number | string, ord?: boolean): "one" | "few" | "many" | 
 export function rwk(n: number | string, ord?: boolean): "one" | "other";
 export function sah(n: number | string, ord?: boolean): "other";
 export function saq(n: number | string, ord?: boolean): "one" | "other";
+export function sat(n: number | string, ord?: boolean): "one" | "two" | "other";
 export function sc(n: number | string, ord?: boolean): "one" | "many" | "other";
 export function scn(n: number | string, ord?: boolean): "one" | "many" | "other";
 export function sd(n: number | string, ord?: boolean): "one" | "other";

@@ -460,6 +460,10 @@ export const os = a;
 export const osa = d;
 export const pa = b;
 export const pap = a;
+export function pcm(n, ord) {
+  if (ord) return 'other';
+  return n >= 0 && n <= 1 ? 'one' : 'other';
+}
 export function pl(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -503,6 +507,7 @@ export function ru(n, ord) {
 export const rwk = a;
 export const sah = d;
 export const saq = a;
+export const sat = e;
 export function sc(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
