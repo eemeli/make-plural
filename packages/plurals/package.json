@@ -10,7 +10,7 @@
     "pluralization"
   ],
   "author": "Eemeli Aro <eemeli@gmail.com>",
-  "license": "ISC",
+  "license": "Unicode-DFS-2016",
   "homepage": "https://github.com/eemeli/make-plural#readme",
   "repository": {
     "type": "git",
