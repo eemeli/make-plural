@@ -1,1 +1,1 @@
-module.exports = require('./lib/compiler').default
+module.exports = require('./lib/compiler').Compiler

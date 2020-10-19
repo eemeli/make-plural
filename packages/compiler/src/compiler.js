@@ -1,7 +1,7 @@
-import Parser from './parser'
-import Tests from './tests'
+import { Parser } from './parser'
+import { Tests } from './tests'
 
-export default class Compiler {
+export class Compiler {
   static cardinals = true
   static ordinals = false
   static rules = { cardinal: {}, ordinal: {} }
