@@ -13,7 +13,7 @@ npm install make-plural-compiler
 ```
 
 ```js
-import Compiler from 'make-plural-compiler'
+import { Compiler } from 'make-plural-compiler'
 ```
 
 ## Compiler.load(cldr, ...)
@@ -51,7 +51,7 @@ Available after `compile()` has been called, `test()` verifies that all of the s
 ```js
 import plurals from 'cldr-core/supplemental/plurals.json'
 import ordinals from 'cldr-core/supplemental/ordinals.json'
-import Compiler from 'make-plural-compiler'
+import { Compiler } from 'make-plural-compiler'
 
 Compiler.load(plurals, ordinals)
 // { [Function: Compiler]
@@ -120,10 +120,9 @@ The canonical source for the data is [cldr-core] (as shown above), but the compi
 
 ```js
 const cldr = require('cldr-data')
-const Compiler = require('make-plural-compiler').load(
-  cldr('supplemental/plurals'),
-  cldr('supplemental/ordinals')
-)
+const { Compiler } = require('make-plural-compiler')
+
+Compiler.load(cldr('supplemental/plurals'), cldr('supplemental/ordinals'))
 const enc = new Compiler('en')
 const en = enc.compile()
 en(3, true)
