@@ -42,16 +42,16 @@ export default class Compiler {
   compile() {
     if (!this.fn) {
       this.fn = this.buildFunction()
-      this.fn.toString = name => {
-        const str = Function.prototype.toString.call(this.fn)
-        const func = name ? `function ${name}` : 'function'
+      this.fn.toString = () =>
         // The /*``*/ is present in Node 8 output, due to
         // https://bugs.chromium.org/p/v8/issues/detail?id=2470
-        return str.replace(
-          /^function(?: \w+)\(([^)]+)\)/,
-          (_, args) => `${func}(${args.replace('/*``*/', '').trim()})`
-        )
-      }
+        Function.prototype.toString
+          .call(this.fn)
+          .replace(
+            /^function(?: \w+)\(([^)]+)\)/,
+            (_, args) => `(${args.replace('/*``*/', '').trim()}) =>`
+          )
+          .replace(/{\s*return\s+([^{}]*);\s*}$/, '$1')
       this.test = () => this.tests.testAll(this.fn)
     }
     return this.fn

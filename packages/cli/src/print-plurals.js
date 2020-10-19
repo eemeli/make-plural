@@ -26,13 +26,11 @@ export default function printPluralsModule(args) {
   const plurals = []
   for (const [fn, locales] of Object.entries(localesByFn)) {
     if (locales.length > maxRepeat && commonId <= 'z') {
-      str += fn.replace(/^function\b/, `function ${commonId}`) + '\n'
+      str += `const ${commonId} = ${fn};\n`
       for (const lc of locales) plurals.push({ lc, id: commonId })
       commonId = String.fromCharCode(commonId.charCodeAt(0) + 1)
     } else {
-      for (const lc of locales) {
-        plurals.push({ lc, fn: fn.replace(/^function\b/, `function ${lc}`) })
-      }
+      for (const lc of locales) plurals.push({ lc, fn })
     }
   }
   plurals.sort((a, b) => (a.lc < b.lc ? -1 : 1))
@@ -42,10 +40,8 @@ export default function printPluralsModule(args) {
     const pm = plurals.map(({ lc, id, fn }) => `${lc}: ${id || fn}`)
     str += printUMD('plurals', pm.join(',\n\n')) + '\n'
   } else {
-    for (const { lc, id, fn } of plurals) {
-      if (id) str += `export const ${lc} = ${id};\n`
-      else str += `export ${fn}\n`
-    }
+    for (const { lc, id, fn } of plurals)
+      str += `export const ${lc} = ${id || fn};\n`
   }
   return str
 }

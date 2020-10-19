@@ -149,15 +149,14 @@ describe('MakePlural compiler', function () {
   describe('#toString()', function () {
     it('should return a string', function () {
       var mp = new MakePlural('en', { ordinals: true }).compile()
-      expect(mp.toString()).to.contain('function')
+      expect(mp.toString()).to.contain('=>')
     })
     it("which can be eval'd as a function", function () {
       var mp = new MakePlural('en', { ordinals: true }).compile()
-      var fn = eval('(' + mp.toString('EN') + ')')
+      var fn = eval('(' + mp.toString() + ')')
       expect(fn).to.be.an.instanceOf(Function)
       expect(fn(1)).to.equal('one')
       expect(fn(2, true)).to.equal('two')
-      expect(fn.name).to.equal('EN')
     })
   })
 })

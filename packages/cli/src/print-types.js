@@ -36,7 +36,7 @@ export default function printPluralTypes(args) {
     mpc.test()
     const id = identifier(lc)
     const cat = stringifyCategories(args, mpc.categories)
-    str += `export function ${id}(${fnArgs}): ${cat};\n`
+    str += `export const ${id}: (${fnArgs}) => ${cat};\n`
   }
   return str
 }

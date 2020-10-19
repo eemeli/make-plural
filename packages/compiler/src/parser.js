@@ -62,6 +62,6 @@ export default class Parser {
       }
     }
     if (!vars.length) return ''
-    return 'var ' + ["s = String(n).split('.')", ...vars].join(', ')
+    return 'const ' + ["s = String(n).split('.')", ...vars].join(', ')
   }
 }
