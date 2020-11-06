@@ -1,4 +1,4 @@
-export default class Parser {
+export class Parser {
   parse(cond) {
     if (cond === 'i = 0 or n = 1') return 'n >= 0 && n <= 1'
     if (cond === 'i = 0,1') return 'n >= 0 && n < 2'

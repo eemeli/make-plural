@@ -1,4 +1,4 @@
-export default class Tests {
+export class Tests {
   constructor(obj) {
     this.lc = obj.lc
     this.ordinal = {}
