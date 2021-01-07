@@ -9,11 +9,12 @@ export class Tests {
     this[type][cat] = { src, values: null }
   }
 
-  error(n, type, msg) {
+  error(n, type, msg, fn) {
     const lc = JSON.stringify(this.lc)
     const val = JSON.stringify(n)
     return new Error(
-      `Locale ${lc} ${type} rule self-test failed for ${val} (${msg})`
+      `Locale ${lc} ${type} rule self-test failed for ${val} (${msg}). Function:
+${fn}`
     )
   }
 
@@ -22,12 +23,12 @@ export class Tests {
       var r = fn(n, type === 'ordinal')
     } catch (error) {
       /* istanbul ignore next: should not happen unless CLDR data is broken */
-      throw this.error(n, type, error)
+      throw this.error(n, type, error, fn.toString())
     }
     if (r !== expResult) {
       const res = JSON.stringify(r)
       const exp = JSON.stringify(expResult)
-      throw this.error(n, type, `was ${res}, expected ${exp}`)
+      throw this.error(n, type, `was ${res}, expected ${exp}`, fn.toString())
     }
     return true
   }
@@ -43,7 +44,7 @@ export class Tests {
     }
     data.values.forEach(n => {
       this.testCond(n, type, cat, fn)
-      if (!/\.0+$/.test(n)) this.testCond(Number(n), type, cat, fn)
+      if (!/\.0+$/.test(n)) this.testCond(n, type, cat, fn)
     })
     return true
   }

@@ -103,6 +103,11 @@ describe('MakePlural compiler', function () {
       expect(mp).to.be.an.instanceOf(Function)
       expect(mp(1)).to.equal('one')
     })
+    it('should handle c/e from cldrv38', function () {
+      var mp = new Compiler('fr').compile()
+      expect(mp).to.be.an.instanceOf(Function)
+      expect(mp('1e6')).to.equal('many')
+    })
     it('should handle local options', function () {
       var mp = new Compiler('en', { ordinals: true }).compile()
       expect(mp(2, true)).to.equal('two')

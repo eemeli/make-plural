@@ -93,6 +93,7 @@ export const da = (n) => {
   return n == 1 || !t0 && (i == 0 || i == 1) ? 'one' : 'other';
 };
 export const de = d;
+export const doi = c;
 export const dsb = (n) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
   return v0 && i100 == 1 || f100 == 1 ? 'one'
@@ -117,7 +118,12 @@ export const fil = (n) => {
   return v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9 || !v0 && f10 != 4 && f10 != 6 && f10 != 9 ? 'one' : 'other';
 };
 export const fo = a;
-export const fr = (n) => n >= 0 && n < 2 ? 'one' : 'other';
+export const fr = (n) => {
+  const _n = String(n), se = _n.split(/[ce]/), e = se[1] || 0, c = e, s = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split("."), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
+  return n >= 0 && n < 2 ? 'one'
+    : e == 0 && i != 0 && i1000000 == 0 && v0 || (e < 0 || e > 5) ? 'many'
+    : 'other';
+};
 export const fur = a;
 export const fy = d;
 export const ga = (n) => {
@@ -233,6 +239,7 @@ export const lag = (n) => {
 };
 export const lb = a;
 export const lg = a;
+export const lij = d;
 export const lkt = e;
 export const ln = b;
 export const lo = e;

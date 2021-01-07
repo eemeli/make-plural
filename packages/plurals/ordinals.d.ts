@@ -52,6 +52,7 @@ export const kn: (n: number | string) => "other";
 export const ko: (n: number | string) => "other";
 export const kw: (n: number | string) => "one" | "many" | "other";
 export const ky: (n: number | string) => "other";
+export const lij: (n: number | string) => "many" | "other";
 export const lo: (n: number | string) => "one" | "other";
 export const lt: (n: number | string) => "other";
 export const lv: (n: number | string) => "other";

@@ -1,4 +1,8 @@
 export class Parser {
+  /**
+   * plural condition
+   * @param {String} cond
+   */
   parse(cond) {
     if (cond === 'i = 0 or n = 1') return 'n >= 0 && n <= 1'
     if (cond === 'i = 0,1') return 'n >= 0 && n < 2'
@@ -8,6 +12,10 @@ export class Parser {
     }
     return cond
       .replace(/([^=\s])([!=%]+)([^=\s])/g, '$1 $2 $3')
+      .replace(/[ce]\s?=\s?(\d+)/g, (m, c) => {
+        this.c = c
+        return m
+      })
       .replace(/([tv]) (!?)= 0/g, (m, sym, noteq) => {
         const sn = sym + '0'
         this[sn] = 1
@@ -48,6 +56,7 @@ export class Parser {
 
   vars() {
     let vars = []
+
     if (this.i) vars.push('i = s[0]')
     if (this.f || this.v) vars.push("f = s[1] || ''")
     /* istanbul ignore if: t is not used in current CLDR */
@@ -62,6 +71,17 @@ export class Parser {
       }
     }
     if (!vars.length) return ''
-    return 'const ' + ["s = String(n).split('.')", ...vars].join(', ')
+    if (this.c) {
+      vars.unshift(
+        '_n = String(n)',
+        'se = _n.split(/[ce]/)',
+        'e = se[1] || 0',
+        'c = e',
+        's = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split(".")'
+      )
+    } else {
+      vars.unshift("s = String(n).split('.')")
+    }
+    return 'const ' + vars.join(', ')
   }
 }
