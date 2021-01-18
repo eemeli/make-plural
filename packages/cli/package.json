@@ -28,7 +28,7 @@
     "make-plural": "./make-plural"
   },
   "dependencies": {
-    "cldr-core": "^37.0.0",
+    "cldr-core": "^38.0.0",
     "make-plural-compiler": "file:../compiler",
     "safe-identifier": "^0.4.2",
     "yargs": "^16.0.3"

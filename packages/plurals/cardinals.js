@@ -131,6 +131,8 @@ da: (n) => {
 
 de: d,
 
+doi: c,
+
 dsb: (n) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
   return v0 && i100 == 1 || f100 == 1 ? 'one'
@@ -170,7 +172,12 @@ fil: (n) => {
 
 fo: a,
 
-fr: (n) => n >= 0 && n < 2 ? 'one' : 'other',
+fr: (n) => {
+  const _n = String(n), se = _n.split(/[ce]/), e = se[1] || 0, c = e, s = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split("."), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
+  return n >= 0 && n < 2 ? 'one'
+    : e == 0 && i != 0 && i1000000 == 0 && v0 || (e < 0 || e > 5) ? 'many'
+    : 'other';
+},
 
 fur: a,
 
@@ -340,6 +347,8 @@ lag: (n) => {
 lb: a,
 
 lg: a,
+
+lij: d,
 
 lkt: e,
 

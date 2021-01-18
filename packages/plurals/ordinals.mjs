@@ -108,6 +108,10 @@ export const kw = (n) => {
     : 'other';
 };
 export const ky = a;
+export const lij = (n) => {
+  const s = String(n).split('.'), t0 = Number(s[0]) == n;
+  return (n == 11 || n == 8 || (t0 && n >= 80 && n <= 89) || (t0 && n >= 800 && n <= 899)) ? 'many' : 'other';
+};
 export const lo = b;
 export const lt = a;
 export const lv = a;
