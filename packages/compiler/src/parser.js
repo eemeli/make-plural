@@ -73,11 +73,10 @@ export class Parser {
     if (!vars.length) return ''
     if (this.c) {
       vars.unshift(
-        '_n = String(n)',
-        'se = _n.split(/[ce]/)',
+        'se = String(n).split(/[ce]/)',
         'e = se[1] || 0',
         'c = e',
-        's = String(e ? Number(se[0]) * Math.pow(10, e) : _n).split(".")'
+        's = String(e ? Number(se[0]) * Math.pow(10, e) : n).split(".")'
       )
     } else {
       vars.unshift("s = String(n).split('.')")
