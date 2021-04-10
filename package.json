@@ -9,7 +9,8 @@
   "scripts": {
     "build:cli": "babel packages/cli/src/ -d packages/cli/lib",
     "build:compiler": "babel packages/compiler/src/ -d packages/compiler/lib",
-    "build": "npm run build:compiler && npm run build:cli && lerna run build",
+    "build:plurals": "cd packages/plurals && npm run build",
+    "build": "npm run build:compiler && npm run build:cli && npm run build:plurals",
     "clean": "git clean -fdx packages/",
     "prettier": "prettier --write .",
     "preversion": "npm run clean && npm run build && npm test",
@@ -28,7 +29,6 @@
     "@babel/register": "^7.12.0",
     "chai": "^4.2.0",
     "cldr-core": "^37.0.0",
-    "lerna": "^3.22.1",
     "mocha": "^8.1.3",
     "nyc": "^15.1.0",
     "prettier": "^2.1.2",
