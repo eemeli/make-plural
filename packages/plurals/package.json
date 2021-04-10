@@ -82,26 +82,5 @@
     "./pluralCategories.js": "./pluralCategories.mjs",
     "./plurals.js": "./plurals.mjs",
     "./ranges.js": "./ranges.mjs"
-  },
-  "scripts": {
-    "build": "npm run build:mjs && npm run build:umd && npm run build:dts",
-    "build:dts": "npm run cardinals:dts && npm run ordinals:dts && npm run plurals:dts && npm run plural-categories:dts && npm run ranges:dts",
-    "build:mjs": "npm run cardinals:mjs && npm run ordinals:mjs && npm run plurals:mjs && npm run plural-categories:mjs && npm run ranges:mjs",
-    "build:umd": "npm run cardinals:umd && npm run ordinals:umd && npm run plurals:umd && npm run plural-categories:umd && npm run ranges:umd",
-    "cardinals:dts": "../cli/make-plural plurals --no-ordinals --dts > cardinals.d.ts",
-    "cardinals:mjs": "../cli/make-plural plurals --no-ordinals -w118 > cardinals.mjs",
-    "cardinals:umd": "../cli/make-plural plurals --no-ordinals --umd -w118 > cardinals.js",
-    "ordinals:dts": "../cli/make-plural plurals --no-cardinals --dts > ordinals.d.ts",
-    "ordinals:mjs": "../cli/make-plural plurals --no-cardinals -w118 > ordinals.mjs",
-    "ordinals:umd": "../cli/make-plural plurals --no-cardinals --umd -w118 > ordinals.js",
-    "plurals:dts": "../cli/make-plural plurals --dts > plurals.d.ts",
-    "plurals:mjs": "../cli/make-plural plurals -w118 > plurals.mjs",
-    "plurals:umd": "../cli/make-plural plurals --umd -w118 > plurals.js",
-    "plural-categories:dts": "../cli/make-plural categories --dts > pluralCategories.d.ts",
-    "plural-categories:mjs": "../cli/make-plural categories > pluralCategories.mjs",
-    "plural-categories:umd": "../cli/make-plural categories --umd > pluralCategories.js",
-    "ranges:dts": "../cli/make-plural ranges --dts > ranges.d.ts",
-    "ranges:mjs": "../cli/make-plural ranges --max-repeat 3 > ranges.mjs",
-    "ranges:umd": "../cli/make-plural ranges --max-repeat 3 --umd > ranges.js"
   }
 }
