@@ -1,10 +1,10 @@
-const { writeFile } = require('fs/promises')
 const { dest, series, src } = require('gulp')
 const babel = require('gulp-babel')
 const { resolve } = require('path')
 const { promisify } = require('util')
 
 const execFile = promisify(require('child_process').execFile)
+const writeFile = promisify(require('fs').writeFile)
 
 const compiler = () =>
   src('packages/compiler/src/*')
