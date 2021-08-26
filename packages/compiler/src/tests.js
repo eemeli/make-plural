@@ -40,6 +40,7 @@ export class Tests {
         .replace(/^[ ,]+|[ ,…]+$/g, '')
         .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
         .split(/[ ,~…]+/)
+        .filter(n => !n.includes('c'))
     }
     data.values.forEach(n => {
       this.testCond(n, type, cat, fn)

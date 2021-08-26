@@ -8,6 +8,12 @@ export class Parser {
     }
     return cond
       .replace(/([^=\s])([!=%]+)([^=\s])/g, '$1 $2 $3')
+      .replace(
+        /[ce] (!?)= ([0-9]+)(?:\.\.[0-9]+)?/g,
+        // assume c & e always have the value 0
+        (m, noteq, x0) => (!noteq === (x0 === '0') ? 'true' : 'false')
+      )
+      .replace(/^true and |^false or | and true$| or false$/g, '')
       .replace(/([tv]) (!?)= 0/g, (m, sym, noteq) => {
         const sn = sym + '0'
         this[sn] = 1
