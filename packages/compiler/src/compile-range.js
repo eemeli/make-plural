@@ -45,7 +45,9 @@ function buildResult(data) {
     }
   }
   lines.push('"other"')
-  return lines.length < 4 ? lines.join(' : ') : '(\n  ' + lines.join('\n  : ') + '\n)'
+  return lines.length < 4
+    ? lines.join(' : ')
+    : '(\n  ' + lines.join('\n  : ') + '\n)'
 }
 
 /**

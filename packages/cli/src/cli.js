@@ -36,8 +36,7 @@ function valueCommand(type, alias) {
 const moduleCommandBuilder = yargs =>
   yargs
     .positional('locale', {
-      desc:
-        'Identifiers for locales to include in the module. If left empty, all available locales will be included.'
+      desc: 'Identifiers for locales to include in the module. If left empty, all available locales will be included.'
     })
     .options({
       cardinals: {
@@ -51,8 +50,7 @@ const moduleCommandBuilder = yargs =>
       },
       'max-repeat': {
         default: 5,
-        desc:
-          'Maximum number of allowed repeats for plural functions & cagetories',
+        desc: 'Maximum number of allowed repeats for plural functions & cagetories',
         type: 'number'
       },
       ordinals: {
