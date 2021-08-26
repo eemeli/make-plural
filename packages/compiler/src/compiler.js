@@ -1,5 +1,5 @@
 import { Parser } from './parser.js'
-import { Tests } from './tests.js'
+import { testCat } from './tests.js'
 
 export class Compiler {
   static cardinals = true
@@ -28,14 +28,27 @@ export class Compiler {
     return null
   }
 
+  /**
+   * @param {string} src
+   * @returns {string[]}
+   */
+  static parseExamples(src) {
+    return src
+      .join(' ')
+      .replace(/^[ ,]+|[ ,…]+$/g, '')
+      .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
+      .split(/[ ,~…]+/)
+      .filter(n => !n.includes('c'))
+  }
+
   constructor(lc, { cardinals, ordinals } = Compiler) {
     if (!lc) throw new Error('A locale is required')
     if (!cardinals && !ordinals)
       throw new Error('At least one type of plural is required')
     this.lc = lc
     this.categories = { cardinal: [], ordinal: [] }
+    this.examples = { cardinal: {}, ordinal: {} }
     this.parser = new Parser()
-    this.tests = new Tests(this)
     this.types = { cardinals, ordinals }
   }
 
@@ -52,7 +65,11 @@ export class Compiler {
             (_, args) => `(${args.replace('/*``*/', '').trim()}) =>`
           )
           .replace(/{\s*return\s+([^{}]*);\s*}$/, '$1')
-      this.test = () => this.tests.testAll(this.fn)
+      this.test = () => {
+        for (const type of ['cardinal', 'ordinal'])
+          for (const [cat, values] of Object.entries(this.examples[type]))
+            testCat(this.lc, type, cat, values, this.fn)
+      }
     }
     return this.fn
   }
@@ -69,7 +86,7 @@ export class Compiler {
       const [cond, ...examples] = rules[r].trim().split(/\s*@\w*/)
       const cat = r.replace('pluralRule-count-', '')
       if (cond) cases.push([this.parser.parse(cond), cat])
-      this.tests.add(type, cat, examples)
+      this.examples[type][cat] = Compiler.parseExamples(examples)
     }
     this.categories[type] = cases.map(c => c[1]).concat('other')
     if (cases.length === 1) {
