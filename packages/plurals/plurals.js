@@ -7,12 +7,16 @@ const b = (n, ord) => {
   return (n == 0 || n == 1) ? 'one' : 'other';
 };
 const c = (n, ord) => {
+  if (ord) return 'other';
+  return n >= 0 && n <= 1 ? 'one' : 'other';
+};
+const d = (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1];
   if (ord) return 'other';
   return n == 1 && v0 ? 'one' : 'other';
 };
-const d = (n, ord) => 'other';
-const e = (n, ord) => {
+const e = (n, ord) => 'other';
+const f = (n, ord) => {
   if (ord) return 'other';
   return n == 1 ? 'one'
     : n == 2 ? 'two'
@@ -25,16 +29,13 @@ const e = (n, ord) => {
   else if (typeof exports === 'object') module.exports = plurals;
   else root.plurals = plurals;
 }(this, {
-_in: d,
+_in: e,
 
 af: a,
 
 ak: b,
 
-am: (n, ord) => {
-  if (ord) return 'other';
-  return n >= 0 && n <= 1 ? 'one' : 'other';
-},
+am: c,
 
 an: a,
 
@@ -71,7 +72,7 @@ as: (n, ord) => {
 
 asa: a,
 
-ast: c,
+ast: d,
 
 az: (n, ord) => {
   const s = String(n).split('.'), i = s[0], i10 = i.slice(-1), i100 = i.slice(-2), i1000 = i.slice(-3);
@@ -99,7 +100,7 @@ bg: a,
 
 bho: b,
 
-bm: d,
+bm: e,
 
 bn: (n, ord) => {
   if (ord) return (n == 1 || n == 5 || n == 7 || n == 8 || n == 9 || n == 10) ? 'one'
@@ -110,7 +111,7 @@ bn: (n, ord) => {
   return n >= 0 && n <= 1 ? 'one' : 'other';
 },
 
-bo: d,
+bo: e,
 
 br: (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2), n1000000 = t0 && s[0].slice(-6);
@@ -185,7 +186,9 @@ da: (n, ord) => {
   return n == 1 || !t0 && (i == 0 || i == 1) ? 'one' : 'other';
 },
 
-de: c,
+de: d,
+
+doi: c,
 
 dsb: (n, ord) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
@@ -198,7 +201,7 @@ dsb: (n, ord) => {
 
 dv: a,
 
-dz: d,
+dz: e,
 
 ee: a,
 
@@ -217,21 +220,18 @@ eo: a,
 
 es: a,
 
-et: c,
+et: d,
 
 eu: a,
 
-fa: (n, ord) => {
-  if (ord) return 'other';
-  return n >= 0 && n <= 1 ? 'one' : 'other';
-},
+fa: c,
 
 ff: (n, ord) => {
   if (ord) return 'other';
   return n >= 0 && n < 2 ? 'one' : 'other';
 },
 
-fi: c,
+fi: d,
 
 fil: (n, ord) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
@@ -242,13 +242,16 @@ fil: (n, ord) => {
 fo: a,
 
 fr: (n, ord) => {
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   if (ord) return n == 1 ? 'one' : 'other';
-  return n >= 0 && n < 2 ? 'one' : 'other';
+  return n >= 0 && n < 2 ? 'one'
+    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : 'other';
 },
 
 fur: a,
 
-fy: c,
+fy: d,
 
 ga: (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
@@ -272,7 +275,7 @@ gd: (n, ord) => {
     : 'other';
 },
 
-gl: c,
+gl: d,
 
 gsw: a,
 
@@ -346,15 +349,15 @@ hy: (n, ord) => {
   return n >= 0 && n < 2 ? 'one' : 'other';
 },
 
-ia: c,
+ia: d,
 
-id: d,
+id: e,
 
-ig: d,
+ig: e,
 
-ii: d,
+ii: e,
 
-io: c,
+io: d,
 
 is: (n, ord) => {
   const s = String(n).split('.'), i = s[0], t0 = Number(s[0]) == n, i10 = i.slice(-1), i100 = i.slice(-2);
@@ -368,7 +371,7 @@ it: (n, ord) => {
   return n == 1 && v0 ? 'one' : 'other';
 },
 
-iu: e,
+iu: f,
 
 iw: (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
@@ -379,19 +382,19 @@ iw: (n, ord) => {
     : 'other';
 },
 
-ja: d,
+ja: e,
 
-jbo: d,
+jbo: e,
 
 jgo: a,
 
-ji: c,
+ji: d,
 
 jmc: a,
 
-jv: d,
+jv: e,
 
-jw: d,
+jw: e,
 
 ka: (n, ord) => {
   const s = String(n).split('.'), i = s[0], i100 = i.slice(-2);
@@ -410,9 +413,9 @@ kaj: a,
 
 kcg: a,
 
-kde: d,
+kde: e,
 
-kea: d,
+kea: e,
 
 kk: (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
@@ -424,14 +427,11 @@ kkj: a,
 
 kl: a,
 
-km: d,
+km: e,
 
-kn: (n, ord) => {
-  if (ord) return 'other';
-  return n >= 0 && n <= 1 ? 'one' : 'other';
-},
+kn: c,
 
-ko: d,
+ko: e,
 
 ks: a,
 
@@ -473,7 +473,13 @@ lb: a,
 
 lg: a,
 
-lkt: d,
+lij: (n, ord) => {
+  const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n;
+  if (ord) return (n == 11 || n == 8 || (t0 && n >= 80 && n <= 89) || (t0 && n >= 800 && n <= 899)) ? 'many' : 'other';
+  return n == 1 && v0 ? 'one' : 'other';
+},
+
+lkt: e,
 
 ln: b,
 
@@ -548,11 +554,11 @@ mt: (n, ord) => {
     : 'other';
 },
 
-my: d,
+my: e,
 
 nah: a,
 
-naq: e,
+naq: f,
 
 nb: a,
 
@@ -564,7 +570,7 @@ ne: (n, ord) => {
   return n == 1 ? 'one' : 'other';
 },
 
-nl: c,
+nl: d,
 
 nn: a,
 
@@ -572,7 +578,7 @@ nnh: a,
 
 no: a,
 
-nqo: d,
+nqo: e,
 
 nr: a,
 
@@ -596,16 +602,13 @@ or: (n, ord) => {
 
 os: a,
 
-osa: d,
+osa: e,
 
 pa: b,
 
 pap: a,
 
-pcm: (n, ord) => {
-  if (ord) return 'other';
-  return n >= 0 && n <= 1 ? 'one' : 'other';
-},
+pcm: c,
 
 pl: (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
@@ -632,7 +635,7 @@ pt: (n, ord) => {
   return (i == 0 || i == 1) ? 'one' : 'other';
 },
 
-pt_PT: c,
+pt_PT: d,
 
 rm: a,
 
@@ -646,7 +649,7 @@ ro: (n, ord) => {
 
 rof: a,
 
-root: d,
+root: e,
 
 ru: (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
@@ -659,11 +662,11 @@ ru: (n, ord) => {
 
 rwk: a,
 
-sah: d,
+sah: e,
 
 saq: a,
 
-sat: e,
+sat: f,
 
 sc: (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1];
@@ -681,13 +684,13 @@ sd: a,
 
 sdh: a,
 
-se: e,
+se: f,
 
 seh: a,
 
-ses: d,
+ses: e,
 
-sg: d,
+sg: e,
 
 sh: (n, ord) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
@@ -729,15 +732,15 @@ sl: (n, ord) => {
     : 'other';
 },
 
-sma: e,
+sma: f,
 
-smi: e,
+smi: f,
 
-smj: e,
+smj: f,
 
-smn: e,
+smn: f,
 
-sms: e,
+sms: f,
 
 sn: a,
 
@@ -765,7 +768,7 @@ ssy: a,
 
 st: a,
 
-su: d,
+su: e,
 
 sv: (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
@@ -773,7 +776,7 @@ sv: (n, ord) => {
   return n == 1 && v0 ? 'one' : 'other';
 },
 
-sw: c,
+sw: d,
 
 syr: a,
 
@@ -783,7 +786,7 @@ te: a,
 
 teo: a,
 
-th: d,
+th: e,
 
 ti: b,
 
@@ -803,7 +806,7 @@ tl: (n, ord) => {
 
 tn: a,
 
-to: d,
+to: e,
 
 tr: a,
 
@@ -826,7 +829,7 @@ uk: (n, ord) => {
     : 'other';
 },
 
-ur: c,
+ur: d,
 
 uz: a,
 
@@ -845,22 +848,19 @@ wa: b,
 
 wae: a,
 
-wo: d,
+wo: e,
 
 xh: a,
 
 xog: a,
 
-yi: c,
+yi: d,
 
-yo: d,
+yo: e,
 
-yue: d,
+yue: e,
 
-zh: d,
+zh: e,
 
-zu: (n, ord) => {
-  if (ord) return 'other';
-  return n >= 0 && n <= 1 ? 'one' : 'other';
-}
+zu: c
 }));
