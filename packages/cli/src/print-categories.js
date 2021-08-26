@@ -1,6 +1,6 @@
 import { identifier } from 'safe-identifier'
-import getCompiler from './get-compiler'
-import printUMD from './print-umd'
+import getCompiler from './get-compiler.js'
+import printUMD from './print-umd.js'
 
 const NAMES = { zero: 'z', one: 'o', two: 't', few: 'f', many: 'm', other: 'x' }
 

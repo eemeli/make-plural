@@ -2,7 +2,7 @@ import { compileRange } from 'make-plural-compiler'
 import { identifier } from 'safe-identifier'
 
 import data from '../cldr-38/pluralRanges.json'
-import printUMD from './print-umd'
+import printUMD from './print-umd.js'
 
 const pluralRanges = data.supplemental.plurals
 

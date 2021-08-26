@@ -1,5 +1,5 @@
-import { Parser } from './parser'
-import { Tests } from './tests'
+import { Parser } from './parser.js'
+import { Tests } from './tests.js'
 
 export class Compiler {
   static cardinals = true

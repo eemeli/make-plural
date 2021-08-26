@@ -3,7 +3,7 @@ import cardinalData from 'cldr-core/supplemental/plurals.json'
 import ordinalData from 'cldr-core/supplemental/ordinals.json'
 import { identifier } from 'safe-identifier'
 
-import { Compiler } from 'make-plural-compiler/src/compiler'
+import { Compiler } from 'make-plural-compiler/src/compiler.js'
 import * as Plurals from 'make-plural/plurals'
 
 Compiler.load(cardinalData, ordinalData)

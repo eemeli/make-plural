@@ -1,6 +1,6 @@
 import { identifier } from 'safe-identifier'
-import getCompiler from './get-compiler'
-import printUMD from './print-umd'
+import getCompiler from './get-compiler.js'
+import printUMD from './print-umd.js'
 
 export default function printPluralsModule(args) {
   const MakePlural = getCompiler(args)

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { compileRange } from 'make-plural-compiler/src/compile-range'
+import { compileRange } from 'make-plural-compiler/src/compile-range.js'
 
 describe('valid plural ranges', () => {
   it('no data', () => {

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import cardinalData from 'cldr-core/supplemental/plurals.json'
 import ordinalData from 'cldr-core/supplemental/ordinals.json'
 
-import { Compiler } from 'make-plural-compiler/src/compiler'
+import { Compiler } from 'make-plural-compiler/src/compiler.js'
 
 describe('MakePlural compiler', function () {
   it('should have data members', function () {

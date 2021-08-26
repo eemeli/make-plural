@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 import yargs from 'yargs'
-import getCompiler from './get-compiler'
-import printCategoriesModule from './print-categories'
-import printPluralsModule from './print-plurals'
-import printRangesModule from './print-ranges'
-import printPluralTypes from './print-types'
+import getCompiler from './get-compiler.js'
+import printCategoriesModule from './print-categories.js'
+import printPluralsModule from './print-plurals.js'
+import printRangesModule from './print-ranges.js'
+import printPluralTypes from './print-types.js'
 
 function valueCommand(type, alias) {
   const aliases = alias ? [alias] : null

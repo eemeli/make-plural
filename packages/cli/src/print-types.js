@@ -1,5 +1,5 @@
 import { identifier } from 'safe-identifier'
-import getCompiler from './get-compiler'
+import getCompiler from './get-compiler.js'
 
 function stringifyCategories({ cardinals, ordinals }, categories) {
   const has = {
