@@ -4,6 +4,9 @@
   "description": "Monorepo for make-plural packages",
   "author": "Eemeli Aro <eemeli@gmail.com>",
   "license": "ISC",
+  "workspaces": [
+    "packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/eemeli/make-plural.git"
