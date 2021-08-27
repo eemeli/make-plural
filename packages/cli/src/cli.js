@@ -3,6 +3,7 @@
 import yargs from 'yargs'
 import getCompiler from './get-compiler.js'
 import printCategoriesModule from './print-categories.js'
+import printExamplesModule from './print-examples.js'
 import printPluralsModule from './print-plurals.js'
 import printRangesModule from './print-ranges.js'
 import printPluralTypes from './print-types.js'
@@ -90,6 +91,14 @@ yargs
     builder: moduleCommandBuilder,
     handler(args) {
       process.stdout.write(printCategoriesModule(args))
+    }
+  })
+  .command({
+    command: 'examples [locale...]',
+    desc: 'Print the plural category examples as the source of a JS module',
+    builder: moduleCommandBuilder,
+    handler(args) {
+      process.stdout.write(printExamplesModule(args))
     }
   })
   .help()
