@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "cldr-core": "^39.0.0",
-    "make-plural-compiler": "^6.0.0",
+    "make-plural-compiler": "file:../compiler",
     "safe-identifier": "^0.4.2",
     "yargs": "^17.1.1"
   },
