@@ -22,18 +22,26 @@ npm install make-plural
 ```js
 import * as Plurals from 'make-plural/plurals' // or just 'make-plural'
 import * as Cardinals from 'make-plural/cardinals'
+import * as Examples from 'make-plural/examples'
 import * as Ordinals from 'make-plural/ordinals'
 import * as Categories from 'make-plural/pluralCategories'
 import * as PluralRanges from 'make-plural/ranges'
 ```
 
 Each of the endpoints is available with both UMD (.js) and ES (.mjs) packaging.
-`Cardinals`, `Ordinals` and `Plurals` each export a set of functions keyed by locale code, returning the pluralization category for the input (either a number or a string representation of a number).
-`Plurals` functions also accept a second boolean parameter to return the ordinal (`true`) rather than cardinal (`false`, default) plural category.
-Note that `Ordinals` includes a slightly smaller subset of locales than `Cardinals` and `Plurals`, due to a lack of data in the CLDR.
-`PluralRanges` provides a set of functions similarly keyed by locale code, but returning the pliralization category of a numerical range, given the corresponding categories of its start and end values as arguments.
-
-`Categories` has a similar structure, but contains for each language an array of the pluralization categories the cardinal and ordinal rules that that language's pluralization function may output.
+- `Cardinals`, `Ordinals` and `Plurals` each export a set of functions keyed by locale code,
+  returning the pluralization category for the input (either a number or a string representation of a number).
+  `Plurals` functions also accept a second boolean parameter to return
+  the ordinal (`true`) rather than cardinal (`false`, default) plural category.
+  Note that `Ordinals` includes a slightly smaller subset of locales than `Cardinals` and `Plurals`,
+  due to a lack of data in the CLDR.
+- `PluralRanges` provides a set of functions similarly keyed by locale code,
+  but returning the pliralization category of a numerical range,
+  given the corresponding categories of its start and end values as arguments.
+- `Categories` has a similar structure,
+  but contains for each language an array of the pluralization categories
+  the cardinal and ordinal rules that that language's pluralization function may output.
+- `Examples` provide sample numeric values for each language's categories.
 
 The object keys are named using the corresponding 2-3 character [language code].
 Due to JavaScript identifier restrictions, there are two exceptions:

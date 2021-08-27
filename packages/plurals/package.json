@@ -46,6 +46,13 @@
       },
       "./cardinals.js"
     ],
+    "./examples": [
+      {
+        "import": "./examples.mjs",
+        "require": "./examples.js"
+      },
+      "./examples.js"
+    ],
     "./ordinals": [
       {
         "import": "./ordinals.mjs",
@@ -78,6 +85,7 @@
   },
   "browser": {
     "./cardinals.js": "./cardinals.mjs",
+    "./examples.js": "./examples.mjs",
     "./ordinals.js": "./ordinals.mjs",
     "./pluralCategories.js": "./pluralCategories.mjs",
     "./plurals.js": "./plurals.mjs",
