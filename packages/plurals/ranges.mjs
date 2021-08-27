@@ -73,6 +73,7 @@ export const my = a;
 export const nb = a;
 export const ne = c;
 export const nl = c;
+export const no = a;
 export const or = b;
 export const pa = c;
 export const pcm = a;

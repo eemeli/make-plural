@@ -138,6 +138,8 @@ ne: c,
 
 nl: c,
 
+no: a,
+
 or: b,
 
 pa: c,

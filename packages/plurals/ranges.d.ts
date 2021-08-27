@@ -59,6 +59,7 @@ export const my: (start: PluralCategory, end: PluralCategory) => "other";
 export const nb: (start: PluralCategory, end: PluralCategory) => "other";
 export const ne: (start: PluralCategory, end: PluralCategory) => "one" | "other";
 export const nl: (start: PluralCategory, end: PluralCategory) => "one" | "other";
+export const no: (start: PluralCategory, end: PluralCategory) => "other";
 export const or: (start: PluralCategory, end: PluralCategory) => "one" | "other";
 export const pa: (start: PluralCategory, end: PluralCategory) => "one" | "other";
 export const pcm: (start: PluralCategory, end: PluralCategory) => "other";
