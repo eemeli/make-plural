@@ -32,5 +32,8 @@
     "make-plural-compiler": "^5.1.0",
     "safe-identifier": "^0.4.2",
     "yargs": "^17.1.1"
+  },
+  "engines": {
+    "node": ">= 12"
   }
 }
