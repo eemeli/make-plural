@@ -1,6 +1,6 @@
 {
   "name": "make-plural-cli",
-  "version": "6.2.1",
+  "version": "7.0.0",
   "description": "CLI for translating Unicode CLDR pluralization rules to executable JavaScript",
   "keywords": [
     "unicode",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "cldr-core": "^39.0.0",
-    "make-plural-compiler": "^5.1.0",
+    "make-plural-compiler": "^6.0.0",
     "safe-identifier": "^0.4.2",
     "yargs": "^17.1.1"
   },

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [https://github.com/eemeli/make-plural/compare/6.2.2...7.0.0](7.0.0) (2021-08-27)
+
+### ⚠ Breaking Changes
+
+* This package is now licensed
+  with the OSI-apporved Unicode Data Files and Software License, as it is
+  based on the data provided in the `cldr-core` package, which is thus
+  licensed.
+* While using ES6 syntax for functions does not change
+  their behaviour in any way, it will need to be transpiled if the target
+  environment (e.g. IE 11) does not support it.
+
+### Features
+
+* Update to CLDR 39 ([https://github.com/eemeli/make-plural/commit/ed2bdbc77e6e86444ec4711124b94a780069f0e4](ed2bdbc))
+* Use const and => notation for function stringification ([https://github.com/eemeli/make-plural/commit/b9da90acd501b86a6b2ab1e73876ea05c57ebc74](b9da90a))
+* Add 'make-plural/ranges' as a new endpoint for plural ranges ([https://github.com/eemeli/make-plural/commit/ee848b34863be2dfd5cfe96572bea53e5efbde40](ee848b3))
+* Add 'make-plural/examples' as a new endpoint ([https://github.com/eemeli/make-plural/commit/7ec09c7f9924508653618dc0bad433b4b2349c00](7ec09c7))
+
+### Bug Fixes
+
+* Drop cli dependency on common-tags; streamline UMD wrapper ([https://github.com/eemeli/make-plural/commit/1404ac640b2d7391973d8d8dae060fef7d468f74](1404ac6))
+
 ## [6.2.2](https://github.com/eemeli/make-plural/compare/make-plural@6.2.1...make-plural@6.2.2) (2020-08-09)
 
 
