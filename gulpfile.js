@@ -22,6 +22,7 @@ async function plurals(cb) {
     ordinals: ['plurals', '--no-cardinals'],
     plurals: ['plurals'],
     pluralCategories: ['categories'],
+    examples: ['examples'],
     ranges: ['ranges', '--max-repeat=3']
   })) {
     for (const [ext, extOpt] of Object.entries({

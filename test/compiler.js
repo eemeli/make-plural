@@ -123,8 +123,8 @@ describe('MakePlural compiler', function () {
   describe('#test()', function () {
     it('should validate default functions', function () {
       var mpc = new Compiler('en', { ordinals: true })
-      var mp = mpc.compile()
-      expect(() => mpc.test()).not.to.throw()
+      mpc.compile()
+      expect(mpc.test).not.to.throw()
     })
     it('should not validate bad functions', function () {
       var cldr = {
@@ -140,7 +140,7 @@ describe('MakePlural compiler', function () {
         prevRules = Compiler.rules
       Compiler.load(cldr)
       var mpc = new Compiler('xx')
-      var mp = mpc.compile()
+      mpc.compile()
       expect(mpc.test).to.throw(/self-test failed/)
       Compiler.rules = prevRules
     })
