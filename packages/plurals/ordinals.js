@@ -7,8 +7,6 @@ const b = (n) => n == 1 ? 'one' : 'other';
   else if (typeof exports === 'object') module.exports = plurals;
   else root.plurals = plurals;
 }(this, {
-_in: a,
-
 af: a,
 
 am: a,
@@ -30,6 +28,8 @@ az: (n) => {
     : i == 0 || i10 == 6 || (i100 == 40 || i100 == 60 || i100 == 90) ? 'many'
     : 'other';
 },
+
+bal: b,
 
 be: (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
@@ -135,8 +135,6 @@ is: a,
 
 it: (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other',
 
-iw: a,
-
 ja: a,
 
 ka: (n) => {
@@ -232,8 +230,6 @@ pt: a,
 
 ro: b,
 
-root: a,
-
 ru: a,
 
 sc: (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other',
@@ -279,12 +275,16 @@ tk: (n) => {
 
 tl: b,
 
+tpi: a,
+
 tr: a,
 
 uk: (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   return n10 == 3 && n100 != 13 ? 'few' : 'other';
 },
+
+und: a,
 
 ur: a,
 

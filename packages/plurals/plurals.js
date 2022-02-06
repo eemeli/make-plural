@@ -29,8 +29,6 @@ const f = (n, ord) => {
   else if (typeof exports === 'object') module.exports = plurals;
   else root.plurals = plurals;
 }(this, {
-_in: e,
-
 af: a,
 
 ak: b,
@@ -82,6 +80,8 @@ az: (n, ord) => {
     : 'other';
   return n == 1 ? 'one' : 'other';
 },
+
+bal: (n, ord) => n == 1 ? 'one' : 'other',
 
 be: (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
@@ -218,7 +218,13 @@ en: (n, ord) => {
 
 eo: a,
 
-es: a,
+es: (n, ord) => {
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
+  if (ord) return 'other';
+  return n == 1 ? 'one'
+    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : 'other';
+},
 
 et: d,
 
@@ -322,6 +328,8 @@ hi: (n, ord) => {
   return n >= 0 && n <= 1 ? 'one' : 'other';
 },
 
+hnj: e,
+
 hr: (n, ord) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
   if (ord) return 'other';
@@ -366,29 +374,20 @@ is: (n, ord) => {
 },
 
 it: (n, ord) => {
-  const s = String(n).split('.'), v0 = !s[1];
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   if (ord) return (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
-  return n == 1 && v0 ? 'one' : 'other';
+  return n == 1 && v0 ? 'one'
+    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : 'other';
 },
 
 iu: f,
-
-iw: (n, ord) => {
-  const s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
-  if (ord) return 'other';
-  return n == 1 && v0 ? 'one'
-    : i == 2 && v0 ? 'two'
-    : v0 && (n < 0 || n > 10) && t0 && n10 == 0 ? 'many'
-    : 'other';
-},
 
 ja: e,
 
 jbo: e,
 
 jgo: a,
-
-ji: d,
 
 jmc: a,
 
@@ -630,12 +629,20 @@ prg: (n, ord) => {
 ps: a,
 
 pt: (n, ord) => {
-  const s = String(n).split('.'), i = s[0];
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   if (ord) return 'other';
-  return (i == 0 || i == 1) ? 'one' : 'other';
+  return (i == 0 || i == 1) ? 'one'
+    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : 'other';
 },
 
-pt_PT: d,
+pt_PT: (n, ord) => {
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
+  if (ord) return 'other';
+  return n == 1 && v0 ? 'one'
+    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : 'other';
+},
 
 rm: a,
 
@@ -648,8 +655,6 @@ ro: (n, ord) => {
 },
 
 rof: a,
-
-root: e,
 
 ru: (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
@@ -808,6 +813,8 @@ tn: a,
 
 to: e,
 
+tpi: e,
+
 tr: a,
 
 ts: a,
@@ -828,6 +835,8 @@ uk: (n, ord) => {
     : v0 && i10 == 0 || v0 && (i10 >= 5 && i10 <= 9) || v0 && (i100 >= 11 && i100 <= 14) ? 'many'
     : 'other';
 },
+
+und: e,
 
 ur: d,
 

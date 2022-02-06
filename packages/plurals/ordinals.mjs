@@ -1,7 +1,6 @@
 const a = (n) => 'other';
 const b = (n) => n == 1 ? 'one' : 'other';
 
-export const _in = a;
 export const af = a;
 export const am = a;
 export const an = a;
@@ -18,6 +17,7 @@ export const az = (n) => {
     : i == 0 || i10 == 6 || (i100 == 40 || i100 == 60 || i100 == 90) ? 'many'
     : 'other';
 };
+export const bal = b;
 export const be = (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   return (n10 == 2 || n10 == 3) && n100 != 12 && n100 != 13 ? 'few' : 'other';
@@ -86,7 +86,6 @@ export const ia = a;
 export const id = a;
 export const is = a;
 export const it = (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
-export const iw = a;
 export const ja = a;
 export const ka = (n) => {
   const s = String(n).split('.'), i = s[0], i100 = i.slice(-2);
@@ -152,7 +151,6 @@ export const prg = a;
 export const ps = a;
 export const pt = a;
 export const ro = b;
-export const root = a;
 export const ru = a;
 export const sc = (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
 export const scn = (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
@@ -181,11 +179,13 @@ export const tk = (n) => {
   return (n10 == 6 || n10 == 9) || n == 10 ? 'few' : 'other';
 };
 export const tl = b;
+export const tpi = a;
 export const tr = a;
 export const uk = (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   return n10 == 3 && n100 != 13 ? 'few' : 'other';
 };
+export const und = a;
 export const ur = a;
 export const uz = a;
 export const vi = b;
