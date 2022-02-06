@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [https://github.com/eemeli/make-plural/compare/5.1.0...6.0.0](6.0.0) (2021-08-27)
+## [6.0.0](https://github.com/eemeli/make-plural/compare/5.1.0...6.0.0) (2021-08-27)
 
 ### ⚠ Breaking Changes
 
@@ -18,12 +18,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* Use const and => notation for function stringification ([https://github.com/eemeli/make-plural/commit/b9da90acd501b86a6b2ab1e73876ea05c57ebc74](b9da90a))
-* Add plural range support ([https://github.com/eemeli/make-plural/commit/cf77a715c65f4282e95a5b332f9261eff0c234f0](cf77a71))
-* export { Compiler } rather than default ([https://github.com/eemeli/make-plural/commit/0cbbf58240208273f8350e5d9d162787a6eba49f](0cbbf58))
-* Export compileRange ([https://github.com/eemeli/make-plural/commit/ab9c32a6c1b6c34404714cb7b45114c6310a5d65](ab9c32a))
-* Support c & e operands by ignoring them (closes [https://github.com/eemeli/make-plural/issues/22](#22)) ([https://github.com/eemeli/make-plural/commit/8c6a553c9c347301df5be24302836bcd20452038](8c6a553))
-* Add Compiler.parseExamples() & refactor compiler.tests into compiler.examples ([https://github.com/eemeli/make-plural/commit/655d27f6ef194e06d12476cd30e4a7b2a98b0a6f](655d27f))
+* Use const and => notation for function stringification ([b9da90a](https://github.com/eemeli/make-plural/commit/b9da90acd501b86a6b2ab1e73876ea05c57ebc74))
+* Add plural range support ([cf77a71](https://github.com/eemeli/make-plural/commit/cf77a715c65f4282e95a5b332f9261eff0c234f0))
+* export { Compiler } rather than default ([0cbbf58](https://github.com/eemeli/make-plural/commit/0cbbf58240208273f8350e5d9d162787a6eba49f))
+* Export compileRange ([ab9c32a](https://github.com/eemeli/make-plural/commit/ab9c32a6c1b6c34404714cb7b45114c6310a5d65))
+* Support c & e operands by ignoring them ([#22](https://github.com/eemeli/make-plural/issues/22)) ([8c6a553](https://github.com/eemeli/make-plural/commit/8c6a553c9c347301df5be24302836bcd20452038))
+* Add Compiler.parseExamples() & refactor compiler.tests into compiler.examples ([655d27f](https://github.com/eemeli/make-plural/commit/655d27f6ef194e06d12476cd30e4a7b2a98b0a6f))
 
 # [5.1.0](https://github.com/eemeli/make-plural/compare/make-plural-compiler@5.0.0...make-plural-compiler@5.1.0) (2020-03-08)
 

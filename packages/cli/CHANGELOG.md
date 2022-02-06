@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [https://github.com/eemeli/make-plural/compare/6.2.1...7.0.0](7.0.0) (2021-08-27)
+## [7.0.0](https://github.com/eemeli/make-plural/compare/6.2.1...7.0.0) (2021-08-27)
 
 ### ⚠ Breaking Changes
 
@@ -14,14 +14,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* Update to CLDR 39 ([https://github.com/eemeli/make-plural/commit/ed2bdbc77e6e86444ec4711124b94a780069f0e4](ed2bdbc))
-* Use const and => notation for function stringification ([https://github.com/eemeli/make-plural/commit/b9da90acd501b86a6b2ab1e73876ea05c57ebc74](b9da90a))
-* Add ranges command ([https://github.com/eemeli/make-plural/commit/902cfa0a6aac428051736bbec4c8aa12c3fc1b13](902cfa0))
-* Add examples command ([https://github.com/eemeli/make-plural/commit/ab33114286d5508ed8c9ddf38ed673e5cb3f7d8b](ab33114))
+* Update to CLDR 39 ([ed2bdbc](https://github.com/eemeli/make-plural/commit/ed2bdbc77e6e86444ec4711124b94a780069f0e4))
+* Use const and => notation for function stringification ([b9da90a](https://github.com/eemeli/make-plural/commit/b9da90acd501b86a6b2ab1e73876ea05c57ebc74))
+* Add ranges command ([902cfa0](https://github.com/eemeli/make-plural/commit/902cfa0a6aac428051736bbec4c8aa12c3fc1b13))
+* Add examples command ([ab33114](https://github.com/eemeli/make-plural/commit/ab33114286d5508ed8c9ddf38ed673e5cb3f7d8b))
 
 ### Bug Fixes
 
-* Drop cli dependency on common-tags; streamline UMD wrapper ([https://github.com/eemeli/make-plural/commit/1404ac640b2d7391973d8d8dae060fef7d468f74](1404ac6))
+* Drop cli dependency on common-tags; streamline UMD wrapper ([1404ac6](https://github.com/eemeli/make-plural/commit/1404ac640b2d7391973d8d8dae060fef7d468f74))
 
 ## [6.2.1](https://github.com/eemeli/make-plural/compare/make-plural-cli@6.2.0...make-plural-cli@6.2.1) (2020-08-09)
 
