@@ -25,7 +25,7 @@ No plural data is included by default, so you'll need to call this at least once
 
 The default CLDR rules are available from the [cldr-core] package, and may be loaded as seen in the examples below.
 
-[json]: https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json
+[json]: https://github.com/unicode-org/cldr-json/blob/main/cldr-json/cldr-core/supplemental/plurals.json
 [cldr-core]: https://www.npmjs.com/package/cldr-core
 
 ### `new Compiler(lc, { cardinals, ordinals })`
