@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.2.0](https://github.com/eemeli/make-plural/compare/make-plural-cli@7.1.0...make-plural-cli@7.2.0) (2022-11-16)
+
+### Features
+
+* Update to cldr-core@42 ([d7f8a07](https://github.com/eemeli/make-plural/commit/d7f8a07dca337b961faf2652736cbf106dc1cfd3))
+
 ## [7.1.0](https://github.com/eemeli/make-plural/compare/make-plural-cli@7.0.0...make-plural-cli@7.1.0) (2022-02-06)
 
 ### Features
