@@ -5,7 +5,9 @@
   "author": "Eemeli Aro <eemeli@gmail.com>",
   "license": "ISC",
   "workspaces": [
-    "packages/*"
+    "packages/compiler",
+    "packages/cli",
+    "packages/plurals"
   ],
   "repository": {
     "type": "git",
@@ -17,11 +19,6 @@
     "prettier": "prettier --write .",
     "preversion": "npm run clean && npm run build && npm test",
     "test": "nyc mocha"
-  },
-  "dependencies": {
-    "make-plural": "file:packages/plurals",
-    "make-plural-cli": "file:packages/cli",
-    "make-plural-compiler": "file:packages/compiler"
   },
   "devDependencies": {
     "@babel/core": "^7.12.0",
