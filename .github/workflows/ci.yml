@@ -20,6 +20,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - if: matrix.node-version <= 14
+        run: npm install --global npm@7
       - run: npm ci
       - if: matrix.node-version == 12
         run: npm install mocha@9
