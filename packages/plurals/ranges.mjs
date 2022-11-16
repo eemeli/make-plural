@@ -37,13 +37,7 @@ export const ga = c;
 export const gl = c;
 export const gsw = c;
 export const gu = c;
-export const he = (start, end) => (
-  (start === "many" && end === "many") ? "many"
-  : (start === "many" && end === "other") ? "many"
-  : (start === "one" && end === "many") ? "many"
-  : (start === "other" && end === "many") ? "many"
-  : "other"
-);
+export const he = a;
 export const hi = c;
 export const hr = c;
 export const hu = c;

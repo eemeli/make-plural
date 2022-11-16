@@ -94,7 +94,12 @@ bs: (n) => {
     : 'other';
 },
 
-ca: d,
+ca: (n) => {
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
+  return n == 1 && v0 ? 'one'
+    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : 'other';
+},
 
 ce: a,
 
@@ -227,10 +232,9 @@ ha: a,
 haw: a,
 
 he: (n) => {
-  const s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
-  return n == 1 && v0 ? 'one'
+  const s = String(n).split('.'), i = s[0], v0 = !s[1];
+  return i == 1 && v0 || i == 0 && !v0 ? 'one'
     : i == 2 && v0 ? 'two'
-    : v0 && (n < 0 || n > 10) && t0 && n10 == 0 ? 'many'
     : 'other';
 },
 
@@ -268,8 +272,8 @@ ii: e,
 io: d,
 
 is: (n) => {
-  const s = String(n).split('.'), i = s[0], t0 = Number(s[0]) == n, i10 = i.slice(-1), i100 = i.slice(-2);
-  return t0 && i10 == 1 && i100 != 11 || !t0 ? 'one' : 'other';
+  const s = String(n).split('.'), i = s[0], t = (s[1] || '').replace(/0+$/, ''), t0 = Number(s[0]) == n, i10 = i.slice(-1), i100 = i.slice(-2);
+  return t0 && i10 == 1 && i100 != 11 || t % 10 == 1 && t % 100 != 11 ? 'one' : 'other';
 },
 
 it: (n) => {
@@ -391,7 +395,7 @@ mn: a,
 mo: (n) => {
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return n == 1 && v0 ? 'one'
-    : !v0 || n == 0 || (n100 >= 2 && n100 <= 19) ? 'few'
+    : !v0 || n == 0 || n != 1 && (n100 >= 1 && n100 <= 19) ? 'few'
     : 'other';
 },
 
@@ -402,7 +406,8 @@ ms: e,
 mt: (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return n == 1 ? 'one'
-    : n == 0 || (n100 >= 2 && n100 <= 10) ? 'few'
+    : n == 2 ? 'two'
+    : n == 0 || (n100 >= 3 && n100 <= 10) ? 'few'
     : (n100 >= 11 && n100 <= 19) ? 'many'
     : 'other';
 },
@@ -487,7 +492,7 @@ rm: a,
 ro: (n) => {
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return n == 1 && v0 ? 'one'
-    : !v0 || n == 0 || (n100 >= 2 && n100 <= 19) ? 'few'
+    : !v0 || n == 0 || n != 1 && (n100 >= 1 && n100 <= 19) ? 'few'
     : 'other';
 },
 
@@ -648,6 +653,13 @@ ur: d,
 uz: a,
 
 ve: a,
+
+vec: (n) => {
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
+  return n == 1 && v0 ? 'one'
+    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : 'other';
+},
 
 vi: e,
 

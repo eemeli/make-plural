@@ -21,6 +21,8 @@ as: (n) => (n == 1 || n == 5 || n == 7 || n == 8 || n == 9 || n == 10) ? 'one'
     : n == 6 ? 'many'
     : 'other',
 
+ast: a,
+
 az: (n) => {
   const s = String(n).split('.'), i = s[0], i10 = i.slice(-1), i100 = i.slice(-2), i1000 = i.slice(-3);
   return (i10 == 1 || i10 == 2 || i10 == 5 || i10 == 7 || i10 == 8) || (i100 == 20 || i100 == 50 || i100 == 70 || i100 == 80) ? 'one'
@@ -289,6 +291,8 @@ und: a,
 ur: a,
 
 uz: a,
+
+vec: (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other',
 
 vi: b,
 

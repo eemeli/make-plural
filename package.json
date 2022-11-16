@@ -26,7 +26,7 @@
     "@babel/preset-env": "^7.12.0",
     "@babel/register": "^7.12.0",
     "chai": "^4.2.0",
-    "cldr-core": "^41.0.0",
+    "cldr-core": "^42.0.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "mocha": "^10.1.0",

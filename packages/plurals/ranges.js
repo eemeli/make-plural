@@ -72,13 +72,7 @@ gsw: c,
 
 gu: c,
 
-he: (start, end) => (
-  (start === "many" && end === "many") ? "many"
-  : (start === "many" && end === "other") ? "many"
-  : (start === "one" && end === "many") ? "many"
-  : (start === "other" && end === "many") ? "many"
-  : "other"
-),
+he: a,
 
 hi: c,
 
