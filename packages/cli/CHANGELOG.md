@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.3.0](https://github.com/eemeli/make-plural/compare/make-plural-cli@7.2.0...make-plural-cli@7.3.0) (2023-05-03)
+
+### Features
+
+* Add `--json` flag to examples command ([#30](https://github.com/eemeli/make-plural/issues/30))
+
 ## [7.2.0](https://github.com/eemeli/make-plural/compare/make-plural-cli@7.1.0...make-plural-cli@7.2.0) (2022-11-16)
 
 ### Features

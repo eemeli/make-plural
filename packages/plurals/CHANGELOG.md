@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.3.0](https://github.com/eemeli/make-plural/compare/make-plural@7.2.0...make-plural@7.3.0) (2023-05-03)
+
+### Features
+
+* Add 'make-plural/examples.json' ([#30](https://github.com/eemeli/make-plural/issues/30))
+
 ## [7.2.0](https://github.com/eemeli/make-plural/compare/make-plural@7.1.0...make-plural@7.2.0) (2022-11-16)
 
 ### Features
