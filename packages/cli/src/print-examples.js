@@ -4,7 +4,7 @@ import printUMD from './print-umd.js'
 
 export default function printExamplesModule(args) {
   const MakePlural = getCompiler(args)
-  const { locale, dts, maxRepeat, umd } = args
+  const { dts, json, locale, maxRepeat, umd } = args
   const locales =
     locale.length === 0 ? Object.keys(MakePlural.rules.cardinal) : locale.sort()
 
@@ -24,7 +24,7 @@ export default function printExamplesModule(args) {
   let commonId = 'a'
   const examples = []
   for (const [ex, locales] of Object.entries(localesByExample)) {
-    if (!dts && locales.length > maxRepeat && commonId <= 'z') {
+    if (!dts && !json && locales.length > maxRepeat && commonId <= 'z') {
       str += `const ${commonId} = ${ex};\n`
       for (const lc of locales) examples.push({ lc, ex: commonId })
       commonId = String.fromCharCode(commonId.charCodeAt(0) + 1)
@@ -35,7 +35,10 @@ export default function printExamplesModule(args) {
   examples.sort((a, b) => (a.lc < b.lc ? -1 : 1))
   if (str) str += '\n'
 
-  if (dts) {
+  if (json) {
+    const pairs = examples.map(({ lc, ex }) => `${JSON.stringify(lc)}: ${ex}`)
+    str = '{\n' + pairs.join(',\n') + '\n}\n'
+  } else if (dts) {
     for (const { lc, ex } of examples) str += `export const ${lc}: ${ex};\n`
   } else if (umd) {
     const cm = examples.map(({ lc, ex }) => `${lc}: ${ex}`)

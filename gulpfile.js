@@ -34,6 +34,8 @@ async function plurals(cb) {
       await writeFile(resolve(pluralDest, `${tgt}.${ext}`), stdout)
     }
   }
+  const { stdout } = await execFile(makePluralCmd, ['examples', '--json'])
+  await writeFile(resolve(pluralDest, 'examples.json'), stdout)
 }
 
 exports.default = series(compiler, cli, plurals)

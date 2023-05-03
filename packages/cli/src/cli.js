@@ -49,6 +49,10 @@ const moduleCommandBuilder = yargs =>
         desc: 'Output a TypeScript d.ts file',
         type: 'boolean'
       },
+      json: {
+        desc: 'Output a JSON file (only valid for examples)',
+        type: 'boolean'
+      },
       'max-repeat': {
         default: 5,
         desc: 'Maximum number of allowed repeats for plural functions & cagetories',

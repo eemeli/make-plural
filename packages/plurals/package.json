@@ -54,6 +54,7 @@
       },
       "./examples.js"
     ],
+    "./examples.json": "./examples.json",
     "./ordinals": [
       {
         "import": "./ordinals.mjs",
