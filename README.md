@@ -18,4 +18,4 @@ npm install
 npm run build
 ```
 
-Note that with the v5 release, the compiler and CLI were split from the canonical `make-plural` package, and the project is now managed with [Lerna](https://lerna.js.org/).
+Note that with the v5 release, the compiler and CLI were split from the canonical `make-plural` package.
