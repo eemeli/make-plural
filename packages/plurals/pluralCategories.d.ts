@@ -111,6 +111,7 @@ export const lv: {cardinal:["zero","one","other"],ordinal:["other"]};
 export const mas: {cardinal:["one","other"],ordinal:["other"]};
 export const mg: {cardinal:["one","other"],ordinal:["other"]};
 export const mgo: {cardinal:["one","other"],ordinal:["other"]};
+export const mi: {cardinal:["one","two","other"],ordinal:["zero","other"]};
 export const mk: {cardinal:["one","other"],ordinal:["one","two","many","other"]};
 export const ml: {cardinal:["one","other"],ordinal:["other"]};
 export const mn: {cardinal:["one","other"],ordinal:["other"]};
