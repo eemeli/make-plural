@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import cardinalData from 'cldr-core/supplemental/plurals.json'
-import ordinalData from 'cldr-core/supplemental/ordinals.json'
+import cardinalData from 'cldr-core/supplemental/plurals.json' with { type: 'json' }
+import ordinalData from 'cldr-core/supplemental/ordinals.json' with { type: 'json' }
 
 import { Compiler } from 'make-plural-compiler/src/compiler.js'
 

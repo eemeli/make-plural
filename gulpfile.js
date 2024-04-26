@@ -7,7 +7,7 @@ const execFile = promisify(require('child_process').execFile)
 const writeFile = promisify(require('fs').writeFile)
 
 const compiler = () =>
-  src('packages/compiler/src/*')
+  src('packages/compiler/src/*.js')
     .pipe(babel())
     .pipe(dest('packages/compiler/lib/'))
 
