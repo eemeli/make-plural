@@ -16,6 +16,7 @@ export const bem: {cardinal:["one","other"],ordinal:["other"]};
 export const bez: {cardinal:["one","other"],ordinal:["other"]};
 export const bg: {cardinal:["one","other"],ordinal:["other"]};
 export const bho: {cardinal:["one","other"],ordinal:["other"]};
+export const blo: {cardinal:["zero","one","other"],ordinal:["zero","one","few","other"]};
 export const bm: {cardinal:["other"],ordinal:["other"]};
 export const bn: {cardinal:["one","other"],ordinal:["one","two","few","many","other"]};
 export const bo: {cardinal:["other"],ordinal:["other"]};

@@ -78,6 +78,16 @@ export const bem = a;
 export const bez = a;
 export const bg = a;
 export const bho = b;
+export const blo = (n, ord) => {
+  const s = String(n).split('.'), i = s[0];
+  if (ord) return i == 0 ? 'zero'
+    : i == 1 ? 'one'
+    : (i == 2 || i == 3 || i == 4 || i == 5 || i == 6) ? 'few'
+    : 'other';
+  return n == 0 ? 'zero'
+    : n == 1 ? 'one'
+    : 'other';
+};
 export const bm = e;
 export const bn = (n, ord) => {
   if (ord) return (n == 1 || n == 5 || n == 7 || n == 8 || n == 9 || n == 10) ? 'one'

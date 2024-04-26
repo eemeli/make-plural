@@ -48,6 +48,9 @@ export const bem = a;
 export const bez = a;
 export const bg = a;
 export const bho = b;
+export const blo = (n) => n == 0 ? 'zero'
+    : n == 1 ? 'one'
+    : 'other';
 export const bm = e;
 export const bn = c;
 export const bo = e;

@@ -16,6 +16,7 @@ export const bem: (n: number | string, ord?: boolean) => "one" | "other";
 export const bez: (n: number | string, ord?: boolean) => "one" | "other";
 export const bg: (n: number | string, ord?: boolean) => "one" | "other";
 export const bho: (n: number | string, ord?: boolean) => "one" | "other";
+export const blo: (n: number | string, ord?: boolean) => "zero" | "one" | "few" | "other";
 export const bm: (n: number | string, ord?: boolean) => "other";
 export const bn: (n: number | string, ord?: boolean) => "one" | "two" | "few" | "many" | "other";
 export const bo: (n: number | string, ord?: boolean) => "other";

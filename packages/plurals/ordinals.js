@@ -40,6 +40,14 @@ be: (n) => {
 
 bg: a,
 
+blo: (n) => {
+  const s = String(n).split('.'), i = s[0];
+  return i == 0 ? 'zero'
+    : i == 1 ? 'one'
+    : (i == 2 || i == 3 || i == 4 || i == 5 || i == 6) ? 'few'
+    : 'other';
+},
+
 bn: (n) => (n == 1 || n == 5 || n == 7 || n == 8 || n == 9 || n == 10) ? 'one'
     : (n == 2 || n == 3) ? 'two'
     : n == 4 ? 'few'

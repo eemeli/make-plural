@@ -70,6 +70,10 @@ bg: a,
 
 bho: b,
 
+blo: (n) => n == 0 ? 'zero'
+    : n == 1 ? 'one'
+    : 'other',
+
 bm: e,
 
 bn: c,

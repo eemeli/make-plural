@@ -10,6 +10,7 @@ export const az: (n: number | string) => "one" | "few" | "many" | "other";
 export const bal: (n: number | string) => "one" | "other";
 export const be: (n: number | string) => "few" | "other";
 export const bg: (n: number | string) => "other";
+export const blo: (n: number | string) => "zero" | "one" | "few" | "other";
 export const bn: (n: number | string) => "one" | "two" | "few" | "many" | "other";
 export const bs: (n: number | string) => "other";
 export const ca: (n: number | string) => "one" | "two" | "few" | "other";

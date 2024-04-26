@@ -100,6 +100,17 @@ bg: a,
 
 bho: b,
 
+blo: (n, ord) => {
+  const s = String(n).split('.'), i = s[0];
+  if (ord) return i == 0 ? 'zero'
+    : i == 1 ? 'one'
+    : (i == 2 || i == 3 || i == 4 || i == 5 || i == 6) ? 'few'
+    : 'other';
+  return n == 0 ? 'zero'
+    : n == 1 ? 'one'
+    : 'other';
+},
+
 bm: e,
 
 bn: (n, ord) => {

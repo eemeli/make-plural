@@ -16,6 +16,7 @@ export const bem: (n: number | string) => "one" | "other";
 export const bez: (n: number | string) => "one" | "other";
 export const bg: (n: number | string) => "one" | "other";
 export const bho: (n: number | string) => "one" | "other";
+export const blo: (n: number | string) => "zero" | "one" | "other";
 export const bm: (n: number | string) => "other";
 export const bn: (n: number | string) => "one" | "other";
 export const bo: (n: number | string) => "other";

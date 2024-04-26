@@ -20,6 +20,7 @@ export const bem = a;
 export const bez = a;
 export const bg = a;
 export const bho = a;
+export const blo = {cardinal:[z,o,x],ordinal:[z,o,f,x]};
 export const bm = c;
 export const bn = {cardinal:[o,x],ordinal:[o,t,f,m,x]};
 export const bo = c;
