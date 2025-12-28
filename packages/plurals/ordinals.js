@@ -65,6 +65,8 @@ ce: a,
 
 cs: a,
 
+cv: a,
+
 cy: (n) => (n == 0 || n == 7 || n == 8 || n == 9) ? 'zero'
     : n == 1 ? 'one'
     : n == 2 ? 'two'
@@ -141,6 +143,8 @@ ia: a,
 
 id: a,
 
+ie: a,
+
 is: a,
 
 it: (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other',
@@ -165,6 +169,16 @@ kn: a,
 
 ko: a,
 
+kok: (n) => n == 1 ? 'one'
+    : (n == 2 || n == 3) ? 'two'
+    : n == 4 ? 'few'
+    : 'other',
+
+kok_Latn: (n) => n == 1 ? 'one'
+    : (n == 2 || n == 3) ? 'two'
+    : n == 4 ? 'few'
+    : 'other',
+
 kw: (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return (t0 && n >= 1 && n <= 4) || ((n100 >= 1 && n100 <= 4) || (n100 >= 21 && n100 <= 24) || (n100 >= 41 && n100 <= 44) || (n100 >= 61 && n100 <= 64) || (n100 >= 81 && n100 <= 84)) ? 'one'
@@ -178,6 +192,8 @@ lij: (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
   return (n == 11 || n == 8 || (t0 && n >= 80 && n <= 89) || (t0 && n >= 800 && n <= 899)) ? 'many' : 'other';
 },
+
+lld: (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other',
 
 lo: b,
 
@@ -244,7 +260,10 @@ ru: a,
 
 sc: (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other',
 
-scn: (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other',
+scn: (n) => {
+  const s = String(n).split('.'), t0 = Number(s[0]) == n;
+  return (n == 11 || n == 8 || (t0 && n >= 80 && n <= 89) || (t0 && n >= 800 && n <= 899)) ? 'many' : 'other';
+},
 
 sd: a,
 

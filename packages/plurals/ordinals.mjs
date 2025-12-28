@@ -43,6 +43,7 @@ export const ca = (n) => (n == 1 || n == 3) ? 'one'
     : 'other';
 export const ce = a;
 export const cs = a;
+export const cv = a;
 export const cy = (n) => (n == 0 || n == 7 || n == 8 || n == 9) ? 'zero'
     : n == 1 ? 'one'
     : n == 2 ? 'two'
@@ -92,6 +93,7 @@ export const hu = (n) => (n == 1 || n == 5) ? 'one' : 'other';
 export const hy = b;
 export const ia = a;
 export const id = a;
+export const ie = a;
 export const is = a;
 export const it = (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
 export const ja = a;
@@ -108,6 +110,14 @@ export const kk = (n) => {
 export const km = a;
 export const kn = a;
 export const ko = a;
+export const kok = (n) => n == 1 ? 'one'
+    : (n == 2 || n == 3) ? 'two'
+    : n == 4 ? 'few'
+    : 'other';
+export const kok_Latn = (n) => n == 1 ? 'one'
+    : (n == 2 || n == 3) ? 'two'
+    : n == 4 ? 'few'
+    : 'other';
 export const kw = (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return (t0 && n >= 1 && n <= 4) || ((n100 >= 1 && n100 <= 4) || (n100 >= 21 && n100 <= 24) || (n100 >= 41 && n100 <= 44) || (n100 >= 61 && n100 <= 64) || (n100 >= 81 && n100 <= 84)) ? 'one'
@@ -119,6 +129,7 @@ export const lij = (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
   return (n == 11 || n == 8 || (t0 && n >= 80 && n <= 89) || (t0 && n >= 800 && n <= 899)) ? 'many' : 'other';
 };
+export const lld = (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
 export const lo = b;
 export const lt = a;
 export const lv = a;
@@ -161,7 +172,10 @@ export const pt = a;
 export const ro = b;
 export const ru = a;
 export const sc = (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
-export const scn = (n) => (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
+export const scn = (n) => {
+  const s = String(n).split('.'), t0 = Number(s[0]) == n;
+  return (n == 11 || n == 8 || (t0 && n >= 80 && n <= 89) || (t0 && n >= 800 && n <= 899)) ? 'many' : 'other';
+};
 export const sd = a;
 export const sh = a;
 export const si = a;

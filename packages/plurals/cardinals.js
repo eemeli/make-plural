@@ -6,7 +6,13 @@ const d = (n) => {
   return n == 1 && v0 ? 'one' : 'other';
 };
 const e = (n) => 'other';
-const f = (n) => n == 1 ? 'one'
+const f = (n) => {
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
+  return n == 1 && v0 ? 'one'
+    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : 'other';
+};
+const g = (n) => n == 1 ? 'one'
     : n == 2 ? 'two'
     : 'other';
 
@@ -98,12 +104,7 @@ bs: (n) => {
     : 'other';
 },
 
-ca: (n) => {
-  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
-  return n == 1 && v0 ? 'one'
-    : i != 0 && i1000000 == 0 && v0 ? 'many'
-    : 'other';
-},
+ca: f,
 
 ce: a,
 
@@ -125,6 +126,12 @@ cs: (n) => {
     : !v0 ? 'many'
     : 'other';
 },
+
+csw: b,
+
+cv: (n) => n == 0 ? 'zero'
+    : n == 1 ? 'one'
+    : 'other',
 
 cy: (n) => n == 0 ? 'zero'
     : n == 1 ? 'one'
@@ -269,6 +276,8 @@ ia: d,
 
 id: e,
 
+ie: d,
+
 ig: e,
 
 ii: e,
@@ -280,14 +289,9 @@ is: (n) => {
   return t0 && i10 == 1 && i100 != 11 || t % 10 == 1 && t % 100 != 11 ? 'one' : 'other';
 },
 
-it: (n) => {
-  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
-  return n == 1 && v0 ? 'one'
-    : i != 0 && i1000000 == 0 && v0 ? 'many'
-    : 'other';
-},
+it: f,
 
-iu: f,
+iu: g,
 
 ja: e,
 
@@ -325,6 +329,10 @@ kn: c,
 
 ko: e,
 
+kok: c,
+
+kok_Latn: c,
+
 ks: a,
 
 ksb: a,
@@ -361,6 +369,8 @@ lg: a,
 lij: d,
 
 lkt: e,
+
+lld: f,
 
 ln: b,
 
@@ -420,7 +430,7 @@ my: e,
 
 nah: a,
 
-naq: f,
+naq: g,
 
 nb: a,
 
@@ -484,12 +494,7 @@ pt: (n) => {
     : 'other';
 },
 
-pt_PT: (n) => {
-  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
-  return n == 1 && v0 ? 'one'
-    : i != 0 && i1000000 == 0 && v0 ? 'many'
-    : 'other';
-},
+pt_PT: f,
 
 rm: a,
 
@@ -516,23 +521,32 @@ sah: e,
 
 saq: a,
 
-sat: f,
+sat: g,
 
 sc: d,
 
-scn: d,
+scn: f,
 
 sd: a,
 
 sdh: a,
 
-se: f,
+se: g,
 
 seh: a,
 
 ses: e,
 
 sg: e,
+
+sgs: (n) => {
+  const s = String(n).split('.'), f = s[1] || '', t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
+  return n10 == 1 && n100 != 11 ? 'one'
+    : n == 2 ? 'two'
+    : n != 2 && (n10 >= 2 && n10 <= 9) && (n100 < 11 || n100 > 19) ? 'few'
+    : f != 0 ? 'many'
+    : 'other';
+},
 
 sh: (n) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
@@ -569,15 +583,15 @@ sl: (n) => {
     : 'other';
 },
 
-sma: f,
+sma: g,
 
-smi: f,
+smi: g,
 
-smj: f,
+smj: g,
 
-smn: f,
+smn: g,
 
-sms: f,
+sms: g,
 
 sn: a,
 
@@ -658,12 +672,7 @@ uz: a,
 
 ve: a,
 
-vec: (n) => {
-  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
-  return n == 1 && v0 ? 'one'
-    : i != 0 && i1000000 == 0 && v0 ? 'many'
-    : 'other';
-},
+vec: f,
 
 vi: e,
 
