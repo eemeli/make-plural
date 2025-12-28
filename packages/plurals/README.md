@@ -33,6 +33,8 @@ Each of the endpoints is available as ES modules only.
   returning the pluralization category for the input (either a number or a string representation of a number).
   `Plurals` functions also accept a second boolean parameter to return
   the ordinal (`true`) rather than cardinal (`false`, default) plural category.
+  For some locales, an additional argument sets the exponent used in compact notation;
+  currently, this is only used in Romance languages.
   Note that `Ordinals` includes a slightly smaller subset of locales than `Cardinals` and `Plurals`,
   due to a lack of data in the CLDR.
 - `PluralRanges` provides a set of functions similarly keyed by locale code,

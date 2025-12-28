@@ -38,7 +38,6 @@ export class Compiler {
       .replace(/^[ ,]+|[ ,…]+$/g, '')
       .replace(/(0\.[0-9])~(1\.[1-9])/g, '$1 1.0 $2')
       .split(/[ ,~…]+/)
-      .filter(n => !n.includes('c'))
   }
 
   constructor(lc, { cardinals, ordinals } = Compiler) {
@@ -66,9 +65,11 @@ export class Compiler {
           )
           .replace(/{\s*return\s+([^{}]*);\s*}$/, '$1')
       this.test = () => {
+        const { cardinals, ordinals } = this.types
+        const ordArg = Boolean(ordinals && cardinals)
         for (const type of ['cardinal', 'ordinal'])
           for (const [cat, values] of Object.entries(this.examples[type]))
-            testCat(this.lc, type, cat, values, this.fn)
+            testCat(this.lc, this.fn, ordArg, type, cat, values)
       }
     }
     return this.fn
@@ -111,10 +112,10 @@ export class Compiler {
       body = `  return ${this.buildBody(pt, true)};`
     }
 
+    const args = this.parser.args(ordinals && cardinals)
     const vars = this.parser.vars()
     if (vars) body = `  ${vars};\n${body}`
 
-    const args = ordinals && cardinals ? 'n, ord' : 'n'
     return new Function(args, body) // eslint-disable-line no-new-func
   }
 }
