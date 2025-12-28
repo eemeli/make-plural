@@ -29,10 +29,10 @@ function testPluralData(type, lc, getPlural) {
       cat + ': ' + Compiler.rules[type][lc]['pluralRule-count-' + cat],
       () => {
         it('Live data', () => {
-          testCat(lc, type, cat, values, mp)
+          testCat(lc, mp, false, type, cat, values)
         })
         it('Output', () => {
-          testCat(lc, type, cat, values, getPlural(lc))
+          testCat(lc, getPlural(lc), true, type, cat, values)
         })
       }
     )
