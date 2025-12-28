@@ -8,12 +8,11 @@ export class Parser {
     }
     return cond
       .replace(/([^=\s])([!=%]+)([^=\s])/g, '$1 $2 $3')
-      .replace(
-        /[ce] (!?)= ([0-9]+)(?:\.\.[0-9]+)?/g,
-        // assume c & e always have the value 0
-        (m, noteq, x0) => (!noteq === (x0 === '0') ? 'true' : 'false')
-      )
-      .replace(/^true and |^false or | and true$| or false$/g, '')
+      .replace(/[ce] (!?)= 0(?:\.\.([0-9]+))?/g, (m, noteq, max) => {
+        this.c = 1
+        if (max) return noteq ? `c > ${max}` : `c <= ${max}`
+        else return noteq ? 'c' : '!c'
+      })
       .replace(/([tv]) (!?)= 0/g, (m, sym, noteq) => {
         const sn = sym + '0'
         this[sn] = 1
@@ -50,6 +49,13 @@ export class Parser {
       .replace(/ and /g, ' && ')
       .replace(/ or /g, ' || ')
       .replace(/ = /g, ' == ')
+  }
+
+  args(ord) {
+    let args = ['n']
+    if (ord) args.push('ord')
+    if (this.c) args.push('c')
+    return args.join(', ')
   }
 
   vars() {

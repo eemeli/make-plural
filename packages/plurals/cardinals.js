@@ -6,10 +6,10 @@ const d = (n) => {
   return n == 1 && v0 ? 'one' : 'other';
 };
 const e = (n) => 'other';
-const f = (n) => {
+const f = (n, c) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   return n == 1 && v0 ? 'one'
-    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
 const g = (n) => n == 1 ? 'one'
@@ -120,10 +120,10 @@ export const ee = a;
 export const el = a;
 export const en = d;
 export const eo = a;
-export const es = (n) => {
+export const es = (n, c) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   return n == 1 ? 'one'
-    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
 export const et = d;
@@ -136,10 +136,10 @@ export const fil = (n) => {
   return v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9 || !v0 && f10 != 4 && f10 != 6 && f10 != 9 ? 'one' : 'other';
 };
 export const fo = a;
-export const fr = (n) => {
+export const fr = (n, c) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   return n >= 0 && n < 2 ? 'one'
-    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
 export const fur = a;
@@ -331,10 +331,10 @@ export const prg = (n) => {
     : 'other';
 };
 export const ps = a;
-export const pt = (n) => {
+export const pt = (n, c) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   return (i == 0 || i == 1) ? 'one'
-    : i != 0 && i1000000 == 0 && v0 ? 'many'
+    : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
 export const pt_PT = f;
