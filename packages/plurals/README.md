@@ -1,11 +1,11 @@
 # make-plural
 
-`make-plural` provides JavaScript functions determining the pluralization categories of the approximately 200 languages included in the [Unicode CLDR].
+`make-plural` provides JavaScript functions determining the pluralization categories of the approximately 220 languages included in the [Unicode CLDR].
 In addition to the more commonly considered cardinal plurals (e.g. one book, two books), it also support ordinal plurals (e.g. 1st book, 2nd book, etc).
 It's used internally by the [intl-pluralrules] polyfill.
 
 The categorization functions are pre-compiled, require no runtime dependencies, and should compress to about 2.5kB.
-The ES module exports in particular are designed to work well with tree-shaking, allowing for further size savings.
+The ES modules are designed to work well with tree-shaking, allowing for further size savings.
 In order to generate an even smaller file from a subset of all possible language or to otherwise customise the modules, use [make-plural-cli] or [make-plural-compiler].
 
 [intl-pluralrules]: https://www.npmjs.com/package/intl-pluralrules
@@ -28,7 +28,7 @@ import * as Categories from 'make-plural/pluralCategories'
 import * as PluralRanges from 'make-plural/ranges'
 ```
 
-Each of the endpoints is available with both UMD (.js) and ES (.mjs) packaging.
+Each of the endpoints is available as ES modules only.
 - `Cardinals`, `Ordinals` and `Plurals` each export a set of functions keyed by locale code,
   returning the pluralization category for the input (either a number or a string representation of a number).
   `Plurals` functions also accept a second boolean parameter to return
@@ -44,16 +44,16 @@ Each of the endpoints is available with both UMD (.js) and ES (.mjs) packaging.
 - `Examples` provide sample numeric values for each language's categories.
 
 The object keys are named using the corresponding 2-3 character [language code].
-Due to JavaScript identifier restrictions, there are two exceptions:
-Portugese as spoken in Portugal (`pt-PT`; `pt` is Brazilian Portuguese) is available as `pt_PT`, and the now-deprecated `in` subtag for Indonesian (preferred: `id`) is available as `_in`.
-The transformation used for these names is available as [safe-identifier] on npm.
+Due to JavaScript identifier restrictions, there is one exception:
+Portugese as spoken in Portugal (`pt-PT`; `pt` is Brazilian Portuguese) is available as `pt_PT`.
+The transformation used for locale names is available as [safe-identifier] on npm.
 
 [language]: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
 [language code]: https://www.unicode.org/cldr/charts/latest/supplemental/languages_and_scripts.html
 [safe-identifier]: https://www.npmjs.com/package/safe-identifier
 
-The package file paths and exports are structured in a manner that should allow transparent usage in any module system.
-In particular, when importing as an ES6 module, tree shaking should be able drop all but the explicitly used functions from the output, provided that **named rather than wildcard imports** are used.
+Tree shaking should be able drop all but the explicitly used functions from the output,
+provided that **named rather than wildcard imports** are used.
 
 ```js
 import { en } from 'make-plural'
@@ -78,8 +78,7 @@ import { en as ordinalEn } from 'make-plural/ordinals'
 ordinalEn(3) // 'few'
 
 import * as Categories from 'make-plural/pluralCategories'
-// { _in: { cardinal: [ 'other' ], ordinal: [ 'other' ] },
-//   af: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
+// { af: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
 //   ak: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
 //   am: { cardinal: [ 'one', 'other' ], ordinal: [ 'other' ] },
 //   ar:
