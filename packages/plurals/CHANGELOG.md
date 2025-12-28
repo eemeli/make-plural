@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](https://github.com/eemeli/make-plural/compare/make-plural@7.5.0...make-plural@8.0.0) (2025-12-28)
+
+### ⚠ Breaking Changes
+
+* Drop CommonJS exports ([#34](https://github.com/eemeli/make-plural/issues/34))
+
 ## [7.5.0](https://github.com/eemeli/make-plural/compare/make-plural@7.4.0...make-plural@7.5.0) (2025-12-28)
 
 * Update to cldr-core v48 ([ddd9aed](https://github.com/eemeli/make-plural/commit/ddd9aed85979c3083bac2586caad848a182015a5))
