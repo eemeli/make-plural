@@ -28,69 +28,17 @@
     "pluralCategories.*",
     "ranges.*"
   ],
-  "type": "commonjs",
+  "type": "module",
   "sideEffects": false,
-  "main": "./plurals.js",
-  "module": "./plurals.mjs",
   "exports": {
-    ".": [
-      {
-        "import": "./plurals.mjs",
-        "require": "./plurals.js"
-      },
-      "./plurals.js"
-    ],
-    "./cardinals": [
-      {
-        "import": "./cardinals.mjs",
-        "require": "./cardinals.js"
-      },
-      "./cardinals.js"
-    ],
-    "./examples": [
-      {
-        "import": "./examples.mjs",
-        "require": "./examples.js"
-      },
-      "./examples.js"
-    ],
+    ".": "./plurals.js",
+    "./cardinals": "./cardinals.js",
+    "./examples": "./examples.js",
     "./examples.json": "./examples.json",
-    "./ordinals": [
-      {
-        "import": "./ordinals.mjs",
-        "require": "./ordinals.js"
-      },
-      "./ordinals.js"
-    ],
-    "./pluralCategories": [
-      {
-        "import": "./pluralCategories.mjs",
-        "require": "./pluralCategories.js"
-      },
-      "./pluralCategories.js"
-    ],
-    "./plurals": [
-      {
-        "import": "./plurals.mjs",
-        "require": "./plurals.js"
-      },
-      "./plurals.js"
-    ],
-    "./ranges": [
-      {
-        "import": "./ranges.mjs",
-        "require": "./ranges.js"
-      },
-      "./ranges.js"
-    ],
+    "./ordinals": "./ordinals.js",
+    "./pluralCategories": "./pluralCategories.js",
+    "./plurals": "./plurals.js",
+    "./ranges": "./ranges.js",
     "./package.json": "./package.json"
-  },
-  "browser": {
-    "./cardinals.js": "./cardinals.mjs",
-    "./examples.js": "./examples.mjs",
-    "./ordinals.js": "./ordinals.mjs",
-    "./pluralCategories.js": "./pluralCategories.mjs",
-    "./plurals.js": "./plurals.mjs",
-    "./ranges.js": "./ranges.mjs"
   }
 }

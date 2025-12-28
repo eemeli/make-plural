@@ -27,8 +27,7 @@ async function plurals(cb) {
   })) {
     for (const [ext, extOpt] of Object.entries({
       'd.ts': ['--dts'],
-      js: ['--umd'],
-      mjs: []
+      js: []
     })) {
       const { stdout } = await execFile(makePluralCmd, [...tgtOpt, ...extOpt])
       await writeFile(resolve(pluralDest, `${tgt}.${ext}`), stdout)
