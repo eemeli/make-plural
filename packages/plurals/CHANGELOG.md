@@ -3,23 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [7.3.0](https://github.com/eemeli/make-plural/compare/make-plural@7.2.0...make-plural@7.3.0) (2023-05-03)
+## [7.5.0](https://github.com/eemeli/make-plural/compare/make-plural@7.4.0...make-plural@7.5.0) (2025-12-28)
 
-### Features
+* Update to cldr-core v48 ([ddd9aed](https://github.com/eemeli/make-plural/commit/ddd9aed85979c3083bac2586caad848a182015a5))
+
+## [7.4.0](https://github.com/eemeli/make-plural/compare/make-plural@7.3.0...make-plural@7.4.0) (2024-04-26)
+
+* Update to cldr-core v45 ([e541652](https://github.com/eemeli/make-plural/commit/e5416522c4ac8e0bfbe0a9f332ec046d98d9a408))
+
+## [7.3.0](https://github.com/eemeli/make-plural/compare/make-plural@7.2.0...make-plural@7.3.0) (2023-05-03)
 
 * Add 'make-plural/examples.json' ([#30](https://github.com/eemeli/make-plural/issues/30))
 
 ## [7.2.0](https://github.com/eemeli/make-plural/compare/make-plural@7.1.0...make-plural@7.2.0) (2022-11-16)
 
-### Features
-
-* Update to cldr-core@42 ([d7f8a07](https://github.com/eemeli/make-plural/commit/d7f8a07dca337b961faf2652736cbf106dc1cfd3))
+* Update to cldr-core v42 ([d7f8a07](https://github.com/eemeli/make-plural/commit/d7f8a07dca337b961faf2652736cbf106dc1cfd3))
 
 ## [7.1.0](https://github.com/eemeli/make-plural/compare/make-plural@7.0.0...make-plural@7.1.0) (2022-02-06)
 
-### Features
-
-* Update to cldr-core@40 ([604a752](https://github.com/eemeli/make-plural/commit/604a7524f92e86391a1ac01fab2fc8ab577ca2aa))
+* Update to cldr-core v40 ([604a752](https://github.com/eemeli/make-plural/commit/604a7524f92e86391a1ac01fab2fc8ab577ca2aa))
 
 ## [7.0.0](https://github.com/eemeli/make-plural/compare/6.2.2...7.0.0) (2021-08-27)
 
