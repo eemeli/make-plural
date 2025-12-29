@@ -1,6 +1,6 @@
 {
   "name": "make-plural-cli",
-  "version": "7.3.0",
+  "version": "7.4.0",
   "description": "CLI for translating Unicode CLDR pluralization rules to executable JavaScript",
   "keywords": [
     "unicode",
@@ -14,7 +14,7 @@
   "homepage": "https://github.com/eemeli/make-plural#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eemeli/make-plural.git",
+    "url": "git+https://github.com/eemeli/make-plural.git",
     "directory": "packages/cli"
   },
   "bugs": {
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "cldr-core": "^48.0.0",
-    "make-plural-compiler": "file:../compiler",
+    "make-plural-compiler": "^6.1.0",
     "safe-identifier": "^0.4.2",
     "yargs": "^17.1.1"
   },

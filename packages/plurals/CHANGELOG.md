@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.0](https://github.com/eemeli/make-plural/compare/make-plural@8.0.0...make-plural@8.1.0) (2025-12-29)
+
+* Support compact notation ([#35](https://github.com/eemeli/make-plural/issues/35))
+
 ## [8.0.0](https://github.com/eemeli/make-plural/compare/make-plural@7.5.0...make-plural@8.0.0) (2025-12-28)
 
 ### ⚠ Breaking Changes

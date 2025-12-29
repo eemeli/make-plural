@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.0](https://github.com/eemeli/make-plural/compare/make-plural-compiler@6.0.0...make-plural-compiler@6.1.0) (2025-12-29)
+
+* Support compact notation ([#35](https://github.com/eemeli/make-plural/issues/35))
+
 ## [6.0.0](https://github.com/eemeli/make-plural/compare/5.1.0...6.0.0) (2021-08-27)
 
 ### ⚠ Breaking Changes

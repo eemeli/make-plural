@@ -1,6 +1,6 @@
 {
   "name": "make-plural-compiler",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "Translates Unicode CLDR pluralization rules to executable JavaScript",
   "keywords": [
     "unicode",
@@ -14,7 +14,7 @@
   "homepage": "https://github.com/eemeli/make-plural#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eemeli/make-plural.git",
+    "url": "git+https://github.com/eemeli/make-plural.git",
     "directory": "packages/compiler"
   },
   "bugs": {
