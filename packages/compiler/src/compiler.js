@@ -112,10 +112,15 @@ export class Compiler {
       body = `  return ${this.buildBody(pt, true)};`
     }
 
-    const args = this.parser.args(ordinals && cardinals)
+    const args = this.functionArgs().join(', ')
     const vars = this.parser.vars()
     if (vars) body = `  ${vars};\n${body}`
 
     return new Function(args, body) // eslint-disable-line no-new-func
+  }
+
+  functionArgs() {
+    const { cardinals, ordinals } = this.types
+    return this.parser.args(ordinals && cardinals)
   }
 }

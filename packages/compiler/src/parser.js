@@ -55,7 +55,7 @@ export class Parser {
     let args = ['n']
     if (ord) args.push('ord')
     if (this.c) args.push('c')
-    return args.join(', ')
+    return args
   }
 
   vars() {

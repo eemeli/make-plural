@@ -20,9 +20,7 @@ function stringifyCategories({ cardinals, ordinals }, categories) {
 
 export default function printPluralTypes(args) {
   const MakePlural = getCompiler(args)
-  const { cardinals, locale, ordinals } = args
-  let fnArgs = 'n: number | string'
-  if (cardinals && ordinals) fnArgs += ', ord?: boolean'
+  const { cardinals, locale } = args
   const locales =
     locale.length === 0
       ? Object.keys(MakePlural.rules[cardinals ? 'cardinal' : 'ordinal'])
@@ -35,8 +33,22 @@ export default function printPluralTypes(args) {
     mpc.compile()
     mpc.test()
     const id = identifier(lc)
+    const fnArgs = mpc.functionArgs().map(arg => {
+      switch (arg) {
+        case 'n':
+          return 'n: number | string'
+        case 'ord':
+          return 'ord?: boolean'
+        case 'c':
+          return 'c?: number'
+        default:
+          throw new Error(
+            `Unsupported selector argument for locale ${lc}: ${arg}`
+          )
+      }
+    })
     const cat = stringifyCategories(args, mpc.categories)
-    str += `export const ${id}: (${fnArgs}) => ${cat};\n`
+    str += `export const ${id}: (${fnArgs.join(', ')}) => ${cat};\n`
   }
   return str
 }
