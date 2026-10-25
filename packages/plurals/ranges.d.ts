@@ -80,6 +80,7 @@ export const sv: (start: PluralCategory, end: PluralCategory) => "other";
 export const sw: (start: PluralCategory, end: PluralCategory) => "one" | "other";
 export const ta: (start: PluralCategory, end: PluralCategory) => "one" | "other";
 export const te: (start: PluralCategory, end: PluralCategory) => "one" | "other";
+export const tg: (start: PluralCategory, end: PluralCategory) => "one" | "other";
 export const th: (start: PluralCategory, end: PluralCategory) => "other";
 export const tk: (start: PluralCategory, end: PluralCategory) => "one" | "other";
 export const tr: (start: PluralCategory, end: PluralCategory) => "one" | "other";

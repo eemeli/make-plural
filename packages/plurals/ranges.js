@@ -93,6 +93,7 @@ export const sv = a;
 export const sw = c;
 export const ta = c;
 export const te = c;
+export const tg = b;
 export const th = a;
 export const tk = c;
 export const tr = c;

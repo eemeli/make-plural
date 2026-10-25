@@ -1,7 +1,10 @@
 const a = (n) => 'other';
 const b = (n) => n == 1 ? 'one' : 'other';
 
-export const af = a;
+export const af = (n) => {
+  const s = String(n).split('.'), i = s[0], i100 = i.slice(-2);
+  return (i100 >= 2 && i100 <= 19) ? 'few' : 'other';
+};
 export const am = a;
 export const an = a;
 export const ar = a;
@@ -23,7 +26,13 @@ export const be = (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   return (n10 == 2 || n10 == 3) && n100 != 12 && n100 != 13 ? 'few' : 'other';
 };
-export const bg = a;
+export const bg = (n) => {
+  const s = String(n).split('.'), i = s[0], i10 = i.slice(-1), i100 = i.slice(-2);
+  return i10 == 1 && i100 != 11 ? 'one'
+    : i10 == 2 && i100 != 12 ? 'two'
+    : (i10 == 3 || i10 == 4) && i100 != 13 && i100 != 14 ? 'few'
+    : 'other';
+};
 export const blo = (n) => {
   const s = String(n).split('.'), i = s[0];
   return i == 0 ? 'zero'
@@ -61,7 +70,10 @@ export const en = (n) => {
     : n10 == 3 && n100 != 13 ? 'few'
     : 'other';
 };
-export const es = a;
+export const es = (n) => {
+  const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
+  return (n10 == 1 || n10 == 3) && n100 != 11 ? 'one' : 'other';
+};
 export const et = a;
 export const eu = a;
 export const fa = a;
@@ -195,6 +207,7 @@ export const sv = (n) => {
 export const sw = a;
 export const ta = a;
 export const te = a;
+export const tg = a;
 export const th = a;
 export const tk = (n) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);

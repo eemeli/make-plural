@@ -138,7 +138,7 @@ export const fil = (n) => {
 export const fo = a;
 export const fr = (n, c) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
-  return n >= 0 && n < 2 ? 'one'
+  return (i == 0 || i == 1) ? 'one'
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
@@ -159,7 +159,7 @@ export const gd = (n) => {
     : ((t0 && n >= 3 && n <= 10) || (t0 && n >= 13 && n <= 19)) ? 'few'
     : 'other';
 };
-export const gl = d;
+export const gl = f;
 export const gsw = a;
 export const gu = c;
 export const guw = b;
@@ -427,6 +427,7 @@ export const syr = a;
 export const ta = a;
 export const te = a;
 export const teo = a;
+export const tg = c;
 export const th = e;
 export const ti = b;
 export const tig = a;
@@ -457,7 +458,7 @@ export const ur = d;
 export const uz = a;
 export const ve = a;
 export const vec = f;
-export const vi = e;
+export const vi = c;
 export const vo = a;
 export const vun = a;
 export const wa = b;

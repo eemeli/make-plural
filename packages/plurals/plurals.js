@@ -1,14 +1,14 @@
 const a = (n, ord) => {
   if (ord) return 'other';
-  return n == 1 ? 'one' : 'other';
+  return (n == 0 || n == 1) ? 'one' : 'other';
 };
 const b = (n, ord) => {
   if (ord) return 'other';
-  return (n == 0 || n == 1) ? 'one' : 'other';
+  return n >= 0 && n <= 1 ? 'one' : 'other';
 };
 const c = (n, ord) => {
   if (ord) return 'other';
-  return n >= 0 && n <= 1 ? 'one' : 'other';
+  return n == 1 ? 'one' : 'other';
 };
 const d = (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1];
@@ -23,10 +23,14 @@ const f = (n, ord) => {
     : 'other';
 };
 
-export const af = a;
-export const ak = b;
-export const am = c;
-export const an = a;
+export const af = (n, ord) => {
+  const s = String(n).split('.'), i = s[0], i100 = i.slice(-2);
+  if (ord) return (i100 >= 2 && i100 <= 19) ? 'few' : 'other';
+  return n == 1 ? 'one' : 'other';
+};
+export const ak = a;
+export const am = b;
+export const an = c;
 export const ar = (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return 'other';
@@ -55,7 +59,7 @@ export const as = (n, ord) => {
     : 'other';
   return n >= 0 && n <= 1 ? 'one' : 'other';
 };
-export const asa = a;
+export const asa = c;
 export const ast = d;
 export const az = (n, ord) => {
   const s = String(n).split('.'), i = s[0], i10 = i.slice(-1), i100 = i.slice(-2), i1000 = i.slice(-3);
@@ -74,10 +78,17 @@ export const be = (n, ord) => {
     : t0 && n10 == 0 || (n10 >= 5 && n10 <= 9) || (n100 >= 11 && n100 <= 14) ? 'many'
     : 'other';
 };
-export const bem = a;
-export const bez = a;
-export const bg = a;
-export const bho = b;
+export const bem = c;
+export const bez = c;
+export const bg = (n, ord) => {
+  const s = String(n).split('.'), i = s[0], i10 = i.slice(-1), i100 = i.slice(-2);
+  if (ord) return i10 == 1 && i100 != 11 ? 'one'
+    : i10 == 2 && i100 != 12 ? 'two'
+    : (i10 == 3 || i10 == 4) && i100 != 13 && i100 != 14 ? 'few'
+    : 'other';
+  return n == 1 ? 'one' : 'other';
+};
+export const bho = a;
 export const blo = (n, ord) => {
   const s = String(n).split('.'), i = s[0];
   if (ord) return i == 0 ? 'zero'
@@ -107,7 +118,7 @@ export const br = (n, ord) => {
     : n != 0 && t0 && n1000000 == 0 ? 'many'
     : 'other';
 };
-export const brx = a;
+export const brx = c;
 export const bs = (n, ord) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
   if (ord) return 'other';
@@ -125,15 +136,15 @@ export const ca = (n, ord, c) => {
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
-export const ce = a;
+export const ce = c;
 export const ceb = (n, ord) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
   if (ord) return 'other';
   return v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9 || !v0 && f10 != 4 && f10 != 6 && f10 != 9 ? 'one' : 'other';
 };
-export const cgg = a;
-export const chr = a;
-export const ckb = a;
+export const cgg = c;
+export const chr = c;
+export const ckb = c;
 export const cs = (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1];
   if (ord) return 'other';
@@ -142,7 +153,7 @@ export const cs = (n, ord) => {
     : !v0 ? 'many'
     : 'other';
 };
-export const csw = b;
+export const csw = a;
 export const cv = (n, ord) => {
   if (ord) return 'other';
   return n == 0 ? 'zero'
@@ -169,7 +180,7 @@ export const da = (n, ord) => {
   return n == 1 || !t0 && (i == 0 || i == 1) ? 'one' : 'other';
 };
 export const de = d;
-export const doi = c;
+export const doi = b;
 export const dsb = (n, ord) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
   if (ord) return 'other';
@@ -178,10 +189,10 @@ export const dsb = (n, ord) => {
     : v0 && (i100 == 3 || i100 == 4) || (f100 == 3 || f100 == 4) ? 'few'
     : 'other';
 };
-export const dv = a;
+export const dv = c;
 export const dz = e;
-export const ee = a;
-export const el = a;
+export const ee = c;
+export const el = c;
 export const en = (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   if (ord) return n10 == 1 && n100 != 11 ? 'one'
@@ -190,17 +201,17 @@ export const en = (n, ord) => {
     : 'other';
   return n == 1 && v0 ? 'one' : 'other';
 };
-export const eo = a;
+export const eo = c;
 export const es = (n, ord, c) => {
-  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
-  if (ord) return 'other';
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2), i1000000 = i.slice(-6);
+  if (ord) return (n10 == 1 || n10 == 3) && n100 != 11 ? 'one' : 'other';
   return n == 1 ? 'one'
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
 export const et = d;
-export const eu = a;
-export const fa = c;
+export const eu = c;
+export const fa = b;
 export const ff = (n, ord) => {
   if (ord) return 'other';
   return n >= 0 && n < 2 ? 'one' : 'other';
@@ -211,15 +222,15 @@ export const fil = (n, ord) => {
   if (ord) return n == 1 ? 'one' : 'other';
   return v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9 || !v0 && f10 != 4 && f10 != 6 && f10 != 9 ? 'one' : 'other';
 };
-export const fo = a;
+export const fo = c;
 export const fr = (n, ord, c) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   if (ord) return n == 1 ? 'one' : 'other';
-  return n >= 0 && n < 2 ? 'one'
+  return (i == 0 || i == 1) ? 'one'
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
-export const fur = a;
+export const fur = c;
 export const fy = d;
 export const ga = (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
@@ -241,8 +252,14 @@ export const gd = (n, ord) => {
     : ((t0 && n >= 3 && n <= 10) || (t0 && n >= 13 && n <= 19)) ? 'few'
     : 'other';
 };
-export const gl = d;
-export const gsw = a;
+export const gl = (n, ord, c) => {
+  const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
+  if (ord) return 'other';
+  return n == 1 && v0 ? 'one'
+    : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
+    : 'other';
+};
+export const gsw = c;
 export const gu = (n, ord) => {
   if (ord) return n == 1 ? 'one'
     : (n == 2 || n == 3) ? 'two'
@@ -251,7 +268,7 @@ export const gu = (n, ord) => {
     : 'other';
   return n >= 0 && n <= 1 ? 'one' : 'other';
 };
-export const guw = b;
+export const guw = a;
 export const gv = (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -261,8 +278,8 @@ export const gv = (n, ord) => {
     : !v0 ? 'many'
     : 'other';
 };
-export const ha = a;
-export const haw = a;
+export const ha = c;
+export const haw = c;
 export const he = (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1];
   if (ord) return 'other';
@@ -323,8 +340,8 @@ export const it = (n, ord, c) => {
 export const iu = f;
 export const ja = e;
 export const jbo = e;
-export const jgo = a;
-export const jmc = a;
+export const jgo = c;
+export const jmc = c;
 export const jv = e;
 export const jw = e;
 export const ka = (n, ord) => {
@@ -338,8 +355,8 @@ export const kab = (n, ord) => {
   if (ord) return 'other';
   return n >= 0 && n < 2 ? 'one' : 'other';
 };
-export const kaj = a;
-export const kcg = a;
+export const kaj = c;
+export const kcg = c;
 export const kde = e;
 export const kea = e;
 export const kk = (n, ord) => {
@@ -347,10 +364,10 @@ export const kk = (n, ord) => {
   if (ord) return n10 == 6 || n10 == 9 || t0 && n10 == 0 && n != 0 ? 'many' : 'other';
   return n == 1 ? 'one' : 'other';
 };
-export const kkj = a;
-export const kl = a;
+export const kkj = c;
+export const kl = c;
 export const km = e;
-export const kn = c;
+export const kn = b;
 export const ko = e;
 export const kok = (n, ord) => {
   if (ord) return n == 1 ? 'one'
@@ -366,15 +383,15 @@ export const kok_Latn = (n, ord) => {
     : 'other';
   return n >= 0 && n <= 1 ? 'one' : 'other';
 };
-export const ks = a;
-export const ksb = a;
+export const ks = c;
+export const ksb = c;
 export const ksh = (n, ord) => {
   if (ord) return 'other';
   return n == 0 ? 'zero'
     : n == 1 ? 'one'
     : 'other';
 };
-export const ku = a;
+export const ku = c;
 export const kw = (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2), n1000 = t0 && s[0].slice(-3), n100000 = t0 && s[0].slice(-5), n1000000 = t0 && s[0].slice(-6);
   if (ord) return (t0 && n >= 1 && n <= 4) || ((n100 >= 1 && n100 <= 4) || (n100 >= 21 && n100 <= 24) || (n100 >= 41 && n100 <= 44) || (n100 >= 61 && n100 <= 64) || (n100 >= 81 && n100 <= 84)) ? 'one'
@@ -387,7 +404,7 @@ export const kw = (n, ord) => {
     : n != 1 && (n100 == 1 || n100 == 21 || n100 == 41 || n100 == 61 || n100 == 81) ? 'many'
     : 'other';
 };
-export const ky = a;
+export const ky = c;
 export const lag = (n, ord) => {
   const s = String(n).split('.'), i = s[0];
   if (ord) return 'other';
@@ -395,8 +412,8 @@ export const lag = (n, ord) => {
     : (i == 0 || i == 1) && n != 0 ? 'one'
     : 'other';
 };
-export const lb = a;
-export const lg = a;
+export const lb = c;
+export const lg = c;
 export const lij = (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n;
   if (ord) return (n == 11 || n == 8 || (t0 && n >= 80 && n <= 89) || (t0 && n >= 800 && n <= 899)) ? 'many' : 'other';
@@ -410,7 +427,7 @@ export const lld = (n, ord, c) => {
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
-export const ln = b;
+export const ln = a;
 export const lo = (n, ord) => {
   if (ord) return n == 1 ? 'one' : 'other';
   return 'other';
@@ -430,9 +447,9 @@ export const lv = (n, ord) => {
     : n10 == 1 && n100 != 11 || v == 2 && f10 == 1 && f100 != 11 || v != 2 && f10 == 1 ? 'one'
     : 'other';
 };
-export const mas = a;
-export const mg = b;
-export const mgo = a;
+export const mas = c;
+export const mg = a;
+export const mgo = c;
 export const mk = (n, ord) => {
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
   if (ord) return i10 == 1 && i100 != 11 ? 'one'
@@ -441,8 +458,8 @@ export const mk = (n, ord) => {
     : 'other';
   return v0 && i10 == 1 && i100 != 11 || f10 == 1 && f100 != 11 ? 'one' : 'other';
 };
-export const ml = a;
-export const mn = a;
+export const ml = c;
+export const mn = c;
 export const mo = (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return n == 1 ? 'one' : 'other';
@@ -471,25 +488,25 @@ export const mt = (n, ord) => {
     : 'other';
 };
 export const my = e;
-export const nah = a;
+export const nah = c;
 export const naq = f;
-export const nb = a;
-export const nd = a;
+export const nb = c;
+export const nd = c;
 export const ne = (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return (t0 && n >= 1 && n <= 4) ? 'one' : 'other';
   return n == 1 ? 'one' : 'other';
 };
 export const nl = d;
-export const nn = a;
-export const nnh = a;
-export const no = a;
+export const nn = c;
+export const nnh = c;
+export const no = c;
 export const nqo = e;
-export const nr = a;
-export const nso = b;
-export const ny = a;
-export const nyn = a;
-export const om = a;
+export const nr = c;
+export const nso = a;
+export const ny = c;
+export const nyn = c;
+export const om = c;
 export const or = (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return (n == 1 || n == 5 || (t0 && n >= 7 && n <= 9)) ? 'one'
@@ -499,11 +516,11 @@ export const or = (n, ord) => {
     : 'other';
   return n == 1 ? 'one' : 'other';
 };
-export const os = a;
+export const os = c;
 export const osa = e;
-export const pa = b;
-export const pap = a;
-export const pcm = c;
+export const pa = a;
+export const pap = c;
+export const pcm = b;
 export const pl = (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -519,7 +536,7 @@ export const prg = (n, ord) => {
     : n10 == 1 && n100 != 11 || v == 2 && f10 == 1 && f100 != 11 || v != 2 && f10 == 1 ? 'one'
     : 'other';
 };
-export const ps = a;
+export const ps = c;
 export const pt = (n, ord, c) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   if (ord) return 'other';
@@ -534,7 +551,7 @@ export const pt_PT = (n, ord, c) => {
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
-export const rm = a;
+export const rm = c;
 export const ro = (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   if (ord) return n == 1 ? 'one' : 'other';
@@ -542,7 +559,7 @@ export const ro = (n, ord) => {
     : !v0 || n == 0 || n != 1 && (n100 >= 1 && n100 <= 19) ? 'few'
     : 'other';
 };
-export const rof = a;
+export const rof = c;
 export const ru = (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -551,9 +568,9 @@ export const ru = (n, ord) => {
     : v0 && i10 == 0 || v0 && (i10 >= 5 && i10 <= 9) || v0 && (i100 >= 11 && i100 <= 14) ? 'many'
     : 'other';
 };
-export const rwk = a;
+export const rwk = c;
 export const sah = e;
-export const saq = a;
+export const saq = c;
 export const sat = f;
 export const sc = (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1];
@@ -567,10 +584,10 @@ export const scn = (n, ord, c) => {
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
-export const sd = a;
-export const sdh = a;
+export const sd = c;
+export const sdh = c;
 export const se = f;
-export const seh = a;
+export const seh = c;
 export const ses = e;
 export const sg = e;
 export const sgs = (n, ord) => {
@@ -622,8 +639,8 @@ export const smi = f;
 export const smj = f;
 export const smn = f;
 export const sms = f;
-export const sn = a;
-export const so = a;
+export const sn = c;
+export const so = c;
 export const sq = (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   if (ord) return n == 1 ? 'one'
@@ -638,9 +655,9 @@ export const sr = (n, ord) => {
     : v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) || (f10 >= 2 && f10 <= 4) && (f100 < 12 || f100 > 14) ? 'few'
     : 'other';
 };
-export const ss = a;
-export const ssy = a;
-export const st = a;
+export const ss = c;
+export const ssy = c;
+export const st = c;
 export const su = e;
 export const sv = (n, ord) => {
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
@@ -648,13 +665,14 @@ export const sv = (n, ord) => {
   return n == 1 && v0 ? 'one' : 'other';
 };
 export const sw = d;
-export const syr = a;
-export const ta = a;
-export const te = a;
-export const teo = a;
+export const syr = c;
+export const ta = c;
+export const te = c;
+export const teo = c;
+export const tg = b;
 export const th = e;
-export const ti = b;
-export const tig = a;
+export const ti = a;
+export const tig = c;
 export const tk = (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1);
   if (ord) return (n10 == 6 || n10 == 9) || n == 10 ? 'few' : 'other';
@@ -665,17 +683,17 @@ export const tl = (n, ord) => {
   if (ord) return n == 1 ? 'one' : 'other';
   return v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9 || !v0 && f10 != 4 && f10 != 6 && f10 != 9 ? 'one' : 'other';
 };
-export const tn = a;
+export const tn = c;
 export const to = e;
 export const tpi = e;
-export const tr = a;
-export const ts = a;
+export const tr = c;
+export const ts = c;
 export const tzm = (n, ord) => {
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
   if (ord) return 'other';
   return (n == 0 || n == 1) || (t0 && n >= 11 && n <= 99) ? 'one' : 'other';
 };
-export const ug = a;
+export const ug = c;
 export const uk = (n, ord) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2), i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return n10 == 3 && n100 != 13 ? 'few' : 'other';
@@ -686,8 +704,8 @@ export const uk = (n, ord) => {
 };
 export const und = e;
 export const ur = d;
-export const uz = a;
-export const ve = a;
+export const uz = c;
+export const ve = c;
 export const vec = (n, ord, c) => {
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   if (ord) return (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';
@@ -697,17 +715,17 @@ export const vec = (n, ord, c) => {
 };
 export const vi = (n, ord) => {
   if (ord) return n == 1 ? 'one' : 'other';
-  return 'other';
+  return n >= 0 && n <= 1 ? 'one' : 'other';
 };
-export const vo = a;
-export const vun = a;
-export const wa = b;
-export const wae = a;
+export const vo = c;
+export const vun = c;
+export const wa = a;
+export const wae = c;
 export const wo = e;
-export const xh = a;
-export const xog = a;
+export const xh = c;
+export const xog = c;
 export const yi = d;
 export const yo = e;
 export const yue = e;
 export const zh = e;
-export const zu = c;
+export const zu = b;
