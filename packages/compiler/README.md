@@ -109,6 +109,7 @@ sk('0')
 
 console.log(String(sk))
 // (n) => {
+//   if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
 //   const s = String(n).split('.'), i = s[0], v0 = !s[1];
 //   return n == 1 && v0 ? 'one'
 //     : (i >= 2 && i <= 4) && v0 ? 'few'
