@@ -1,26 +1,41 @@
-const a = (n) => n == 1 ? 'one' : 'other';
-const b = (n) => (n == 0 || n == 1) ? 'one' : 'other';
-const c = (n) => n >= 0 && n <= 1 ? 'one' : 'other';
+const a = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n == 1 ? 'one' : 'other';
+};
+const b = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return (n == 0 || n == 1) ? 'one' : 'other';
+};
+const c = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n >= 0 && n <= 1 ? 'one' : 'other';
+};
 const d = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), v0 = !s[1];
   return n == 1 && v0 ? 'one' : 'other';
 };
 const e = (n) => 'other';
 const f = (n, c) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   return n == 1 && v0 ? 'one'
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
     : 'other';
 };
-const g = (n) => n == 1 ? 'one'
+const g = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n == 1 ? 'one'
     : n == 2 ? 'two'
     : 'other';
+};
 
 export const af = a;
 export const ak = b;
 export const am = c;
 export const an = a;
 export const ar = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return n == 0 ? 'zero'
     : n == 1 ? 'one'
@@ -30,6 +45,7 @@ export const ar = (n) => {
     : 'other';
 };
 export const ars = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return n == 0 ? 'zero'
     : n == 1 ? 'one'
@@ -44,6 +60,7 @@ export const ast = d;
 export const az = a;
 export const bal = a;
 export const be = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   return n10 == 1 && n100 != 11 ? 'one'
     : (n10 >= 2 && n10 <= 4) && (n100 < 12 || n100 > 14) ? 'few'
@@ -54,13 +71,17 @@ export const bem = a;
 export const bez = a;
 export const bg = a;
 export const bho = b;
-export const blo = (n) => n == 0 ? 'zero'
+export const blo = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n == 0 ? 'zero'
     : n == 1 ? 'one'
     : 'other';
+};
 export const bm = e;
 export const bn = c;
 export const bo = e;
 export const br = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2), n1000000 = t0 && s[0].slice(-6);
   return n10 == 1 && n100 != 11 && n100 != 71 && n100 != 91 ? 'one'
     : n10 == 2 && n100 != 12 && n100 != 72 && n100 != 92 ? 'two'
@@ -70,6 +91,7 @@ export const br = (n) => {
 };
 export const brx = a;
 export const bs = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
   return v0 && i10 == 1 && i100 != 11 || f10 == 1 && f100 != 11 ? 'one'
     : v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) || (f10 >= 2 && f10 <= 4) && (f100 < 12 || f100 > 14) ? 'few'
@@ -78,6 +100,7 @@ export const bs = (n) => {
 export const ca = f;
 export const ce = a;
 export const ceb = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
   return v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9 || !v0 && f10 != 4 && f10 != 6 && f10 != 9 ? 'one' : 'other';
 };
@@ -85,6 +108,7 @@ export const cgg = a;
 export const chr = a;
 export const ckb = a;
 export const cs = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1];
   return n == 1 && v0 ? 'one'
     : (i >= 2 && i <= 4) && v0 ? 'few'
@@ -92,22 +116,30 @@ export const cs = (n) => {
     : 'other';
 };
 export const csw = b;
-export const cv = (n) => n == 0 ? 'zero'
+export const cv = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n == 0 ? 'zero'
     : n == 1 ? 'one'
     : 'other';
-export const cy = (n) => n == 0 ? 'zero'
+};
+export const cy = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n == 0 ? 'zero'
     : n == 1 ? 'one'
     : n == 2 ? 'two'
     : n == 3 ? 'few'
     : n == 6 ? 'many'
     : 'other';
+};
 export const da = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], t0 = Number(s[0]) == n;
   return n == 1 || !t0 && (i == 0 || i == 1) ? 'one' : 'other';
 };
 export const de = d;
 export const doi = c;
 export const dsb = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
   return v0 && i100 == 1 || f100 == 1 ? 'one'
     : v0 && i100 == 2 || f100 == 2 ? 'two'
@@ -121,6 +153,7 @@ export const el = a;
 export const en = d;
 export const eo = a;
 export const es = (n, c) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   return n == 1 ? 'one'
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
@@ -129,14 +162,19 @@ export const es = (n, c) => {
 export const et = d;
 export const eu = a;
 export const fa = c;
-export const ff = (n) => n >= 0 && n < 2 ? 'one' : 'other';
+export const ff = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n >= 0 && n < 2 ? 'one' : 'other';
+};
 export const fi = d;
 export const fil = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
   return v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9 || !v0 && f10 != 4 && f10 != 6 && f10 != 9 ? 'one' : 'other';
 };
 export const fo = a;
 export const fr = (n, c) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   return (i == 0 || i == 1) ? 'one'
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
@@ -145,6 +183,7 @@ export const fr = (n, c) => {
 export const fur = a;
 export const fy = d;
 export const ga = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
   return n == 1 ? 'one'
     : n == 2 ? 'two'
@@ -153,6 +192,7 @@ export const ga = (n) => {
     : 'other';
 };
 export const gd = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
   return (n == 1 || n == 11) ? 'one'
     : (n == 2 || n == 12) ? 'two'
@@ -164,6 +204,7 @@ export const gsw = a;
 export const gu = c;
 export const guw = b;
 export const gv = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   return v0 && i10 == 1 ? 'one'
     : v0 && i10 == 2 ? 'two'
@@ -174,6 +215,7 @@ export const gv = (n) => {
 export const ha = a;
 export const haw = a;
 export const he = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1];
   return i == 1 && v0 || i == 0 && !v0 ? 'one'
     : i == 2 && v0 ? 'two'
@@ -182,12 +224,14 @@ export const he = (n) => {
 export const hi = c;
 export const hnj = e;
 export const hr = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
   return v0 && i10 == 1 && i100 != 11 || f10 == 1 && f100 != 11 ? 'one'
     : v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) || (f10 >= 2 && f10 <= 4) && (f100 < 12 || f100 > 14) ? 'few'
     : 'other';
 };
 export const hsb = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
   return v0 && i100 == 1 || f100 == 1 ? 'one'
     : v0 && i100 == 2 || f100 == 2 ? 'two'
@@ -195,7 +239,10 @@ export const hsb = (n) => {
     : 'other';
 };
 export const hu = a;
-export const hy = (n) => n >= 0 && n < 2 ? 'one' : 'other';
+export const hy = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n >= 0 && n < 2 ? 'one' : 'other';
+};
 export const ia = d;
 export const id = e;
 export const ie = d;
@@ -203,6 +250,7 @@ export const ig = e;
 export const ii = e;
 export const io = d;
 export const is = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], t = (s[1] || '').replace(/0+$/, ''), t0 = Number(s[0]) == n, i10 = i.slice(-1), i100 = i.slice(-2);
   return t0 && i10 == 1 && i100 != 11 || t % 10 == 1 && t % 100 != 11 ? 'one' : 'other';
 };
@@ -215,7 +263,10 @@ export const jmc = a;
 export const jv = e;
 export const jw = e;
 export const ka = a;
-export const kab = (n) => n >= 0 && n < 2 ? 'one' : 'other';
+export const kab = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n >= 0 && n < 2 ? 'one' : 'other';
+};
 export const kaj = a;
 export const kcg = a;
 export const kde = e;
@@ -230,11 +281,15 @@ export const kok = c;
 export const kok_Latn = c;
 export const ks = a;
 export const ksb = a;
-export const ksh = (n) => n == 0 ? 'zero'
+export const ksh = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
+  return n == 0 ? 'zero'
     : n == 1 ? 'one'
     : 'other';
+};
 export const ku = a;
 export const kw = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2), n1000 = t0 && s[0].slice(-3), n100000 = t0 && s[0].slice(-5), n1000000 = t0 && s[0].slice(-6);
   return n == 0 ? 'zero'
     : n == 1 ? 'one'
@@ -245,6 +300,7 @@ export const kw = (n) => {
 };
 export const ky = a;
 export const lag = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0];
   return n == 0 ? 'zero'
     : (i == 0 || i == 1) && n != 0 ? 'one'
@@ -258,6 +314,7 @@ export const lld = f;
 export const ln = b;
 export const lo = e;
 export const lt = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), f = s[1] || '', t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   return n10 == 1 && (n100 < 11 || n100 > 19) ? 'one'
     : (n10 >= 2 && n10 <= 9) && (n100 < 11 || n100 > 19) ? 'few'
@@ -265,6 +322,7 @@ export const lt = (n) => {
     : 'other';
 };
 export const lv = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), f = s[1] || '', v = f.length, t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2), f100 = f.slice(-2), f10 = f.slice(-1);
   return t0 && n10 == 0 || (n100 >= 11 && n100 <= 19) || v == 2 && (f100 >= 11 && f100 <= 19) ? 'zero'
     : n10 == 1 && n100 != 11 || v == 2 && f10 == 1 && f100 != 11 || v != 2 && f10 == 1 ? 'one'
@@ -274,12 +332,14 @@ export const mas = a;
 export const mg = b;
 export const mgo = a;
 export const mk = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
   return v0 && i10 == 1 && i100 != 11 || f10 == 1 && f100 != 11 ? 'one' : 'other';
 };
 export const ml = a;
 export const mn = a;
 export const mo = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return n == 1 && v0 ? 'one'
     : !v0 || n == 0 || n != 1 && (n100 >= 1 && n100 <= 19) ? 'few'
@@ -288,6 +348,7 @@ export const mo = (n) => {
 export const mr = a;
 export const ms = e;
 export const mt = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return n == 1 ? 'one'
     : n == 2 ? 'two'
@@ -318,6 +379,7 @@ export const pa = b;
 export const pap = a;
 export const pcm = c;
 export const pl = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   return n == 1 && v0 ? 'one'
     : v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) ? 'few'
@@ -325,6 +387,7 @@ export const pl = (n) => {
     : 'other';
 };
 export const prg = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), f = s[1] || '', v = f.length, t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2), f100 = f.slice(-2), f10 = f.slice(-1);
   return t0 && n10 == 0 || (n100 >= 11 && n100 <= 19) || v == 2 && (f100 >= 11 && f100 <= 19) ? 'zero'
     : n10 == 1 && n100 != 11 || v == 2 && f10 == 1 && f100 != 11 || v != 2 && f10 == 1 ? 'one'
@@ -332,6 +395,7 @@ export const prg = (n) => {
 };
 export const ps = a;
 export const pt = (n, c) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   return (i == 0 || i == 1) ? 'one'
     : !c && i != 0 && i1000000 == 0 && v0 || c > 5 ? 'many'
@@ -340,6 +404,7 @@ export const pt = (n, c) => {
 export const pt_PT = f;
 export const rm = a;
 export const ro = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n100 = t0 && s[0].slice(-2);
   return n == 1 && v0 ? 'one'
     : !v0 || n == 0 || n != 1 && (n100 >= 1 && n100 <= 19) ? 'few'
@@ -347,6 +412,7 @@ export const ro = (n) => {
 };
 export const rof = a;
 export const ru = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   return v0 && i10 == 1 && i100 != 11 ? 'one'
     : v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) ? 'few'
@@ -366,6 +432,7 @@ export const seh = a;
 export const ses = e;
 export const sg = e;
 export const sgs = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), f = s[1] || '', t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
   return n10 == 1 && n100 != 11 ? 'one'
     : n == 2 ? 'two'
@@ -374,22 +441,26 @@ export const sgs = (n) => {
     : 'other';
 };
 export const sh = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
   return v0 && i10 == 1 && i100 != 11 || f10 == 1 && f100 != 11 ? 'one'
     : v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) || (f10 >= 2 && f10 <= 4) && (f100 < 12 || f100 > 14) ? 'few'
     : 'other';
 };
 export const shi = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
   return n >= 0 && n <= 1 ? 'one'
     : (t0 && n >= 2 && n <= 10) ? 'few'
     : 'other';
 };
 export const si = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '';
   return (n == 0 || n == 1) || i == 0 && f == 1 ? 'one' : 'other';
 };
 export const sk = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1];
   return n == 1 && v0 ? 'one'
     : (i >= 2 && i <= 4) && v0 ? 'few'
@@ -397,6 +468,7 @@ export const sk = (n) => {
     : 'other';
 };
 export const sl = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i100 = i.slice(-2);
   return v0 && i100 == 1 ? 'one'
     : v0 && i100 == 2 ? 'two'
@@ -412,6 +484,7 @@ export const sn = a;
 export const so = a;
 export const sq = a;
 export const sr = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2), f10 = f.slice(-1), f100 = f.slice(-2);
   return v0 && i10 == 1 && i100 != 11 || f10 == 1 && f100 != 11 ? 'one'
     : v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) || (f10 >= 2 && f10 <= 4) && (f100 < 12 || f100 > 14) ? 'few'
@@ -433,6 +506,7 @@ export const ti = b;
 export const tig = a;
 export const tk = a;
 export const tl = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i10 = i.slice(-1), f10 = f.slice(-1);
   return v0 && (i == 1 || i == 2 || i == 3) || v0 && i10 != 4 && i10 != 6 && i10 != 9 || !v0 && f10 != 4 && f10 != 6 && f10 != 9 ? 'one' : 'other';
 };
@@ -442,11 +516,13 @@ export const tpi = e;
 export const tr = a;
 export const ts = a;
 export const tzm = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), t0 = Number(s[0]) == n;
   return (n == 0 || n == 1) || (t0 && n >= 11 && n <= 99) ? 'one' : 'other';
 };
 export const ug = a;
 export const uk = (n) => {
+  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
   const s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   return v0 && i10 == 1 && i100 != 11 ? 'one'
     : v0 && (i10 >= 2 && i10 <= 4) && (i100 < 12 || i100 > 14) ? 'few'

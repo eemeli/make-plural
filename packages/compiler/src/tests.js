@@ -28,9 +28,12 @@ function testCond(lc, fn, ordArg, n, type, expResult) {
 }
 
 export function testCat(lc, fn, ordArg, type, cat, values) {
-  for (const n of values) {
-    testCond(lc, fn, ordArg, n, type, cat)
-    if (!n.includes('c') && !/\.0+$/.test(n))
-      testCond(lc, fn, ordArg, Number(n), type, cat)
+  for (const v of values) {
+    // A negative number has the same category as its absolute value.
+    for (const n of [v, '-' + v]) {
+      testCond(lc, fn, ordArg, n, type, cat)
+      if (!n.includes('c') && !/\.0+$/.test(n))
+        testCond(lc, fn, ordArg, Number(n), type, cat)
+    }
   }
 }

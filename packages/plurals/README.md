@@ -61,12 +61,14 @@ provided that **named rather than wildcard imports** are used.
 import { en } from 'make-plural'
 
 en(1) // 'one'
+en(-1) // 'one'
 en('1.0') // 'other'
 en(2) // 'other'
 en(2, true) // 'two' (ordinal)
 
 String(en)
 // (n, ord) => {
+//   if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;
 //   const s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
 //   if (ord) return n10 == 1 && n100 != 11 ? 'one'
 //     : n10 == 2 && n100 != 12 ? 'two'

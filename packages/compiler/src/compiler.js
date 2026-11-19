@@ -116,6 +116,11 @@ export class Compiler {
     const vars = this.parser.vars()
     if (vars) body = `  ${vars};\n${body}`
 
+    // The rules are defined for the absolute value of the source number.
+    // A string keeps its fraction digits, so only drop its sign.
+    if (/\bn\b/.test(body))
+      body = `  if (n < 0) n = typeof n === 'string' ? n.slice(1) : -n;\n${body}`
+
     return new Function(args, body) // eslint-disable-line no-new-func
   }
 
